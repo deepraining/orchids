@@ -2,7 +2,7 @@
  * base Object
  * @type {{}}
  */
-var Orchi = {
+var Orchids = {
     /**
      * register a App Object
      */

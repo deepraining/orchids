@@ -5,7 +5,7 @@ var util = require('./util'),
         'onCreate', 'onDestroy'
     ],
     /**
-     * default Page option
+     * default Fragment option
      * @type {{}}
      */
     defaultOption = {
@@ -17,14 +17,14 @@ var util = require('./util'),
 
     };
 
-function Page(option) {
+function Fragment(option) {
     var self = this;
     self.option = util.extend(true, {}, defaultOption, option);
 
     self.init();
 }
 
-Page.prototype = {
+Fragment.prototype = {
     init: function() {
         var self = this;
 
