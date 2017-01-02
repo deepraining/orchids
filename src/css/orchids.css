@@ -2,6 +2,11 @@
     display: block;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+.orchids:before,
+.orchids:after {
+    box-sizing: border-box;
 }
 .orchids-page,
 .orchids-fragment {
@@ -22,4 +27,29 @@
     position: absolute;
     top: 0;
     height: 100%;
+}
+/* 动画 */
+.orchids-page.orchids-with-animation,
+.orchids-fragment.orchids-with-animation {
+    transition: all .5s;
+}
+/* 水平动画，默认 */
+.orchids-page.orchids-with-animation {
+    opacity: 0;
+}
+.orchids-page.orchids-with-animation.orchids-active {
+    opacity: 1;
+}
+.orchids-page.orchids-with-animation.orchids-horizontal {
+    transform: translateX(100%);
+}
+.orchids-page.orchids-with-animation.orchids-horizontal.orchids-active {
+    transform: translateX(0);
+}
+/* 竖直动画 */
+.orchids-page.orchids-with-animation.orchids-vertical {
+    transform: translateY(100%);
+}
+.orchids-page.orchids-with-animation.orchids-vertical.orchids-active {
+    transform: translateY(0);
 }
