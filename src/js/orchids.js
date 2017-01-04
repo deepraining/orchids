@@ -1,4 +1,4 @@
-var css = require('css-loader!../css/orchids.css');
+require('style!css!../css/orchids.css');
 
 var orchids = {};
 
