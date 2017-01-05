@@ -40,16 +40,16 @@
 .orchids-page.orchids-with-animation.orchids-active {
     opacity: 1;
 }
-.orchids-page.orchids-with-animation.orchids-horizontal {
+.orchids-page.orchids-horizontal {
     transform: translateX(100%);
 }
-.orchids-page.orchids-with-animation.orchids-horizontal.orchids-active {
+.orchids-page.orchids-horizontal.orchids-active {
     transform: translateX(0);
 }
 /* 竖直动画 */
-.orchids-page.orchids-with-animation.orchids-vertical {
+.orchids-page.orchids-vertical {
     transform: translateY(100%);
 }
-.orchids-page.orchids-with-animation.orchids-vertical.orchids-active {
+.orchids-page.orchids-vertical.orchids-active {
     transform: translateY(0);
 }

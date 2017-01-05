@@ -89,7 +89,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-fragment {\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-page {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n/* left and width attribute need to be set in Fragment Object */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n/* 动画 */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-fragment.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n/* 水平动画，默认 */\r\n.orchids-page.orchids-with-animation {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-with-animation.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n/* 竖直动画 */\r\n.orchids-page.orchids-with-animation.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-with-animation.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-fragment {\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-page {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n/* left and width attribute need to be set in Fragment Object */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n/* 动画 */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-fragment.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n/* 水平动画，默认 */\r\n.orchids-page.orchids-with-animation {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n/* 竖直动画 */\r\n.orchids-page.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}", ""]);
 
 	// exports
 
@@ -435,8 +435,7 @@
 	         * horizontal/vertical, default: horizontal
 	         */
 	        animateDirection: 'horizontal'
-	    }
-	},
+	    },
 	    /**
 	     * all registered page Object container
 	     * format: {
@@ -448,7 +447,7 @@
 	     * }
 	     * @type {{}}
 	     */
-	    pages = {},
+	    pages: {},
 	    /**
 	     * all registered Pages Attributes
 	     * format: {
@@ -461,7 +460,7 @@
 	     * }
 	     * @type {{}}
 	     */
-	    pagesAttributes = {},
+	    pagesAttributes: {},
 	    /**
 	     * all initialized Page instances
 	     * format: {
@@ -474,7 +473,8 @@
 	     * }
 	     * @type {{}}
 	     */
-	    pagesInstances = {};
+	    pagesInstances: {}
+	};
 
 	var util = __webpack_require__(6),
 	    page = __webpack_require__(7);
@@ -489,6 +489,16 @@
 	 */
 	app.init = function(option) {
 	    util.extend(true, app.option, option || {});
+	};
+	/**
+	 * start current application
+	 * if current url has orchidsPage parameter, it'will start the "orchidsPage" specified page, not the page "pageName"
+	 *
+	 * @param pageName
+	 * @param data
+	 * @param startOption
+	 */
+	app.start = function (pageName, data, startOption) {
 	    var params = (function () {
 	            var params = {};
 	            !!location.search && (
@@ -511,7 +521,10 @@
 	        }
 
 	        app.startPage(pageName, orchidsData);
+	        return;
 	    }
+
+	    app.startPage(pageName, data, startOption);
 	};
 	/**
 	 * initialize a Page and show it
@@ -523,9 +536,10 @@
 	 *         route: true/false, //
 	 *     }
 	 * @param forResult Whether current page is initialized by startPageForResult or not
+	 * @param prepareResultData Parameter to be used by the next page's prepareForResult method
 	 */
-	app.startPageInner = function (pageName, data, startOption, forResult) {
-	    var pageObject = pages[pageName], // the Page Object
+	app.startPageInner = function (pageName, data, startOption, forResult, prepareResultData) {
+	    var pageObject = app.pages[pageName], // the Page Object
 	        option, // Page option
 	        instance; // instance of page
 
@@ -539,8 +553,8 @@
 
 
 	    if (pageObject.option.singleton) {
-	        Object.keys(pagesInstances).map(function (id) {
-	            var page = pages[id];
+	        Object.keys(app.pagesInstances).map(function (id) {
+	            var page = app.pages[id];
 	            if (page.name == pageName) {
 	                instance = page.page;
 	                return !1;
@@ -555,7 +569,8 @@
 	    option = util.extend(true, {}, pageObject.option);
 	    option.pageId = ++pageCount;
 	    instance = new pageObject.page(option, data || {});
-	    pagesInstances[option.pageId] = {
+	    forResult && instance.prepareForResult(prepareResultData);
+	    app.pagesInstances[option.pageId] = {
 	        name: pageName,
 	        forResult: !!forResult,
 	        singleton: option.singleton,
@@ -563,12 +578,24 @@
 	    };
 	};
 
+	/**
+	 * start a page
+	 * @param pageName
+	 * @param data
+	 * @param startOption
+	 */
 	app.startPage = function (pageName, data, startOption) {
 	    app.startPageInner(pageName, data, startOption, !1)
 	};
-
-	app.startPageForResult = function (pageName, data, startOption) {
-	    app.startPageInner(pageName, data, startOption, !0)
+	/**
+	 * start a page for result
+	 * @param pageName
+	 * @param data
+	 * @param prepareResultData Parameter to be used by the next page's prepareForResult method
+	 * @param startOption
+	 */
+	app.startPageForResult = function (pageName, data, prepareResultData, startOption) {
+	    app.startPageInner(pageName, data, startOption, !0, prepareResultData)
 	};
 
 	/**
@@ -581,7 +608,10 @@
 
 	app.registerPage = function (pageName, extendAttributes, option, superPageName) {
 	    var newPage, // new Page Object
-	        superPagesExtendAttributes = []; // all super extend attributes
+	        superPagesExtendAttributes = [], // all super extend attributes
+	        superPagesOptions = [], // all super options
+	        tempOption,
+	        i, il;
 
 	    /**
 	     * get all super extend attributes
@@ -589,10 +619,12 @@
 	     * @param superPageName
 	     */
 	    function getSuperPagesExtendAttributes(superPageName) {
-	        var superPage = pages[superPageName],
-	            superExtendAttributes = pagesAttributes[superPageName];
+	        var superPage = app.pages[superPageName],
+	            superOption = superPage.option,
+	            superExtendAttributes = app.pagesAttributes[superPageName];
 
 	        !!superExtendAttributes && superPagesExtendAttributes.unshift(superExtendAttributes);
+	        !!superOption && superPagesOptions.unshift(superOption);
 	        !!superPage.superPage && getSuperPagesExtendAttributes(superPage.superPage);
 	    }
 
@@ -601,38 +633,32 @@
 	        return;
 	    }
 
-	    if (!!pagesAttributes[pageName]) {
+	    if (!!app.pagesAttributes[pageName]) {
 	        console.error('page "' + pageName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
 	    }
 	    // put extendAttributes to pagesAttributes container
-	    pagesAttributes[pageName] = extendAttributes;
+	    app.pagesAttributes[pageName] = extendAttributes;
 
 	    newPage = page();
+	    tempOption = util.extend(!0, {}, app.option);
 	    // no superPage
-	    if (!superPageName) {
-	        util.extend(!0, newPage.prototype, extendAttributes);
-	    }
-	    // has superPage
-	    else {
+	    if (!!superPageName) {
 	        getSuperPagesExtendAttributes(superPageName);
-	        if (superPagesExtendAttributes.length == 1) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0]);
-	        else if (superPagesExtendAttributes.length == 2) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1]);
-	        else if (superPagesExtendAttributes.length == 3) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2]);
-	        else if (superPagesExtendAttributes.length == 4) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3]);
-	        else if (superPagesExtendAttributes.length == 5) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4]);
-	        else if (superPagesExtendAttributes.length == 6) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5]);
-	        else if (superPagesExtendAttributes.length == 7) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5], superPagesExtendAttributes[6]);
-	        else if (superPagesExtendAttributes.length == 8) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5], superPagesExtendAttributes[6], superPagesExtendAttributes[7]);
-	        else {
-	            console.error('The max extend level is 8, and now is more than 8.');
+	        for (i = 0, il = superPagesExtendAttributes.length; i < il; i++) {
+	            util.extend(!0, newPage.prototype, superPagesExtendAttributes[i]);
+	        }
+
+	        for (i = 0, il = superPagesOptions.length; i < il; i++) {
+	            util.extend(!0, tempOption, superPagesOptions[i]);
 	        }
 	    }
-	    option = option || {};
-	    option = util.extend(true, {}, app.option, option);
-	    option.pageName = pageName;
-	    pages[pageName] = {
-	        superPage: void 0,
-	        option: option,
+	    util.extend(!0, newPage.prototype, extendAttributes);
+	    util.extend(!0, tempOption, option);
+
+	    tempOption.pageName = pageName;
+	    app.pages[pageName] = {
+	        superPage: superPageName,
+	        option: tempOption,
 	        page: newPage
 	    };
 	};
@@ -644,8 +670,8 @@
 	 */
 	app.getPage = function (index) {
 	    typeof index == 'undefined' && (index = -1);
-	    var keys = Object.keys(pagesInstances);
-	    return pagesInstances[keys[(keys.length + index) % keys.length]];
+	    var keys = Object.keys(app.pagesInstances);
+	    return app.pagesInstances[keys[(keys.length + index) % keys.length]];
 	};
 
 	/**
@@ -671,8 +697,8 @@
 	 */
 	app.deletePage = function (index) {
 	    typeof index == 'undefined' && (index = -1);
-	    var keys = Object.keys(pagesInstances);
-	    delete pagesInstances[keys[(keys.length + index) % keys.length]];
+	    var keys = Object.keys(app.pagesInstances);
+	    delete app.pagesInstances[keys[(keys.length + index) % keys.length]];
 	};
 
 	/**
@@ -682,15 +708,24 @@
 	app.deleteCurrentPage = function () {
 	    return app.deletePage(-1);
 	};
-
+	/**
+	 * back to prev page
+	 */
 	app.back = function () {
-	    var instance = app.getCurrentPage();
+	    var instance,
+	        prevInstance;
+
+	    // if current pages remain only 1, back action is invalid.
+	    if (Object.keys(app.pagesInstances).length <= 1) return;
+
+	    instance = app.getCurrentPage();
+	    prevInstance = app.getPrevPage();
 	    // for result
 	    instance.forResult && (
-	        !!app.getPrevPage.onPageResult && app.getPrevPage.onPageResult(instance.__orchids__result)
+	        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
 	    );
 	    // destroy
-	    instance.__orchids__hide();
+	    instance.page.__orchids__hide();
 	    app.deleteCurrentPage();
 	};
 
@@ -816,8 +851,8 @@
 	    function Page(option, data) {
 	        var self = this;
 	        self.option = util.extend(true, {}, option);
-	        self.__orchids__init();
 	        self.__orchids__data = data || {};
+	        self.__orchids__init();
 	    }
 
 	    Page.prototype = {
@@ -838,10 +873,10 @@
 	            self.el.dataset.orchidsPageId = self.id;
 	            // animation
 	            !!self.option.animate && (
-	                classes.push('orchids-with-animation'),
-	                    self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal')
+	                classes.push('orchids-with-animation')
 	            );
-
+	            // direction
+	            self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
 	            // classList
 	            self.__orchids__isFirstPage && classes.push('orchids-active');
 	            self.el.classList = classes.join(' ');
@@ -849,19 +884,22 @@
 	            self.el.style.backgroundColor = self.option.backgroundColor;
 	            // z-index
 	            !!self.option.singleton && (self.el.style.zIndex = 2);
-	            // user custom initialization
-	            !!self.onCreate && self.onCreate(self.__orchids__data);
-
-	            // route, if it is the first page, no route change
-	            !!self.option.route && self.__orchids__isFirstPage && self.__orchids__routeForward();
 
 	            // add to body element
 	            document.body.appendChild(self.el);
 
-	            // show page
+	            // user custom initialization
+	            !!self.onCreate && self.onCreate(self.__orchids__data);
+
+	            // route, if it is the first page, no route change
+	            !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();
+
+	            /**
+	             * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+	             */
 	            !self.__orchids__isFirstPage && setTimeout(function () {
 	                self.el.classList.add('orchids-active')
-	            }, 0);
+	            }, 100);
 	        },
 	        // make a forward route
 	        __orchids__routeForward: function () {
@@ -879,13 +917,15 @@
 	                })(),
 	                searchString = '';
 	            params.orchidsPage = pageName;
-	            params.pageData = pageData;
+	            params.orchidsData = pageData;
 
 	            Object.keys(params).map(function (key) {
 	                searchString += '&' + key + '=' + (!!params[key] ? params[key] : '');
 	            });
 
-	            history.pushState(null, null, '?' + searchString.slice(1));
+	            history.pushState({
+	                pageId: self.id
+	            }, null, '?' + searchString.slice(1));
 	        },
 	        // back a route
 	        __orchids__routeBack: function () {
@@ -895,10 +935,18 @@
 	        __orchids__hide: function () {
 	            var self = this;
 	            self.onDestroy();
+
 	            self.el.classList.remove('orchids-active');
-	            !self.option.singleton && setTimeout(function () {
-	                self.el.remove()
-	            }, 500);
+	            self.option.animate ? (
+	                // has animation
+	                !self.option.singleton && setTimeout(function () {
+	                    self.el.remove()
+	                }, 500)
+	            ) : (
+	                // no animation
+	                !self.option.singleton && self.el.remove()
+	            );
+
 	            // route
 	            !!self.option.route && self.__orchids__routeBack();
 	        },

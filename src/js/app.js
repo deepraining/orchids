@@ -27,8 +27,7 @@ var app = {
          * horizontal/vertical, default: horizontal
          */
         animateDirection: 'horizontal'
-    }
-},
+    },
     /**
      * all registered page Object container
      * format: {
@@ -40,7 +39,7 @@ var app = {
      * }
      * @type {{}}
      */
-    pages = {},
+    pages: {},
     /**
      * all registered Pages Attributes
      * format: {
@@ -53,7 +52,7 @@ var app = {
      * }
      * @type {{}}
      */
-    pagesAttributes = {},
+    pagesAttributes: {},
     /**
      * all initialized Page instances
      * format: {
@@ -66,7 +65,8 @@ var app = {
      * }
      * @type {{}}
      */
-    pagesInstances = {};
+    pagesInstances: {}
+};
 
 var util = require('./util'),
     page = require('./Page');
@@ -81,6 +81,16 @@ var util = require('./util'),
  */
 app.init = function(option) {
     util.extend(true, app.option, option || {});
+};
+/**
+ * start current application
+ * if current url has orchidsPage parameter, it'will start the "orchidsPage" specified page, not the page "pageName"
+ *
+ * @param pageName
+ * @param data
+ * @param startOption
+ */
+app.start = function (pageName, data, startOption) {
     var params = (function () {
             var params = {};
             !!location.search && (
@@ -103,6 +113,14 @@ app.init = function(option) {
         }
 
         app.startPage(pageName, orchidsData);
+        return;
+    }
+
+    app.startPage(pageName, data, startOption);
+
+    // if user call back page by phone button, keep it
+    window.onpopstate = function (event) {
+
     }
 };
 /**
@@ -115,9 +133,10 @@ app.init = function(option) {
  *         route: true/false, //
  *     }
  * @param forResult Whether current page is initialized by startPageForResult or not
+ * @param prepareResultData Parameter to be used by the next page's prepareForResult method
  */
-app.startPageInner = function (pageName, data, startOption, forResult) {
-    var pageObject = pages[pageName], // the Page Object
+app.startPageInner = function (pageName, data, startOption, forResult, prepareResultData) {
+    var pageObject = app.pages[pageName], // the Page Object
         option, // Page option
         instance; // instance of page
 
@@ -131,8 +150,8 @@ app.startPageInner = function (pageName, data, startOption, forResult) {
 
 
     if (pageObject.option.singleton) {
-        Object.keys(pagesInstances).map(function (id) {
-            var page = pages[id];
+        Object.keys(app.pagesInstances).map(function (id) {
+            var page = app.pages[id];
             if (page.name == pageName) {
                 instance = page.page;
                 return !1;
@@ -147,7 +166,8 @@ app.startPageInner = function (pageName, data, startOption, forResult) {
     option = util.extend(true, {}, pageObject.option);
     option.pageId = ++pageCount;
     instance = new pageObject.page(option, data || {});
-    pagesInstances[option.pageId] = {
+    forResult && instance.prepareForResult(prepareResultData);
+    app.pagesInstances[option.pageId] = {
         name: pageName,
         forResult: !!forResult,
         singleton: option.singleton,
@@ -155,12 +175,24 @@ app.startPageInner = function (pageName, data, startOption, forResult) {
     };
 };
 
+/**
+ * start a page
+ * @param pageName
+ * @param data
+ * @param startOption
+ */
 app.startPage = function (pageName, data, startOption) {
     app.startPageInner(pageName, data, startOption, !1)
 };
-
-app.startPageForResult = function (pageName, data, startOption) {
-    app.startPageInner(pageName, data, startOption, !0)
+/**
+ * start a page for result
+ * @param pageName
+ * @param data
+ * @param prepareResultData Parameter to be used by the next page's prepareForResult method
+ * @param startOption
+ */
+app.startPageForResult = function (pageName, data, prepareResultData, startOption) {
+    app.startPageInner(pageName, data, startOption, !0, prepareResultData)
 };
 
 /**
@@ -173,7 +205,10 @@ app.startPageForResult = function (pageName, data, startOption) {
 
 app.registerPage = function (pageName, extendAttributes, option, superPageName) {
     var newPage, // new Page Object
-        superPagesExtendAttributes = []; // all super extend attributes
+        superPagesExtendAttributes = [], // all super extend attributes
+        superPagesOptions = [], // all super options
+        tempOption,
+        i, il;
 
     /**
      * get all super extend attributes
@@ -181,10 +216,12 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
      * @param superPageName
      */
     function getSuperPagesExtendAttributes(superPageName) {
-        var superPage = pages[superPageName],
-            superExtendAttributes = pagesAttributes[superPageName];
+        var superPage = app.pages[superPageName],
+            superOption = superPage.option,
+            superExtendAttributes = app.pagesAttributes[superPageName];
 
         !!superExtendAttributes && superPagesExtendAttributes.unshift(superExtendAttributes);
+        !!superOption && superPagesOptions.unshift(superOption);
         !!superPage.superPage && getSuperPagesExtendAttributes(superPage.superPage);
     }
 
@@ -193,38 +230,32 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
         return;
     }
 
-    if (!!pagesAttributes[pageName]) {
+    if (!!app.pagesAttributes[pageName]) {
         console.error('page "' + pageName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
     }
     // put extendAttributes to pagesAttributes container
-    pagesAttributes[pageName] = extendAttributes;
+    app.pagesAttributes[pageName] = extendAttributes;
 
     newPage = page();
+    tempOption = util.extend(!0, {}, app.option);
     // no superPage
-    if (!superPageName) {
-        util.extend(!0, newPage.prototype, extendAttributes);
-    }
-    // has superPage
-    else {
+    if (!!superPageName) {
         getSuperPagesExtendAttributes(superPageName);
-        if (superPagesExtendAttributes.length == 1) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0]);
-        else if (superPagesExtendAttributes.length == 2) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1]);
-        else if (superPagesExtendAttributes.length == 3) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2]);
-        else if (superPagesExtendAttributes.length == 4) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3]);
-        else if (superPagesExtendAttributes.length == 5) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4]);
-        else if (superPagesExtendAttributes.length == 6) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5]);
-        else if (superPagesExtendAttributes.length == 7) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5], superPagesExtendAttributes[6]);
-        else if (superPagesExtendAttributes.length == 8) util.extend(!0, newPage.prototype, extendAttributes, superPagesExtendAttributes[0], superPagesExtendAttributes[1], superPagesExtendAttributes[2], superPagesExtendAttributes[3], superPagesExtendAttributes[4], superPagesExtendAttributes[5], superPagesExtendAttributes[6], superPagesExtendAttributes[7]);
-        else {
-            console.error('The max extend level is 8, and now is more than 8.');
+        for (i = 0, il = superPagesExtendAttributes.length; i < il; i++) {
+            util.extend(!0, newPage.prototype, superPagesExtendAttributes[i]);
+        }
+
+        for (i = 0, il = superPagesOptions.length; i < il; i++) {
+            util.extend(!0, tempOption, superPagesOptions[i]);
         }
     }
-    option = option || {};
-    option = util.extend(true, {}, app.option, option);
-    option.pageName = pageName;
-    pages[pageName] = {
-        superPage: void 0,
-        option: option,
+    util.extend(!0, newPage.prototype, extendAttributes);
+    util.extend(!0, tempOption, option);
+
+    tempOption.pageName = pageName;
+    app.pages[pageName] = {
+        superPage: superPageName,
+        option: tempOption,
         page: newPage
     };
 };
@@ -236,8 +267,8 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
  */
 app.getPage = function (index) {
     typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(pagesInstances);
-    return pagesInstances[keys[(keys.length + index) % keys.length]];
+    var keys = Object.keys(app.pagesInstances);
+    return app.pagesInstances[keys[(keys.length + index) % keys.length]];
 };
 
 /**
@@ -263,8 +294,8 @@ app.getPrevPage = function () {
  */
 app.deletePage = function (index) {
     typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(pagesInstances);
-    delete pagesInstances[keys[(keys.length + index) % keys.length]];
+    var keys = Object.keys(app.pagesInstances);
+    delete app.pagesInstances[keys[(keys.length + index) % keys.length]];
 };
 
 /**
@@ -274,15 +305,24 @@ app.deletePage = function (index) {
 app.deleteCurrentPage = function () {
     return app.deletePage(-1);
 };
-
+/**
+ * back to prev page
+ */
 app.back = function () {
-    var instance = app.getCurrentPage();
+    var instance,
+        prevInstance;
+
+    // if current pages remain only 1, back action is invalid.
+    if (Object.keys(app.pagesInstances).length <= 1) return;
+
+    instance = app.getCurrentPage();
+    prevInstance = app.getPrevPage();
     // for result
     instance.forResult && (
-        !!app.getPrevPage.onPageResult && app.getPrevPage.onPageResult(instance.__orchids__result)
+        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
     );
     // destroy
-    instance.__orchids__hide();
+    instance.page.__orchids__hide();
     app.deleteCurrentPage();
 };
 

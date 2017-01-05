@@ -12,8 +12,8 @@ var newPage = function () {
     function Page(option, data) {
         var self = this;
         self.option = util.extend(true, {}, option);
-        self.__orchids__init();
         self.__orchids__data = data || {};
+        self.__orchids__init();
     }
 
     Page.prototype = {
@@ -34,10 +34,10 @@ var newPage = function () {
             self.el.dataset.orchidsPageId = self.id;
             // animation
             !!self.option.animate && (
-                classes.push('orchids-with-animation'),
-                    self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal')
+                classes.push('orchids-with-animation')
             );
-
+            // direction
+            self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
             // classList
             self.__orchids__isFirstPage && classes.push('orchids-active');
             self.el.classList = classes.join(' ');
@@ -45,19 +45,22 @@ var newPage = function () {
             self.el.style.backgroundColor = self.option.backgroundColor;
             // z-index
             !!self.option.singleton && (self.el.style.zIndex = 2);
-            // user custom initialization
-            !!self.onCreate && self.onCreate(self.__orchids__data);
-
-            // route, if it is the first page, no route change
-            !!self.option.route && self.__orchids__isFirstPage && self.__orchids__routeForward();
 
             // add to body element
             document.body.appendChild(self.el);
 
-            // show page
+            // user custom initialization
+            !!self.onCreate && self.onCreate(self.__orchids__data);
+
+            // route, if it is the first page, no route change
+            !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();
+
+            /**
+             * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+             */
             !self.__orchids__isFirstPage && setTimeout(function () {
                 self.el.classList.add('orchids-active')
-            }, 0);
+            }, 100);
         },
         // make a forward route
         __orchids__routeForward: function () {
@@ -75,13 +78,15 @@ var newPage = function () {
                 })(),
                 searchString = '';
             params.orchidsPage = pageName;
-            params.pageData = pageData;
+            params.orchidsData = pageData;
 
             Object.keys(params).map(function (key) {
                 searchString += '&' + key + '=' + (!!params[key] ? params[key] : '');
             });
 
-            history.pushState(null, null, '?' + searchString.slice(1));
+            history.pushState({
+                pageId: self.id
+            }, null, '?' + searchString.slice(1));
         },
         // back a route
         __orchids__routeBack: function () {
@@ -91,10 +96,18 @@ var newPage = function () {
         __orchids__hide: function () {
             var self = this;
             self.onDestroy();
+
             self.el.classList.remove('orchids-active');
-            !self.option.singleton && setTimeout(function () {
-                self.el.remove()
-            }, 500);
+            self.option.animate ? (
+                // has animation
+                !self.option.singleton && setTimeout(function () {
+                    self.el.remove()
+                }, 500)
+            ) : (
+                // no animation
+                !self.option.singleton && self.el.remove()
+            );
+
             // route
             !!self.option.route && self.__orchids__routeBack();
         },
