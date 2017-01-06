@@ -43,8 +43,6 @@ var newPage = function () {
             self.el.classList = classes.join(' ');
             // background color
             self.el.style.backgroundColor = self.option.backgroundColor;
-            // z-index
-            !!self.option.singleton && (self.el.style.zIndex = 2);
 
             // add to body element
             document.body.appendChild(self.el);
@@ -93,32 +91,32 @@ var newPage = function () {
             history.back();
         },
         // hide current page
-        __orchids__hide: function () {
+        __orchids__hide: function (keepRoute) {
             var self = this;
             self.onDestroy();
 
             self.el.classList.remove('orchids-active');
             self.option.animate ? (
                 // has animation
-                !self.option.singleton && setTimeout(function () {
+                setTimeout(function () {
                     self.el.remove()
                 }, 500)
             ) : (
                 // no animation
-                !self.option.singleton && self.el.remove()
+                self.el.remove()
             );
 
             // route
-            !!self.option.route && self.__orchids__routeBack();
+            !!self.option.route && !keepRoute && self.__orchids__routeBack();
         },
 
-        // show current page
-        __orchids__show: function () {
-            var self = this;
-            // route
-            !!self.option.route && self.__orchids__routeForward();
-            self.el.classList.add('orchids-active');
-        },
+        // show current page (current no using)
+        //__orchids__show: function () {
+        //    var self = this;
+        //    // route
+        //    !!self.option.route && self.__orchids__routeForward();
+        //    self.el.classList.add('orchids-active');
+        //},
 
         // render a page after a page is initialized
         onCreate: function(data) {},

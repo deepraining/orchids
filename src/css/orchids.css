@@ -9,47 +9,48 @@
     box-sizing: border-box;
 }
 .orchids-page,
-.orchids-fragment {
-    background: #ffffff;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    z-index: 1;
-}
-.orchids-page {
+.orchids-dialog {
     position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    background: #ffffff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1;
 }
-/* left and width attribute need to be set in Fragment Object */
-.orchids-fragment {
-    position: absolute;
-    top: 0;
-    height: 100%;
+.orchids-dialog {
+    z-index: 2;
 }
 /* 动画 */
 .orchids-page.orchids-with-animation,
-.orchids-fragment.orchids-with-animation {
+.orchids-dialog.orchids-with-animation {
     transition: all .5s;
 }
 /* 水平动画，默认 */
-.orchids-page.orchids-with-animation {
+.orchids-page.orchids-with-animation,
+.orchids-dialog.orchids-with-animation {
     opacity: 0;
 }
-.orchids-page.orchids-with-animation.orchids-active {
+.orchids-page.orchids-with-animation.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-active {
     opacity: 1;
 }
-.orchids-page.orchids-horizontal {
+.orchids-page.orchids-horizontal,
+.orchids-dialog.orchids-horizontal {
     transform: translateX(100%);
 }
-.orchids-page.orchids-horizontal.orchids-active {
+.orchids-page.orchids-horizontal.orchids-active,
+.orchids-dialog.orchids-horizontal.orchids-active {
     transform: translateX(0);
 }
 /* 竖直动画 */
-.orchids-page.orchids-vertical {
+.orchids-page.orchids-vertical,
+.orchids-dialog.orchids-vertical {
     transform: translateY(100%);
 }
-.orchids-page.orchids-vertical.orchids-active {
+.orchids-page.orchids-vertical.orchids-active,
+.orchids-dialog.orchids-vertical.orchids-active {
     transform: translateY(0);
 }

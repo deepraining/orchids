@@ -28,11 +28,37 @@ var app = {
          */
         animateDirection: 'horizontal'
     },
+    // default dialog option
+    defaultDialogOption: {
+        /**
+         * background of root element
+         */
+        backgroundColor: '#ffffff',
+        /**
+         * whether to use animation when switch between pages
+         * default: true
+         */
+        animate: !0,
+        /**
+         * animation direction of switching page
+         * horizontal/vertical, default: horizontal
+         */
+        animateDirection: 'vertical',
+        /**
+         * whether current dialog is singleton or not
+         */
+        singleton: !0
+    },
     /**
      * all registered page Object container
      * format: {
      *     name: {
-     *         option: option, // Option to initialize a Page
+     *         option: option, // Option to initialize a Page, available option is showed bellow
+     *             {
+     *                 backgroundColor: '#ffffff',
+     *                 animate: !0,
+     *                 animateDirection: 'horizontal'
+     *             }
      *         superPage: '', // super page name, default is blank string
      *         page: Page // Page Object
      *     }
@@ -54,28 +80,83 @@ var app = {
      */
     pagesAttributes: {},
     /**
-     * all initialized Page instances
+     * all initialized Page instances (current page is not supporting singleton)
      * format: {
      *     id: {
      *         name: pageName, // Page name
      *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-     *         singleton: true/false, // whether current page is singleton or not.
      *         page: Page // Page instance
      *     }
      * }
      * @type {{}}
      */
-    pagesInstances: {}
+    pagesInstances: {},
+    /**
+     * all registered dialog Object container
+     * format: {
+     *     name: {
+     *         option: option, // Option to initialize a Dialog, available option is showed bellow
+     *             {
+     *                 backgroundColor: '#ffffff',
+     *                 animate: !0,
+     *                 animateDirection: 'vertical',
+     *                 singleton: true
+     *             }
+     *         superDialog: '', // super dialog name, default is blank string
+     *         dialog: Dialog // Dialog Object
+     *     }
+     * }
+     * @type {{}}
+     */
+    dialogs: {},
+    /**
+     * all registered Dialogs Attributes
+     * format: {
+     *     name: {
+     *         name1: field1,
+     *         name2: filed2,
+     *         name3: func1,
+     *         name4: func2
+     *     }
+     * }
+     * @type {{}}
+     */
+    dialogsAttributes: {},
+    /**
+     * all initialized Dialog instances
+     * format: {
+     *     id: {
+     *         name: dialogName, // Dialog name
+     *         forResult: true/false, // whether current page is initialized by startPageForResult or not
+     *         dialog: Dialog // Dialog instance
+     *     }
+     * }
+     * @type {{}}
+     */
+    dialogsInstances: {},
+    /**
+     * all initialized Dialog singleton instances
+     * format: {
+     *     name: {
+     *         id: id, // dialog id
+     *         dialog: Dialog // Dialog instance
+     *     }
+     * }
+     * @type {{}}
+     */
+    dialogsSingletonInstances: {}
 };
 
 var util = require('./util'),
-    page = require('./Page');
+    page = require('./Page'),
+    dialog = require('./Dialog');
 
     /**
      * total page count of current app
      * @type {number}
      */
-    var pageCount = 0;
+    var pageCount = 0,
+        dialogCount = 0;
 /**
  * initialize app
  */
@@ -88,9 +169,8 @@ app.init = function(option) {
  *
  * @param pageName
  * @param data
- * @param startOption
  */
-app.start = function (pageName, data, startOption) {
+app.start = function (pageName, data) {
     var params = (function () {
             var params = {};
             !!location.search && (
@@ -100,77 +180,65 @@ app.start = function (pageName, data, startOption) {
             );
             return params;
         })(),
-        pageName,
+        orchidsPage,
         orchidsData;
+
+
+    // if user call back page by phone button, keep it
+    // here we do not consider other action, like forward, refresh, for this is main for wechat webapp using
+    window.onpopstate = function (event) {
+        app.back(!0);
+    };
 
     // tell the first page and option by the parameter
     if (!!params.orchidsPage) {
-        pageName = decodeURIComponent(params.orchidsPage);
+        orchidsPage = decodeURIComponent(params.orchidsPage);
         try {
             orchidsData = JSON.parse(decodeURIComponent(params.orchidsData));
         } catch (e) {
             orchidsData = {};
         }
 
-        app.startPage(pageName, orchidsData);
+        app.startPage(orchidsPage, orchidsData);
         return;
     }
 
-    app.startPage(pageName, data, startOption);
+    app.startPage(pageName, data);
 
-    // if user call back page by phone button, keep it
-    window.onpopstate = function (event) {
-
-    }
 };
 /**
  * initialize a Page and show it
  * @param pageName The name of a Page Object
  * @param data Data to initialize a Page, and will be use by onCreate method
- * @param startOption Option for how to start a page
- *     {
- *         launchMode: 'clearStack', // it will clear the page stack when the page is created, and it will be in the bottom of the page stack
- *         route: true/false, //
- *     }
  * @param forResult Whether current page is initialized by startPageForResult or not
  * @param prepareResultData Parameter to be used by the next page's prepareForResult method
  */
-app.startPageInner = function (pageName, data, startOption, forResult, prepareResultData) {
+app.startPageInner = function (pageName, data, forResult, prepareResultData) {
     var pageObject = app.pages[pageName], // the Page Object
         option, // Page option
         instance; // instance of page
+
+    // has dialog active
+    if (Object.keys(app.dialogsInstances).length >= 1) {
+        console.error('Current application has dialog present, please close it and then start another page.');
+        return;
+    }
 
     if (!pageObject) {
         console.error('The Page "' + pageName + '" you called is not registered, please register it before initialize.');
         return;
     }
 
-    startOption = startOption || {};
-
-
-
-    if (pageObject.option.singleton) {
-        Object.keys(app.pagesInstances).map(function (id) {
-            var page = app.pages[id];
-            if (page.name == pageName) {
-                instance = page.page;
-                return !1;
-            }
-        });
-        if (!!instance) {
-            instance.__orchids__show();
-            return;
-        }
-    }
-
     option = util.extend(true, {}, pageObject.option);
+    // pageId
     option.pageId = ++pageCount;
+    // route
+    option.route = app.option.route;
     instance = new pageObject.page(option, data || {});
     forResult && instance.prepareForResult(prepareResultData);
     app.pagesInstances[option.pageId] = {
         name: pageName,
         forResult: !!forResult,
-        singleton: option.singleton,
         page: instance
     };
 };
@@ -179,20 +247,109 @@ app.startPageInner = function (pageName, data, startOption, forResult, prepareRe
  * start a page
  * @param pageName
  * @param data
- * @param startOption
  */
-app.startPage = function (pageName, data, startOption) {
-    app.startPageInner(pageName, data, startOption, !1)
+app.startPage = function (pageName, data) {
+    app.startPageInner(pageName, data, !1)
 };
 /**
  * start a page for result
  * @param pageName
  * @param data
  * @param prepareResultData Parameter to be used by the next page's prepareForResult method
- * @param startOption
  */
-app.startPageForResult = function (pageName, data, prepareResultData, startOption) {
-    app.startPageInner(pageName, data, startOption, !0, prepareResultData)
+app.startPageForResult = function (pageName, data, prepareResultData) {
+    app.startPageInner(pageName, data, !0, prepareResultData)
+};
+
+/**
+ * initialize a Dialog and show it
+ * @param dialogName The name of a Dialog Object
+ * @param data Data to initialize a Dialog, and will be use by onCreate method
+ * @param forResult Whether current dialog is initialized by startDialogForResult or not
+ * @param prepareResultData Parameter to be used by the next dialog's prepareForResult method
+ */
+app.startDialogInner = function (dialogName, data, forResult, prepareResultData) {
+    var dialogObject = app.dialogs[dialogName], // the Dialog Object
+        option, // Dialog option
+        instance, // instance of dialog
+        existedSingletonInstance; //
+
+    if (!dialogObject) {
+        console.error('The Dialog "' + dialogName + '" you called is not registered, please register it before initialize.');
+        return;
+    }
+
+    // singleton
+    if (dialogObject.option.singleton) {
+        Object.keys(app.dialogsInstances).map(function (id) {
+            var dialog = app.dialogsInstances[id];
+            if (dialog.name == dialogName) {
+                existedSingletonInstance = dialog.dialog;
+                return !1;
+            }
+        });
+        if (!!existedSingletonInstance) {
+            console.error('The Dialog "' + dialogName + '" is singleton, and is active in current application, please do not use it twice');
+            return;
+        }
+        Object.keys(app.dialogsSingletonInstances).map(function (name) {
+            var singletonInstance;
+            if (name == dialogName) {
+                singletonInstance = app.dialogsSingletonInstances[name];
+                // update forResult and active attribute
+                instance = singletonInstance;
+                return !1;
+            }
+        });
+        if (!!instance) {
+            app.dialogsInstances[instance.dialogId] = {
+                name: dialogName,
+                forResult: !!forResult,
+                dialog: instance.dialog
+            };
+            forResult ? instance.dialog.__orchids__show(!0, prepareResultData) : instance.dialog.__orchids__show();
+            return;
+        }
+    }
+
+
+    option = util.extend(true, {}, dialogObject.option);
+    // dialogId
+    option.dialogId = ++dialogCount;
+
+    instance = new dialogObject.dialog(option, data || {});
+    forResult && instance.prepareForResult(prepareResultData);
+
+    dialogObject.option.singleton && (
+        app.dialogsSingletonInstances[dialogName] = {
+            id: option.dialogId,
+            dialog: instance
+        }
+    );
+
+    app.dialogsInstances[option.dialogId] = {
+        name: dialogName,
+        forResult: !!forResult,
+        dialog: instance
+    };
+};
+
+/**
+ * start a dialog
+ * @param dialogName
+ * @param data
+ */
+app.startDialog = function (dialogName, data) {
+    app.startDialogInner(dialogName, data, !1)
+};
+/**
+ * start a dialog for result
+ * @param dialogName
+ * @param data
+ * @param prepareResultData Parameter to be used by the next dialog's prepareForResult method
+ */
+app.startDialogForResult = function (dialogName, data, prepareResultData) {
+    app.startDialogInner(dialogName, data, !0, prepareResultData)
 };
 
 /**
@@ -261,6 +418,72 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
 };
 
 /**
+ * register a Dialog Object
+ * @param dialogName New name of new Dialog Object, support dot semantic, for instance, "foo.bar.name"
+ * @param extendAttributes Attributes to be extended to new Dialog Object
+ * @param option Option to initialize a Dialog
+ * @param superDialogName Super Dialog Object, default is Dialog
+ */
+
+app.registerDialog = function (dialogName, extendAttributes, option, superDialogName) {
+    var newDialog, // new Dialog Object
+        superDialogsExtendAttributes = [], // all super extend attributes
+        superDialogsOptions = [], // all super options
+        tempOption,
+        i, il;
+
+    /**
+     * get all super extend attributes
+     *
+     * @param superDialogName
+     */
+    function getSuperDialogsExtendAttributes(superDialogName) {
+        var superDialog = app.dialogs[superDialogName],
+            superOption = superDialog.option,
+            superExtendAttributes = app.dialogsAttributes[superDialogName];
+
+        !!superExtendAttributes && superDialogsExtendAttributes.unshift(superExtendAttributes);
+        !!superOption && superDialogsOptions.unshift(superOption);
+        !!superDialog.superDialog && getSuperDialogsExtendAttributes(superDialog.superDialog);
+    }
+
+    if (!dialogName || typeof dialogName != 'string') {
+        console.error('Register a Dialog Object needs a explicit string name');
+        return;
+    }
+
+    if (!!app.dialogsAttributes[dialogName]) {
+        console.error('dialog "' + dialogName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
+    }
+    // put extendAttributes to dialogsAttributes container
+    app.dialogsAttributes[dialogName] = extendAttributes;
+
+    newDialog = dialog();
+    tempOption = util.extend(!0, {}, app.defaultDialogOption);
+    // no superDialog
+    if (!!superDialogName) {
+        getSuperDialogsExtendAttributes(superDialogName);
+        for (i = 0, il = superDialogsExtendAttributes.length; i < il; i++) {
+            util.extend(!0, newDialog.prototype, superDialogsExtendAttributes[i]);
+        }
+
+        for (i = 0, il = superDialogsOptions.length; i < il; i++) {
+            util.extend(!0, tempOption, superDialogsOptions[i]);
+        }
+    }
+    util.extend(!0, newDialog.prototype, extendAttributes);
+    util.extend(!0, tempOption, option);
+
+    tempOption.dialogName = dialogName;
+    app.dialogs[dialogName] = {
+        superDialog: superDialogName,
+        option: tempOption,
+        singleton: !!tempOption.singleton,
+        dialog: newDialog
+    };
+};
+
+/**
  * get page object
  * @param index
  * @returns {*}
@@ -305,25 +528,105 @@ app.deletePage = function (index) {
 app.deleteCurrentPage = function () {
     return app.deletePage(-1);
 };
+
+/**
+ * get dialog object
+ * @param index
+ * @returns {*}
+ */
+app.getDialog = function (index) {
+    typeof index == 'undefined' && (index = -1);
+    var keys = Object.keys(app.dialogsInstances);
+    return app.dialogsInstances[keys[(keys.length + index) % keys.length]];
+};
+
+/**
+ * get current dialog object
+ * @returns {*}
+ */
+app.getCurrentDialog = function () {
+    return app.getDialog(-1);
+};
+
+/**
+ * get prev dialog object
+ * @returns {*}
+ */
+app.getPrevDialog = function () {
+    return app.getDialog(-2);
+};
+
+/**
+ * delete dialog object
+ * @param index
+ * @returns {*}
+ */
+app.deleteDialog = function (index) {
+    typeof index == 'undefined' && (index = -1);
+    var keys = Object.keys(app.dialogsInstances);
+    delete app.dialogsInstances[keys[(keys.length + index) % keys.length]];
+};
+
+/**
+ * delete current dialog object
+ * @returns {*}
+ */
+app.deleteCurrentDialog = function () {
+    return app.deleteDialog(-1);
+};
 /**
  * back to prev page
+ *
+ * @param keepRoute Whether to keep route no change
  */
-app.back = function () {
+app.back = function (keepRoute) {
     var instance,
         prevInstance;
+
+    // has dialog active
+    if (Object.keys(app.dialogsInstances).length >= 1) {
+        app.dialogBack();
+        return;
+    }
 
     // if current pages remain only 1, back action is invalid.
     if (Object.keys(app.pagesInstances).length <= 1) return;
 
     instance = app.getCurrentPage();
-    prevInstance = app.getPrevPage();
     // for result
     instance.forResult && (
-        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
+        prevInstance = app.getPrevPage(),
+    !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
     );
     // destroy
-    instance.page.__orchids__hide();
+    instance.page.__orchids__hide(!!keepRoute);
     app.deleteCurrentPage();
+};
+/**
+ * back to page
+ */
+app.dialogBack = function () {
+    var instance,
+        prevInstance,
+        prevPageInstance;
+
+    // if current dialogs remain 0, back action is invalid.
+    if (Object.keys(app.dialogsInstances).length <= 0) return;
+
+    instance = app.getCurrentDialog();
+    // for result
+    instance.forResult && (
+        prevInstance = app.getPrevDialog(),
+            !!prevInstance ? (
+                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {})
+            ) : (
+                prevPageInstance = app.getPrevPage(),
+                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {})
+            )
+    );
+    // destroy
+    instance.dialog.__orchids__hide();
+    app.deleteCurrentDialog();
 };
 
 module.exports = app;
