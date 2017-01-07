@@ -203,7 +203,7 @@ app.onpopstate = function (event) {
  * if current url has orchidsPage parameter, it'will start the "orchidsPage" specified page, not the page "pageName"
  *
  * @param pageName
- * @param data
+ * @param data Data to initialize a Page, and will be use by onCreate method
  */
 app.start = function (pageName, data) {
     var params = (function () {
@@ -249,7 +249,8 @@ app.start = function (pageName, data) {
 app.startPageInner = function (pageName, data, forResult, prepareResultData) {
     var pageObject = app.pages[pageName], // the Page Object
         option, // Page option
-        instance; // instance of page
+        instance, // instance of page
+        prevPageInstance;
 
     // has dialog active
     if (Object.keys(app.dialogsInstances).length >= 1) {
@@ -261,6 +262,10 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
         console.error('The Page "' + pageName + '" you called is not registered, please register it before initialize.');
         return;
     }
+
+    // call prev page's onHide method
+    prevPageInstance = app.getCurrentPage();
+    !!prevPageInstance && prevPageInstance.page.onHide();
 
     option = util.extend(true, {}, pageObject.option);
     // pageId
@@ -279,7 +284,7 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
 /**
  * start a page
  * @param pageName
- * @param data
+ * @param data Parameter to use by new page's onCreate method
  */
 app.startPage = function (pageName, data) {
     app.startPageInner(pageName, data, !1)
@@ -287,7 +292,7 @@ app.startPage = function (pageName, data) {
 /**
  * start a page for result
  * @param pageName
- * @param data
+ * @param data Parameter to use by new page's onCreate method
  * @param prepareResultData Parameter to be used by the next page's prepareForResult method
  */
 app.startPageForResult = function (pageName, data, prepareResultData) {
@@ -370,7 +375,7 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
 /**
  * start a dialog
  * @param dialogName
- * @param data
+ * @param data Parameter to use by new dialog's onCreate method
  */
 app.startDialog = function (dialogName, data) {
     app.startDialogInner(dialogName, data, !1)
@@ -378,7 +383,7 @@ app.startDialog = function (dialogName, data) {
 /**
  * start a dialog for result
  * @param dialogName
- * @param data
+ * @param data Parameter to use by new dialog's onCreate method
  * @param prepareResultData Parameter to be used by the next dialog's prepareForResult method
  */
 app.startDialogForResult = function (dialogName, data, prepareResultData) {
@@ -387,9 +392,35 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
 
 /**
  * register a Page Object
- * @param pageName New name of new Page Object, support dot semantic, for instance, "foo.bar.name"
+ * @param pageName New name of new Page Object
  * @param extendAttributes Attributes to be extended to new Page Object
+ *     methods to override
+ *     {
+ *         // render a page after a page is initialized
+ *         onCreate: function(){},
+ *         // pre handle before destroy a page
+ *         onDestroy: function() {},
+ *         // called when back page from other page
+ *         onShow: function () {},
+ *         // called when start another page
+ *         onHide: function () {},
+ *         // called when the child page destroyed and return the value by setResult method.
+ *         onPageResult: function(data) {},
+ *         // receive data from the previous page, startPageForResult method's second parameter
+ *         prepareForResult: function(data) {}
+ *     }
+ *     methods to call
+ *     {
+ *         // set the result if this page is called by startPageForResult method,
+ *         // and the returned value will be used as the param of the onPageResult method of last page
+ *         setResult: function(data) {}
+ *     }
  * @param option Option to initialize a Page
+ *     {
+ *         backgroundColor: '#ffffff',
+ *         animate: !0,
+ *         animateDirection: 'horizontal'
+ *     }
  * @param superPageName Super Page Object, default is Page
  */
 
@@ -423,6 +454,20 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
     if (!!app.pagesAttributes[pageName]) {
         console.error('page "' + pageName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
     }
+
+    if (arguments.length == 1) {
+        console.error('Register page "' + pageName + '" with no extend attributes is not ok, please check it');
+        return;
+    }
+    else if (arguments.length == 2) {
+        option = {};
+        superPageName = '';
+    }
+    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+        superPageName = option;
+        option = {};
+    }
+
     // put extendAttributes to pagesAttributes container
     app.pagesAttributes[pageName] = extendAttributes;
 
@@ -452,12 +497,34 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
 
 /**
  * register a Dialog Object
- * @param dialogName New name of new Dialog Object, support dot semantic, for instance, "foo.bar.name"
+ * @param dialogName New name of new Dialog Object
  * @param extendAttributes Attributes to be extended to new Dialog Object
+ *     methods to override
+ *     {
+ *         // render a dialog after a dialog is initialized
+ *         onCreate: function(){},
+ *         // pre handle before destroy a dialog
+ *         onDestroy: function() {},
+ *         // called when the child dialog destroyed and return the value by setResult method.
+ *         onDialogResult: function(data) {},
+ *         // receive data from the previous dialog, startDialogForResult method's second parameter
+ *         prepareForResult: function(data) {}
+ *     }
+ *     methods to call
+ *     {
+ *         // set the result if this dialog is called by startDialogForResult method,
+ *         // and the returned value will be used as the param of the onDialogResult method of last dialog
+ *         setResult: function(data) {}
+ *     }
  * @param option Option to initialize a Dialog
+ *     {
+ *         backgroundColor: '#ffffff',
+ *         animate: !0,
+ *         animateDirection: 'vertical',
+ *         singleton: !0 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
+ *     }
  * @param superDialogName Super Dialog Object, default is Dialog
  */
-
 app.registerDialog = function (dialogName, extendAttributes, option, superDialogName) {
     var newDialog, // new Dialog Object
         superDialogsExtendAttributes = [], // all super extend attributes
@@ -488,6 +555,20 @@ app.registerDialog = function (dialogName, extendAttributes, option, superDialog
     if (!!app.dialogsAttributes[dialogName]) {
         console.error('dialog "' + dialogName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
     }
+
+    if (arguments.length == 1) {
+        console.error('Register dialog "' + dialogName + '" with no extend attributes is not ok, please check it');
+        return;
+    }
+    else if (arguments.length == 2) {
+        option = {};
+        superDialogName = '';
+    }
+    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+        superDialogName = option;
+        option = {};
+    }
+
     // put extendAttributes to dialogsAttributes container
     app.dialogsAttributes[dialogName] = extendAttributes;
 
@@ -676,13 +757,15 @@ app.pageBack = function () {
     if (Object.keys(app.pagesInstances).length <= 1) return;
 
     instance = app.getCurrentPage();
+    prevInstance = app.getPrevPage();
     // for result
     instance.forResult && (
-        prevInstance = app.getPrevPage(),
         !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
     );
     // destroy
     instance.page.__orchids__hide();
+    // call prev page's onShow method
+    !!prevInstance.page.onShow && prevInstance.page.onShow();
     app.deleteCurrentPage();
 };
 

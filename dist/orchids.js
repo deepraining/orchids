@@ -54,7 +54,6 @@
 	//orchids.app = app;
 
 	orchids.init = app.init;
-	orchids.start = app.start;
 	orchids.registerPage = app.registerPage;
 	orchids.registerDialog = app.registerDialog;
 	orchids.startPage = app.startPage;
@@ -62,6 +61,7 @@
 	orchids.startDialog = app.startDialog;
 	orchids.startDialogForResult = app.startDialogForResult;
 	orchids.back = app.back;
+	orchids.start = app.start;
 
 	orchids.getPage = app.getPageById;
 	orchids.getDialog = app.getDialogById;
@@ -673,7 +673,8 @@
 	app.startPageInner = function (pageName, data, forResult, prepareResultData) {
 	    var pageObject = app.pages[pageName], // the Page Object
 	        option, // Page option
-	        instance; // instance of page
+	        instance, // instance of page
+	        prevPageInstance;
 
 	    // has dialog active
 	    if (Object.keys(app.dialogsInstances).length >= 1) {
@@ -685,6 +686,10 @@
 	        console.error('The Page "' + pageName + '" you called is not registered, please register it before initialize.');
 	        return;
 	    }
+
+	    // call prev page's onHide method
+	    prevPageInstance = app.getCurrentPage();
+	    !!prevPageInstance && prevPageInstance.page.onHide();
 
 	    option = util.extend(true, {}, pageObject.option);
 	    // pageId
@@ -811,9 +816,35 @@
 
 	/**
 	 * register a Page Object
-	 * @param pageName New name of new Page Object, support dot semantic, for instance, "foo.bar.name"
+	 * @param pageName New name of new Page Object
 	 * @param extendAttributes Attributes to be extended to new Page Object
+	 *     methods to override
+	 *     {
+	 *         // render a page after a page is initialized
+	 *         onCreate: function(){},
+	 *         // pre handle before destroy a page
+	 *         onDestroy: function() {},
+	 *         // called when back page from other page
+	 *         onShow: function () {},
+	 *         // called when start another page
+	 *         onHide: function () {},
+	 *         // called when the child page destroyed and return the value by setResult method.
+	 *         onPageResult: function(data) {},
+	 *         // receive data from the previous page, startPageForResult method's second parameter
+	 *         prepareForResult: function(data) {}
+	 *     }
+	 *     methods to call
+	 *     {
+	 *         // set the result if this page is called by startPageForResult method,
+	 *         // and the returned value will be used as the param of the onPageResult method of last page
+	 *         setResult: function(data) {}
+	 *     }
 	 * @param option Option to initialize a Page
+	 *     {
+	 *         backgroundColor: '#ffffff',
+	 *         animate: !0,
+	 *         animateDirection: 'horizontal'
+	 *     }
 	 * @param superPageName Super Page Object, default is Page
 	 */
 
@@ -847,6 +878,20 @@
 	    if (!!app.pagesAttributes[pageName]) {
 	        console.error('page "' + pageName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
 	    }
+
+	    if (arguments.length == 1) {
+	        console.error('Register page "' + pageName + '" with no extend attributes is not ok, please check it');
+	        return;
+	    }
+	    else if (arguments.length == 2) {
+	        option = {};
+	        superPageName = '';
+	    }
+	    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+	        superPageName = option;
+	        option = {};
+	    }
+
 	    // put extendAttributes to pagesAttributes container
 	    app.pagesAttributes[pageName] = extendAttributes;
 
@@ -1100,13 +1145,15 @@
 	    if (Object.keys(app.pagesInstances).length <= 1) return;
 
 	    instance = app.getCurrentPage();
+	    prevInstance = app.getPrevPage();
 	    // for result
 	    instance.forResult && (
-	        prevInstance = app.getPrevPage(),
 	        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
 	    );
 	    // destroy
 	    instance.page.__orchids__hide();
+	    // call prev page's onShow method
+	    !!prevInstance.page.onShow && prevInstance.page.onShow();
 	    app.deleteCurrentPage();
 	};
 
@@ -1363,12 +1410,25 @@
 	        //    self.el.classList.add('orchids-active');
 	        //},
 
-	        // render a page after a page is initialized
+	        /**
+	         * render a page after a page is initialized
+	         * @param data
+	         */
 	        onCreate: function(data) {},
 
-	        // pre handle before destroy a page
+	        /**
+	         * pre handle before destroy a page
+	         */
 	        onDestroy: function() {},
 
+	        /**
+	         * called when back page from other page
+	         */
+	        onShow: function () {},
+	        /**
+	         * called when start another page
+	         */
+	        onHide: function () {},
 	        /**
 	         * set the result if this page is called by startPageForResult method,
 	         * and the returned value will be used as the param of the onPageResult method of last page

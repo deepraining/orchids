@@ -115,12 +115,25 @@ var newPage = function () {
         //    self.el.classList.add('orchids-active');
         //},
 
-        // render a page after a page is initialized
+        /**
+         * render a page after a page is initialized
+         * @param data
+         */
         onCreate: function(data) {},
 
-        // pre handle before destroy a page
+        /**
+         * pre handle before destroy a page
+         */
         onDestroy: function() {},
 
+        /**
+         * called when back page from other page
+         */
+        onShow: function () {},
+        /**
+         * called when start another page
+         */
+        onHide: function () {},
         /**
          * set the result if this page is called by startPageForResult method,
          * and the returned value will be used as the param of the onPageResult method of last page

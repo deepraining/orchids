@@ -17,10 +17,18 @@ orchids.registerPage('a', {
     onCreate2: function(data) {
         console.log('a: onCreate2');
         $(this.el).html(data.text);
+        document.title = 'a';
     },
     onPageResult: function(data) {
         console.log('a: onPageResult success.');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
+    },
+    onShow: function () {
+        console.log('a: onShow');
+        document.title = 'a';
+    },
+    onHide: function () {
+        console.log('a: onHide');
     }
 }, {
     backgroundColor: '#ff0000',
@@ -30,10 +38,18 @@ orchids.registerPage('b', {
     onCreate: function(data) {
         $(this.el).html(data.text);
         this.setResult({text: 'I\'m come from b.'});
+        document.title = 'b';
     },
     prepareForResult: function (data) {
         console.log('b: prepareForResult success');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
+    },
+    onShow: function () {
+        console.log('b: onShow');
+        document.title = 'b';
+    },
+    onHide: function () {
+        console.log('b: onHide');
     }
 }, {
     backgroundColor: '#00ff00'

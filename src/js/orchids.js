@@ -8,7 +8,6 @@ var app = require('./app');
 //orchids.app = app;
 
 orchids.init = app.init;
-orchids.start = app.start;
 orchids.registerPage = app.registerPage;
 orchids.registerDialog = app.registerDialog;
 orchids.startPage = app.startPage;
@@ -16,6 +15,7 @@ orchids.startPageForResult = app.startPageForResult;
 orchids.startDialog = app.startDialog;
 orchids.startDialogForResult = app.startDialogForResult;
 orchids.back = app.back;
+orchids.start = app.start;
 
 orchids.getPage = app.getPageById;
 orchids.getDialog = app.getDialogById;
