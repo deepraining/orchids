@@ -48,7 +48,23 @@
 
 	var orchids = {};
 
-	orchids.app = __webpack_require__(5);
+	var app = __webpack_require__(5);
+
+	// for debug
+	//orchids.app = app;
+
+	orchids.init = app.init;
+	orchids.start = app.start;
+	orchids.registerPage = app.registerPage;
+	orchids.registerDialog = app.registerDialog;
+	orchids.startPage = app.startPage;
+	orchids.startPageForResult = app.startPageForResult;
+	orchids.startDialog = app.startDialog;
+	orchids.startDialogForResult = app.startDialogForResult;
+	orchids.back = app.back;
+
+	orchids.getPage = app.getPageById;
+	orchids.getDialog = app.getDialogById;
 
 	window.orchids = orchids;
 
@@ -572,6 +588,41 @@
 	    util.extend(true, app.option, option || {});
 	};
 	/**
+	 * on pop state
+	 * @param event
+	 */
+	app.onpopstate = function (event) {
+	    var dialogInstance,
+	        prevDialogInstance,
+	        pageInstance,
+	        i, il, dialogsInstancesKeys;
+
+	    // if user page back by press back button of phone, close all dialogs first
+	    dialogsInstancesKeys = Object.keys(app.dialogsInstances);
+	    if (!!dialogsInstancesKeys.length) {
+	        for (il = dialogsInstancesKeys.length, i = il - 1; i >= 0; i--) {
+	            // first dialog
+	            i <= 0 ? (
+	                pageInstance = app.getCurrentPage(),
+	                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
+	                    dialogInstance.forResult && !!pageInstance.page.onPageResult && pageInstance.page.onPageResult(dialogInstance.dialog.__orchids__result || {}),
+	                    // destroy
+	                    dialogInstance.dialog.__orchids__hide(),
+	                    app.deleteCurrentDialog()
+	            ) : (
+	                // at least two dialogs
+	                prevDialogInstance = app.dialogsInstances[dialogsInstancesKeys[i - 1]],
+	                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
+	                    dialogInstance.forResult && !!prevDialogInstance.dialog.onDialogResult && prevDialogInstance.dialog.onDialogResult(dialogInstance.dialog.__orchids__result || {}),
+	                    // destroy
+	                    dialogInstance.dialog.__orchids__hide(),
+	                    app.deleteCurrentDialog()
+	            );
+	        }
+	    }
+	    app.pageBack();
+	};
+	/**
 	 * start current application
 	 * if current url has orchidsPage parameter, it'will start the "orchidsPage" specified page, not the page "pageName"
 	 *
@@ -594,9 +645,7 @@
 
 	    // if user call back page by phone button, keep it
 	    // here we do not consider other action, like forward, refresh, for this is main for wechat webapp using
-	    window.onpopstate = function (event) {
-	        app.back(!0);
-	    };
+	    window.onpopstate = app.onpopstate;
 
 	    // tell the first page and option by the parameter
 	    if (!!params.orchidsPage) {
@@ -692,7 +741,7 @@
 	        Object.keys(app.dialogsInstances).map(function (id) {
 	            var dialog = app.dialogsInstances[id];
 	            if (dialog.name == dialogName) {
-	                existedSingletonInstance = dialog.dialog;
+	                existedSingletonInstance = dialog;
 	                return !1;
 	            }
 	        });
@@ -710,7 +759,7 @@
 	            }
 	        });
 	        if (!!instance) {
-	            app.dialogsInstances[instance.dialogId] = {
+	            app.dialogsInstances[instance.id] = {
 	                name: dialogName,
 	                forResult: !!forResult,
 	                dialog: instance.dialog
@@ -903,6 +952,27 @@
 	};
 
 	/**
+	 * get page object
+	 * @param id Page id, if not set, return current page
+	 * @returns {*}
+	 */
+	app.getPageById = function (id) {
+	    var keys;
+	    if (!id) {
+	        keys = Object.keys(app.pagesInstances);
+	        if (!keys.length) return null;
+	        return app.pagesInstances[keys[keys.length - 1]].page;
+	    }
+	    else {
+	        try {
+	            return app.pagesInstances[id].page;
+	        } catch (e) {
+	            return null;
+	        }
+
+	    }
+	};
+	/**
 	 * get current page object
 	 * @returns {*}
 	 */
@@ -936,6 +1006,28 @@
 	app.deleteCurrentPage = function () {
 	    return app.deletePage(-1);
 	};
+
+	/**
+	 * get dialog object
+	 * @param id Dialog id, if not set, return current dialog
+	 * @returns {*}
+	 */
+	app.getDialogById = function (id) {
+	    var keys;
+	    if (!id) {
+	        keys = Object.keys(app.dialogsInstances);
+	        if (!keys.length) return null;
+	        return app.dialogsInstances[keys[keys.length - 1]].dialog;
+	    }
+	    else {
+	        try {
+	            return app.dialogsInstances[id].dialog;
+	        } catch (e) {
+	            return null;
+	        }
+	    }
+	};
+
 
 	/**
 	 * get dialog object
@@ -983,19 +1075,26 @@
 	    return app.deleteDialog(-1);
 	};
 	/**
-	 * back to prev page
-	 *
-	 * @param keepRoute Whether to keep route no change
+	 * back to prev page or prev dialog
 	 */
-	app.back = function (keepRoute) {
-	    var instance,
-	        prevInstance;
-
+	app.back = function () {
 	    // has dialog active
 	    if (Object.keys(app.dialogsInstances).length >= 1) {
 	        app.dialogBack();
 	        return;
 	    }
+
+	    app.option.route ? (
+	        Object.keys(app.pagesInstances).length >= 2 && history.back()
+	    ) : app.pageBack();
+	};
+
+	/**
+	 * back to prev page
+	 */
+	app.pageBack = function () {
+	    var instance,
+	        prevInstance;
 
 	    // if current pages remain only 1, back action is invalid.
 	    if (Object.keys(app.pagesInstances).length <= 1) return;
@@ -1004,12 +1103,14 @@
 	    // for result
 	    instance.forResult && (
 	        prevInstance = app.getPrevPage(),
-	    !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
+	        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
 	    );
 	    // destroy
-	    instance.page.__orchids__hide(!!keepRoute);
+	    instance.page.__orchids__hide();
 	    app.deleteCurrentPage();
 	};
+
+
 	/**
 	 * back to page
 	 */
@@ -1233,12 +1334,12 @@
 	                pageId: self.id
 	            }, null, '?' + searchString.slice(1));
 	        },
-	        // back a route
-	        __orchids__routeBack: function () {
-	            history.back();
-	        },
+	        // back a route (current no using)
+	        //__orchids__routeBack: function () {
+	        //    history.back();
+	        //},
 	        // hide current page
-	        __orchids__hide: function (keepRoute) {
+	        __orchids__hide: function () {
 	            var self = this;
 	            self.onDestroy();
 
@@ -1252,9 +1353,6 @@
 	                // no animation
 	                self.el.remove()
 	            );
-
-	            // route
-	            !!self.option.route && !keepRoute && self.__orchids__routeBack();
 	        },
 
 	        // show current page (current no using)

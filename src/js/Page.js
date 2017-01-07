@@ -86,12 +86,12 @@ var newPage = function () {
                 pageId: self.id
             }, null, '?' + searchString.slice(1));
         },
-        // back a route
-        __orchids__routeBack: function () {
-            history.back();
-        },
+        // back a route (current no using)
+        //__orchids__routeBack: function () {
+        //    history.back();
+        //},
         // hide current page
-        __orchids__hide: function (keepRoute) {
+        __orchids__hide: function () {
             var self = this;
             self.onDestroy();
 
@@ -105,9 +105,6 @@ var newPage = function () {
                 // no animation
                 self.el.remove()
             );
-
-            // route
-            !!self.option.route && !keepRoute && self.__orchids__routeBack();
         },
 
         // show current page (current no using)

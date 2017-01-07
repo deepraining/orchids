@@ -31,4 +31,14 @@ module.exports = {
       loader:  'style-loader!css-loader'
     }
   ]
+  /**
+   * 压缩
+   */
+  //plugins: [
+  //  new webpack.optimize.UglifyJsPlugin({
+  //    compress: {
+  //      warnings: false
+  //    }
+  //  })
+  //]
 };
