@@ -26,7 +26,17 @@ var app = {
          * animation direction of switching page
          * horizontal/vertical, default: horizontal
          */
-        animateDirection: 'horizontal'
+        animateDirection: 'horizontal',
+        /**
+         * whether to use animation when switch between fragments
+         * default: true
+         */
+        fragmentAnimate: !0,
+        /**
+         * animation direction of switching fragment
+         * horizontal/vertical, default: horizontal
+         */
+        fragmentAnimateDirection: 'horizontal'
     },
     // default dialog option
     defaultDialogOption: {
@@ -49,107 +59,30 @@ var app = {
          */
         singleton: !0
     },
-    /**
-     * all registered page Object container
-     * format: {
-     *     name: {
-     *         option: option, // Option to initialize a Page, available option is showed bellow
-     *             {
-     *                 backgroundColor: '#ffffff',
-     *                 animate: !0,
-     *                 animateDirection: 'horizontal'
-     *             }
-     *         superPage: '', // super page name, default is blank string
-     *         page: Page // Page Object
-     *     }
-     * }
-     * @type {{}}
-     */
-    pages: {},
-    /**
-     * all registered Pages Attributes
-     * format: {
-     *     name: {
-     *         name1: field1,
-     *         name2: filed2,
-     *         name3: func1,
-     *         name4: func2
-     *     }
-     * }
-     * @type {{}}
-     */
-    pagesAttributes: {},
-    /**
-     * all initialized Page instances (current page is not supporting singleton)
-     * format: {
-     *     id: {
-     *         name: pageName, // Page name
-     *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-     *         page: Page // Page instance
-     *     }
-     * }
-     * @type {{}}
-     */
-    pagesInstances: {},
-    /**
-     * all registered dialog Object container
-     * format: {
-     *     name: {
-     *         option: option, // Option to initialize a Dialog, available option is showed bellow
-     *             {
-     *                 backgroundColor: '#ffffff',
-     *                 animate: !0,
-     *                 animateDirection: 'vertical',
-     *                 singleton: true
-     *             }
-     *         superDialog: '', // super dialog name, default is blank string
-     *         dialog: Dialog // Dialog Object
-     *     }
-     * }
-     * @type {{}}
-     */
-    dialogs: {},
-    /**
-     * all registered Dialogs Attributes
-     * format: {
-     *     name: {
-     *         name1: field1,
-     *         name2: filed2,
-     *         name3: func1,
-     *         name4: func2
-     *     }
-     * }
-     * @type {{}}
-     */
-    dialogsAttributes: {},
-    /**
-     * all initialized Dialog instances
-     * format: {
-     *     id: {
-     *         name: dialogName, // Dialog name
-     *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-     *         dialog: Dialog // Dialog instance
-     *     }
-     * }
-     * @type {{}}
-     */
-    dialogsInstances: {},
-    /**
-     * all initialized Dialog singleton instances
-     * format: {
-     *     name: {
-     *         id: id, // dialog id
-     *         dialog: Dialog // Dialog instance
-     *     }
-     * }
-     * @type {{}}
-     */
-    dialogsSingletonInstances: {}
+    // default fragment option
+    defaultFragmentOption: {
+        /**
+         * background of root element
+         */
+        backgroundColor: '#ffffff'
+    }
 };
+
 
 var util = require('./util'),
     page = require('./Page'),
-    dialog = require('./Dialog');
+    dialog = require('./Dialog'),
+    container = require('./container');
+
+app.pages = container.pages;
+app.pagesAttributes = container.pagesAttributes;
+app.pagesInstances = container.pagesInstances;
+app.dialogs = container.dialogs;
+app.dialogsAttributes = container.dialogsAttributes;
+app.dialogsInstances = container.dialogsInstances;
+app.dialogsSingletonInstances = container.dialogsSingletonInstances;
+app.fragments = container.fragments;
+app.fragmentsAttributes = container.fragmentsAttributes;
 
     /**
      * total page count of current app
@@ -419,7 +352,18 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  *     {
  *         backgroundColor: '#ffffff',
  *         animate: !0,
- *         animateDirection: 'horizontal'
+ *         animateDirection: 'horizontal',
+ *         // sub fragments
+ *         // note that, current page element should have a child node
+ *         // which has 'data-orchids-fragments-container' attribute,
+ *         // and it must has position-relative or position-absolute width specified width and height
+ *         // or fragments will not be rendered correctly
+ *         fragments: [
+ *             'name1',
+ *             'name2'
+ *         ],
+ *         fragmentAnimate: !0,
+ *         fragmentAnimateDirection: 'horizontal'
  *     }
  * @param superPageName Super Page Object, default is Page
  */
@@ -597,6 +541,92 @@ app.registerDialog = function (dialogName, extendAttributes, option, superDialog
     };
 };
 
+/**
+ * register a Fragment Object
+ * @param fragmentName New name of new Fragment Object
+ * @param extendAttributes Attributes to be extended to new Fragment Object
+ *     methods to override
+ *     {
+ *         // render a fragment after a fragment is initialized
+ *         onCreate: function(){}
+ *     }
+ * @param option Option to initialize a Fragment
+ *     {
+ *         backgroundColor: '#ffffff'
+ *     }
+ * @param superFragmentName Super Fragment Object, default is Fragment
+ */
+
+app.registerFragment = function (fragmentName, extendAttributes, option, superFragmentName) {
+    var newFragment, // new Fragment Object
+        superFragmentsExtendAttributes = [], // all super extend attributes
+        superFragmentsOptions = [], // all super options
+        tempOption,
+        i, il;
+
+    /**
+     * get all super extend attributes
+     *
+     * @param superFragmentName
+     */
+    function getSuperFragmentsExtendAttributes(superFragmentName) {
+        var superFragment = app.fragments[superFragmentName],
+            superOption = superFragment.option,
+            superExtendAttributes = app.fragmentsAttributes[superFragmentName];
+
+        !!superExtendAttributes && superFragmentsExtendAttributes.unshift(superExtendAttributes);
+        !!superOption && superFragmentsOptions.unshift(superOption);
+        !!superFragment.superFragment && getSuperFragmentsExtendAttributes(superFragment.superFragment);
+    }
+
+    if (!fragmentName || typeof fragmentName != 'string') {
+        console.error('Register a Fragment Object needs a explicit string name');
+        return;
+    }
+
+    if (!!app.fragmentsAttributes[fragmentName]) {
+        console.error('fragment "' + fragmentName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
+    }
+
+    if (arguments.length == 1) {
+        console.error('Register fragment "' + fragmentName + '" with no extend attributes is not ok, please check it');
+        return;
+    }
+    else if (arguments.length == 2) {
+        option = {};
+        superFragmentName = '';
+    }
+    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+        superFragmentName = option;
+        option = {};
+    }
+
+    // put extendAttributes to fragmentsAttributes container
+    app.fragmentsAttributes[fragmentName] = extendAttributes;
+
+    newFragment = fragment();
+    tempOption = util.extend(!0, {}, app.option);
+    // no superFragment
+    if (!!superFragmentName) {
+        getSuperFragmentsExtendAttributes(superFragmentName);
+        for (i = 0, il = superFragmentsExtendAttributes.length; i < il; i++) {
+            util.extend(!0, newFragment.prototype, superFragmentsExtendAttributes[i]);
+        }
+
+        for (i = 0, il = superFragmentsOptions.length; i < il; i++) {
+            util.extend(!0, tempOption, superFragmentsOptions[i]);
+        }
+    }
+    util.extend(!0, newFragment.prototype, extendAttributes);
+    util.extend(!0, tempOption, option);
+
+    tempOption.fragmentName = fragmentName;
+    app.fragments[fragmentName] = {
+        superFragment: superFragmentName,
+        option: tempOption,
+        fragment: newFragment
+    };
+};
 /**
  * get page object
  * @param index

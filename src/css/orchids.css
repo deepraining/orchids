@@ -23,14 +23,10 @@
 .orchids-dialog {
     z-index: 2;
 }
-/* 动画 */
+/* animation */
 .orchids-page.orchids-with-animation,
 .orchids-dialog.orchids-with-animation {
     transition: all .5s;
-}
-/* 水平动画，默认 */
-.orchids-page.orchids-with-animation,
-.orchids-dialog.orchids-with-animation {
     opacity: 0;
 }
 .orchids-page.orchids-with-animation.orchids-active,
@@ -45,7 +41,6 @@
 .orchids-dialog.orchids-horizontal.orchids-active {
     transform: translateX(0);
 }
-/* 竖直动画 */
 .orchids-page.orchids-vertical,
 .orchids-dialog.orchids-vertical {
     transform: translateY(100%);
@@ -53,4 +48,36 @@
 .orchids-page.orchids-vertical.orchids-active,
 .orchids-dialog.orchids-vertical.orchids-active {
     transform: translateY(0);
+}
+
+/* fragment */
+.orchids-fragment {
+    position: absolute;
+    background: #ffffff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1;
+}
+.orchids-fragment.orchids-horizontal {
+    top: 0;
+    height: 100%;
+}
+.orchids-fragment.orchids-vertical {
+    left: 0;
+    width: 100%;
+}
+.orchids-fragments-container {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+}
+.orchids-fragments-container.orchids-with-animation {
+    transition: all .5s;
+}
+.orchids-fragments-container.orchids-horizontal {
+    height: 100%;
+}
+.orchids-fragments-container.orchids-vertical {
+    width: 100%;
 }

@@ -14,6 +14,8 @@ var newFragment = function () {
         self.option = util.extend(true, {}, option);
         self.__orchids__data = data || {};
         self.__orchids__init();
+        // whether current fragment is initialized
+        self.__orchids_initialized = !1;
     }
 
     Fragment.prototype = {
@@ -49,9 +51,6 @@ var newFragment = function () {
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);
-
-            // route, if it is the first fragment, no route change
-            !!self.option.route && !self.__orchids__isFirstFragment && self.__orchids__routeForward();
 
             /**
              * show fragment, delay 100 ms to guarantee the animation  is ok, and 0 is not ok

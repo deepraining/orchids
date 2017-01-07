@@ -53,12 +53,31 @@ var newPage = function () {
             // route, if it is the first page, no route change
             !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();
 
+            // render fragments
+            !!self.option.fragments && !!self.option.fragments.length && self.__orchids__renderFragments();
+
             /**
              * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
              */
             !self.__orchids__isFirstPage && setTimeout(function () {
                 self.el.classList.add('orchids-active')
             }, 100);
+
+        },
+        // render fragments
+        __orchids__renderFragments: function () {
+            var self = this,
+                fragmentsContainer = self.el.querySelector('[data-orchids-fragments-container]'),
+                i, il, fragmentName;
+            if (!fragmentsContainer) {
+                console.error('Render fragments failed: no fragments container which should has "data-orchids-fragments-container" attribute.');
+                return;
+            }
+            
+            for (i = 0, il = self.option.fragments.length; i < il; i++) {
+                fragmentName = self.option.fragments[i];
+
+            }
         },
         // make a forward route
         __orchids__routeForward: function () {

@@ -27,7 +27,17 @@ orchids.init({
      * animation direction of switching page
      * horizontal/vertical, default: horizontal
      */
-    animateDirection: 'horizontal'
+    animateDirection: 'horizontal',
+    /**
+     * whether to use animation when switch between fragments
+     * default: true
+     */
+    fragmentAnimate: !0,
+    /**
+     * animation direction of switching fragment
+     * horizontal/vertical, default: horizontal
+     */
+    fragmentAnimateDirection: 'horizontal'
 });
 ```
 
@@ -63,7 +73,18 @@ orchids.init({
  *     {
  *         backgroundColor: '#ffffff',
  *         animate: !0,
- *         animateDirection: 'horizontal'
+ *         animateDirection: 'horizontal',
+ *         // sub fragments
+ *         // note that, current page element should have a child node
+ *         // which has 'data-orchids-fragments-container' attribute,
+ *         // and it must has position-relative or position-absolute width specified width and height
+ *         // or fragments will not be rendered correctly
+ *         fragments: [
+ *             'name1',
+ *             'name2'
+ *         ],
+ *         fragmentAnimate: !0,
+ *         fragmentAnimateDirection: 'horizontal'
  *     }
  * @param superPageName Super Page Object, default is Page
  */
