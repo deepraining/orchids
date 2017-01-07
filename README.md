@@ -100,7 +100,8 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  *         backgroundColor: '#ffffff',
  *         animate: !0,
  *         animateDirection: 'vertical',
- *         singleton: !0 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
+ *         singleton: !0 // whether current dialog is singleton or not, if true,
+ *                       //it will be only created once, and will not be destroyed
  *     }
  * @param superDialogName Super Dialog Object, default is Dialog
  */
@@ -197,4 +198,24 @@ orchids.getPage(id)
  * @returns {*}
  */
 orchids.getDialog(id)
+```
+
+### orchids.getCurrentPage
+
+```
+/**
+ * get current page instance
+ * @returns {*}
+ */
+orchids.getCurrentPage();
+```
+
+### orchids.getCurrentDialog
+
+```
+/**
+ * get current dialog instance
+ * @returns {*}
+ */
+orchids.getCurrentDialog();
 ```

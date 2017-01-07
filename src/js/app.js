@@ -636,7 +636,13 @@ app.getPageById = function (id) {
 app.getCurrentPage = function () {
     return app.getPage(-1);
 };
-
+/**
+ * get current page instance
+ * @returns {*}
+ */
+app.getCurrentPageInstance = function () {
+    return app.getPage(-1).page;
+};
 /**
  * get prev page object
  * @returns {*}
@@ -704,7 +710,18 @@ app.getDialog = function (index) {
 app.getCurrentDialog = function () {
     return app.getDialog(-1);
 };
-
+/**
+ * get current dialog instance
+ * @returns {*}
+ */
+app.getCurrentDialogInstance = function () {
+    try {
+        return app.getDialog(-1).dialog;
+    }
+    catch (e) {
+        return null;
+    }
+};
 /**
  * get prev dialog object
  * @returns {*}

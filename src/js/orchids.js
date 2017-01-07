@@ -19,6 +19,8 @@ orchids.start = app.start;
 
 orchids.getPage = app.getPageById;
 orchids.getDialog = app.getDialogById;
+orchids.getCurrentPage = app.getCurrentPageInstance;
+orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
 window.orchids = orchids;
 

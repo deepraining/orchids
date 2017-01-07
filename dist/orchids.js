@@ -65,6 +65,8 @@
 
 	orchids.getPage = app.getPageById;
 	orchids.getDialog = app.getDialogById;
+	orchids.getCurrentPage = app.getCurrentPageInstance;
+	orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
 	window.orchids = orchids;
 
@@ -627,7 +629,7 @@
 	 * if current url has orchidsPage parameter, it'will start the "orchidsPage" specified page, not the page "pageName"
 	 *
 	 * @param pageName
-	 * @param data
+	 * @param data Data to initialize a Page, and will be use by onCreate method
 	 */
 	app.start = function (pageName, data) {
 	    var params = (function () {
@@ -708,7 +710,7 @@
 	/**
 	 * start a page
 	 * @param pageName
-	 * @param data
+	 * @param data Parameter to use by new page's onCreate method
 	 */
 	app.startPage = function (pageName, data) {
 	    app.startPageInner(pageName, data, !1)
@@ -716,7 +718,7 @@
 	/**
 	 * start a page for result
 	 * @param pageName
-	 * @param data
+	 * @param data Parameter to use by new page's onCreate method
 	 * @param prepareResultData Parameter to be used by the next page's prepareForResult method
 	 */
 	app.startPageForResult = function (pageName, data, prepareResultData) {
@@ -799,7 +801,7 @@
 	/**
 	 * start a dialog
 	 * @param dialogName
-	 * @param data
+	 * @param data Parameter to use by new dialog's onCreate method
 	 */
 	app.startDialog = function (dialogName, data) {
 	    app.startDialogInner(dialogName, data, !1)
@@ -807,7 +809,7 @@
 	/**
 	 * start a dialog for result
 	 * @param dialogName
-	 * @param data
+	 * @param data Parameter to use by new dialog's onCreate method
 	 * @param prepareResultData Parameter to be used by the next dialog's prepareForResult method
 	 */
 	app.startDialogForResult = function (dialogName, data, prepareResultData) {
@@ -921,12 +923,34 @@
 
 	/**
 	 * register a Dialog Object
-	 * @param dialogName New name of new Dialog Object, support dot semantic, for instance, "foo.bar.name"
+	 * @param dialogName New name of new Dialog Object
 	 * @param extendAttributes Attributes to be extended to new Dialog Object
+	 *     methods to override
+	 *     {
+	 *         // render a dialog after a dialog is initialized
+	 *         onCreate: function(){},
+	 *         // pre handle before destroy a dialog
+	 *         onDestroy: function() {},
+	 *         // called when the child dialog destroyed and return the value by setResult method.
+	 *         onDialogResult: function(data) {},
+	 *         // receive data from the previous dialog, startDialogForResult method's second parameter
+	 *         prepareForResult: function(data) {}
+	 *     }
+	 *     methods to call
+	 *     {
+	 *         // set the result if this dialog is called by startDialogForResult method,
+	 *         // and the returned value will be used as the param of the onDialogResult method of last dialog
+	 *         setResult: function(data) {}
+	 *     }
 	 * @param option Option to initialize a Dialog
+	 *     {
+	 *         backgroundColor: '#ffffff',
+	 *         animate: !0,
+	 *         animateDirection: 'vertical',
+	 *         singleton: !0 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
+	 *     }
 	 * @param superDialogName Super Dialog Object, default is Dialog
 	 */
-
 	app.registerDialog = function (dialogName, extendAttributes, option, superDialogName) {
 	    var newDialog, // new Dialog Object
 	        superDialogsExtendAttributes = [], // all super extend attributes
@@ -957,6 +981,20 @@
 	    if (!!app.dialogsAttributes[dialogName]) {
 	        console.error('dialog "' + dialogName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
 	    }
+
+	    if (arguments.length == 1) {
+	        console.error('Register dialog "' + dialogName + '" with no extend attributes is not ok, please check it');
+	        return;
+	    }
+	    else if (arguments.length == 2) {
+	        option = {};
+	        superDialogName = '';
+	    }
+	    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+	        superDialogName = option;
+	        option = {};
+	    }
+
 	    // put extendAttributes to dialogsAttributes container
 	    app.dialogsAttributes[dialogName] = extendAttributes;
 
@@ -1024,7 +1062,13 @@
 	app.getCurrentPage = function () {
 	    return app.getPage(-1);
 	};
-
+	/**
+	 * get current page instance
+	 * @returns {*}
+	 */
+	app.getCurrentPageInstance = function () {
+	    return app.getPage(-1).page;
+	};
 	/**
 	 * get prev page object
 	 * @returns {*}
@@ -1092,7 +1136,18 @@
 	app.getCurrentDialog = function () {
 	    return app.getDialog(-1);
 	};
-
+	/**
+	 * get current dialog instance
+	 * @returns {*}
+	 */
+	app.getCurrentDialogInstance = function () {
+	    try {
+	        return app.getDialog(-1).dialog;
+	    }
+	    catch (e) {
+	        return null;
+	    }
+	};
 	/**
 	 * get prev dialog object
 	 * @returns {*}
