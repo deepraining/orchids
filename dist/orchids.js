@@ -108,7 +108,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-dialog {\r\n    z-index: 2;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container {\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-dialog {\r\n    z-index: 2;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
 
 	// exports
 
@@ -491,7 +491,17 @@
 	        /**
 	         * background of root element
 	         */
-	        backgroundColor: '#ffffff'
+	        backgroundColor: '#ffffff',
+	        /**
+	         * whether to use animation when switch between sub fragments
+	         * default: true
+	         */
+	        subFragmentAnimate: !0,
+	        /**
+	         * animation direction of switching sub fragment
+	         * horizontal/vertical, default: horizontal
+	         */
+	        subFragmentAnimateDirection: 'horizontal'
 	    }
 	};
 
@@ -544,7 +554,7 @@
 	                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
 	                    dialogInstance.forResult && !!pageInstance.page.onPageResult && pageInstance.page.onPageResult(dialogInstance.dialog.__orchids__result || {}),
 	                    // destroy
-	                    dialogInstance.dialog.__orchids__hide(),
+	                    dialogInstance.dialog.__orchids__destroy(),
 	                    app.deleteCurrentDialog()
 	            ) : (
 	                // at least two dialogs
@@ -552,7 +562,7 @@
 	                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
 	                    dialogInstance.forResult && !!prevDialogInstance.dialog.onDialogResult && prevDialogInstance.dialog.onDialogResult(dialogInstance.dialog.__orchids__result || {}),
 	                    // destroy
-	                    dialogInstance.dialog.__orchids__hide(),
+	                    dialogInstance.dialog.__orchids__destroy(),
 	                    app.deleteCurrentDialog()
 	            );
 	        }
@@ -624,9 +634,9 @@
 	        return;
 	    }
 
-	    // call prev page's onHide method
+	    // call prev page's __orchids__hide method
 	    prevPageInstance = app.getCurrentPage();
-	    !!prevPageInstance && prevPageInstance.page.onHide();
+	    !!prevPageInstance && prevPageInstance.page.__orchids__hide();
 
 	    option = util.extend(true, {}, pageObject.option);
 	    // pageId
@@ -999,6 +1009,15 @@
 	 *     {
 	 *         // render a fragment after a fragment is initialized
 	 *         onCreate: function(){},
+	 *         // pre handle before destroy a fragment
+	 *         onDestroy: function() {},
+	 *         // called when showed, not include first show while created
+	 *         onShow: function () {},
+	 *         // called when show another fragment
+	 *         onHide: function () {},
+	 *     }
+	 *     methods to call
+	 *     {
 	 *         // show sub fragment specified by id
 	 *         showSubFragment: function(id) {},
 	 *         // get sub fragment specified by id, default return the first fragment
@@ -1070,7 +1089,7 @@
 	    app.fragmentsAttributes[fragmentName] = extendAttributes;
 
 	    newFragment = fragment();
-	    tempOption = util.extend(!0, {}, app.option);
+	    tempOption = util.extend(!0, {}, app.defaultFragmentOption);
 	    // no superFragment
 	    if (!!superFragmentName) {
 	        getSuperFragmentsExtendAttributes(superFragmentName);
@@ -1275,9 +1294,9 @@
 	        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
 	    );
 	    // destroy
-	    instance.page.__orchids__hide();
-	    // call prev page's onShow method
-	    !!prevInstance.page.onShow && prevInstance.page.onShow();
+	    instance.page.__orchids__destroy();
+	    // call prev page's __orchids__show method
+	    prevInstance.page.__orchids__show();
 	    app.deleteCurrentPage();
 	};
 
@@ -1305,7 +1324,7 @@
 	            )
 	    );
 	    // destroy
-	    instance.dialog.__orchids__hide();
+	    instance.dialog.__orchids__destroy();
 	    app.deleteCurrentDialog();
 	};
 
@@ -1433,7 +1452,6 @@
 	        var self = this;
 	        self.option = util.extend(true, {}, option);
 	        self.__orchids__data = data || {};
-	        self.__orchids__init();
 	        /**
 	         * current fragment instances
 	         * @type {{}}
@@ -1446,6 +1464,7 @@
 	         * @private
 	         */
 	        self.__orchids__currentFragmentId = 1;
+	        self.__orchids__init();
 	    }
 
 	    Page.prototype = {
@@ -1549,6 +1568,8 @@
 	                instance = new fragment.fragment(fragmentOption);
 
 	                self.__orchids__fragmentsInstances[fragmentOption.fragmentId] = instance;
+	                // add fragment element to current root fragments container
+	                self.__orchids__fragmentsContainerEl.appendChild(instance.el);
 	            }
 	        },
 	        /**
@@ -1557,7 +1578,7 @@
 	         */
 	        showFragment: function (id) {
 	            var self = this,
-	                instance;
+	                instance, previousInstance;
 	            if (!id) {
 	                console.error('method showFragment needs a specified fragment id');
 	                return;
@@ -1571,16 +1592,25 @@
 	                return;
 	            }
 
+
+	            // create fragment if not created, or call onShow method
+	            !instance.__orchids__initialized ?
+	                (
+	                    !!instance.onCreate && instance.onCreate(),
+	                        instance.__orchids__initialized = !0
+	                ) :
+	            !!instance.onShow && instance.onShow();
+	            // call previous fragment onHide method
+	            previousInstance = self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId];
+	            !!previousInstance.onHide && previousInstance.onHide();
 	            // update current active fragment id
 	            self.__orchids__currentFragmentId = id;
-	            // create fragment if not created
-	            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
 	            // create sub fragments if not created
 	            !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
 	            self.option.fragmentAnimateDirection == 'vertical' ? (
-	                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + ')'
+	                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + 'px)'
 	            ) : (
-	                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + ')'
+	                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + 'px)'
 	            );
 	        },
 	        /**
@@ -1622,13 +1652,15 @@
 	                pageId: self.id
 	            }, null, '?' + searchString.slice(1));
 	        },
-	        // back a route (current no using)
-	        //__orchids__routeBack: function () {
-	        //    history.back();
-	        //},
-	        // hide current page
-	        __orchids__hide: function () {
+
+	        // destroy current page
+	        __orchids__destroy: function () {
 	            var self = this;
+
+	            // call all fragments's __orchids__destroy
+	            Object.keys(self.__orchids__fragmentsInstances).map(function (id) {
+	                self.__orchids__fragmentsInstances[id].__orchids__destroy();
+	            });
 	            self.onDestroy();
 
 	            self.el.classList.remove('orchids-active');
@@ -1643,13 +1675,30 @@
 	            );
 	        },
 
-	        // show current page (current no using)
-	        //__orchids__show: function () {
-	        //    var self = this;
-	        //    // route
-	        //    !!self.option.route && self.__orchids__routeForward();
-	        //    self.el.classList.add('orchids-active');
-	        //},
+	        // hide current page
+	        __orchids__hide: function () {
+	            var self = this;
+	            // call active fragment's __orchids__hide
+	            try {
+	                self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__hide();
+	            }
+	            catch (e) {}
+
+	            self.onHide();
+	        },
+
+	        // show current page
+	        __orchids__show: function () {
+	            var self = this;
+
+	            self.onShow();
+	            // call active fragment's __orchids__show
+	            try {
+	                self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__show();
+	            }
+	            catch (e) {}
+
+	        },
 
 	        /**
 	         * render a page after a page is initialized
@@ -1892,8 +1941,8 @@
 	                self.el.classList.add('orchids-active')
 	            }, 100);
 	        },
-	        // hide current dialog
-	        __orchids__hide: function () {
+	        // destroy current dialog
+	        __orchids__destroy: function () {
 	            var self = this;
 	            self.onDestroy();
 
@@ -1982,7 +2031,6 @@
 	    function Fragment(option) {
 	        var self = this;
 	        self.option = util.extend(true, {}, option);
-	        self.__orchids__init();
 	        // whether current fragment is initialized
 	        self.__orchids__initialized = !1;
 	        /**
@@ -1997,6 +2045,7 @@
 	         * @private
 	         */
 	        self.__orchids__currentSubFragmentId = 1;
+	        self.__orchids__init();
 	    }
 
 	    Fragment.prototype = {
@@ -2022,11 +2071,11 @@
 	            self.option.fragmentDirection == 'vertical' ? (
 	                classes.push('orchids-vertical'),
 	                    self.el.style.top = self.option.fragmentHeight * (self.id - 1) + 'px',
-	                    self.el.style.height = self.option.fragmentHeight
+	                    self.el.style.height = self.option.fragmentHeight + 'px'
 	            ) : (
 	                classes.push('orchids-horizontal'),
 	                    self.el.style.left = self.option.fragmentWidth * (self.id - 1) + 'px',
-	                    self.el.style.width = self.option.fragmentWidth
+	                    self.el.style.width = self.option.fragmentWidth + 'px'
 	            );
 	            self.el.classList = classes.join(' ');
 	            // user custom initialization
@@ -2043,7 +2092,7 @@
 	                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
 	                i, il, fragmentName, fragment,
 	                fragmentsContainerClasses = [
-	                    'orchids-fragments-sub-container'
+	                    'orchids-sub-fragments-container'
 	                ],
 	                fragmentOption, instance;
 	            if (!fragmentsEl) {
@@ -2090,6 +2139,8 @@
 	                instance = new fragment.fragment(fragmentOption);
 
 	                self.__orchids__subFragmentsInstances[fragmentOption.fragmentId] = instance;
+	                // add sub fragment element to current root sub fragments container
+	                self.__orchids__subFragmentsContainerEl.appendChild(instance.el);
 	            }
 	        },
 	        /**
@@ -2098,7 +2149,7 @@
 	         */
 	        showSubFragment: function (id) {
 	            var self = this,
-	                instance;
+	                instance, previousInstance;
 	            if (!id) {
 	                console.error('method showFragment needs a specified fragment id');
 	                return;
@@ -2112,17 +2163,58 @@
 	                return;
 	            }
 
+	            // create fragment if not created, or call onShow method
+	            !instance.__orchids__initialized ?
+	                (
+	                    !!instance.onCreate && instance.onCreate(),
+	                        instance.__orchids__initialized = !0
+	                ) :
+	            !!instance.onShow && instance.onShow();
+	            // call previous fragment onHide method
+	            previousInstance = self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId];
+	            !!previousInstance.onHide && previousInstance.onHide();
 	            // update current active fragment id
 	            self.__orchids__currentSubFragmentId = id;
-	            // create fragment if not created
-	            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
 	            // create sub fragments if not created
 	            !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
 	            self.option.subFragmentAnimateDirection == 'vertical' ? (
-	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__subFragmentHeight * (id - 1)) + ')'
+	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__subFragmentHeight * (id - 1)) + 'px)'
 	            ) : (
-	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__subFragmentWidth * (id - 1)) + ')'
+	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__subFragmentWidth * (id - 1)) + 'px)'
 	            );
+	        },
+	        // called when current page is destroy
+	        __orchids__destroy: function () {
+	            var self = this;
+
+	            // call all sub fragments's __orchids__destroy
+	            Object.keys(self.__orchids__subFragmentsInstances).map(function (id) {
+	                self.__orchids__subFragmentsInstances[id].__orchids__destroy();
+	            });
+	            self.onDestroy();
+	        },
+	        // hide current fragment
+	        __orchids__hide: function () {
+	            var self = this;
+	            // call active sub fragment's __orchids__hide
+	            try {
+	                self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__hide();
+	            }
+	            catch (e) {}
+
+	            self.onHide();
+	        },
+
+	        // show current sub fragment
+	        __orchids__show: function () {
+	            var self = this;
+
+	            self.onShow();
+	            // call active sub fragment's __orchids__show
+	            try {
+	                self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__show();
+	            }
+	            catch (e) {}
 	        },
 	        /**
 	         * get sub fragment specified by id, default return the first fragment
@@ -2140,7 +2232,20 @@
 	        /**
 	         * render a fragment after a fragment is initialized
 	         */
-	        onCreate: function() {}
+	        onCreate: function() {},
+	        /**
+	         * pre handle before destroy a fragment
+	         */
+	        onDestroy: function() {},
+
+	        /**
+	         * called when showed, not include first show while created
+	         */
+	        onShow: function () {},
+	        /**
+	         * called when show another fragment
+	         */
+	        onHide: function () {}
 	    };
 
 	    return Fragment;

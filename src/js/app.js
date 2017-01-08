@@ -64,7 +64,17 @@ var app = {
         /**
          * background of root element
          */
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        /**
+         * whether to use animation when switch between sub fragments
+         * default: true
+         */
+        subFragmentAnimate: !0,
+        /**
+         * animation direction of switching sub fragment
+         * horizontal/vertical, default: horizontal
+         */
+        subFragmentAnimateDirection: 'horizontal'
     }
 };
 
@@ -117,7 +127,7 @@ app.onpopstate = function (event) {
                     dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
                     dialogInstance.forResult && !!pageInstance.page.onPageResult && pageInstance.page.onPageResult(dialogInstance.dialog.__orchids__result || {}),
                     // destroy
-                    dialogInstance.dialog.__orchids__hide(),
+                    dialogInstance.dialog.__orchids__destroy(),
                     app.deleteCurrentDialog()
             ) : (
                 // at least two dialogs
@@ -125,7 +135,7 @@ app.onpopstate = function (event) {
                     dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
                     dialogInstance.forResult && !!prevDialogInstance.dialog.onDialogResult && prevDialogInstance.dialog.onDialogResult(dialogInstance.dialog.__orchids__result || {}),
                     // destroy
-                    dialogInstance.dialog.__orchids__hide(),
+                    dialogInstance.dialog.__orchids__destroy(),
                     app.deleteCurrentDialog()
             );
         }
@@ -197,9 +207,9 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
         return;
     }
 
-    // call prev page's onHide method
+    // call prev page's __orchids__hide method
     prevPageInstance = app.getCurrentPage();
-    !!prevPageInstance && prevPageInstance.page.onHide();
+    !!prevPageInstance && prevPageInstance.page.__orchids__hide();
 
     option = util.extend(true, {}, pageObject.option);
     // pageId
@@ -572,6 +582,15 @@ app.registerDialog = function (dialogName, extendAttributes, option, superDialog
  *     {
  *         // render a fragment after a fragment is initialized
  *         onCreate: function(){},
+ *         // pre handle before destroy a fragment
+ *         onDestroy: function() {},
+ *         // called when showed, not include first show while created
+ *         onShow: function () {},
+ *         // called when show another fragment
+ *         onHide: function () {},
+ *     }
+ *     methods to call
+ *     {
  *         // show sub fragment specified by id
  *         showSubFragment: function(id) {},
  *         // get sub fragment specified by id, default return the first fragment
@@ -643,7 +662,7 @@ app.registerFragment = function (fragmentName, extendAttributes, option, superFr
     app.fragmentsAttributes[fragmentName] = extendAttributes;
 
     newFragment = fragment();
-    tempOption = util.extend(!0, {}, app.option);
+    tempOption = util.extend(!0, {}, app.defaultFragmentOption);
     // no superFragment
     if (!!superFragmentName) {
         getSuperFragmentsExtendAttributes(superFragmentName);
@@ -848,9 +867,9 @@ app.pageBack = function () {
         !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
     );
     // destroy
-    instance.page.__orchids__hide();
-    // call prev page's onShow method
-    !!prevInstance.page.onShow && prevInstance.page.onShow();
+    instance.page.__orchids__destroy();
+    // call prev page's __orchids__show method
+    prevInstance.page.__orchids__show();
     app.deleteCurrentPage();
 };
 
@@ -878,7 +897,7 @@ app.dialogBack = function () {
             )
     );
     // destroy
-    instance.dialog.__orchids__hide();
+    instance.dialog.__orchids__destroy();
     app.deleteCurrentDialog();
 };
 

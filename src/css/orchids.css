@@ -66,20 +66,24 @@
     left: 0;
     width: 100%;
 }
-.orchids-fragments-container {
+.orchids-fragments-container,
+.orchids-sub-fragments-container{
     position: absolute;
     overflow: hidden;
     left: 0;
     top: 0;
 }
-.orchids-fragments-container.orchids-with-animation {
+.orchids-fragments-container.orchids-with-animation,
+.orchids-sub-fragments-container.orchids-with-animation {
     transition: all .5s;
 }
-.orchids-fragments-container.orchids-horizontal {
+.orchids-fragments-container.orchids-horizontal,
+.orchids-sub-fragments-container.orchids-horizontal {
     height: 100%;
     transform: translateX(0);
 }
-.orchids-fragments-container.orchids-vertical {
+.orchids-fragments-container.orchids-vertical,
+.orchids-sub-fragments-container.orchids-vertical {
     width: 100%;
     transform: translateY(0);
 }

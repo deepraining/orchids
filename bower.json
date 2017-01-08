@@ -1,0 +1,26 @@
+{
+  "name": "orchids",
+  "version": "0.0.1",
+  "description": "make web app be felt as native app.",
+  "keywords": [
+    "web app",
+    "native app",
+    "spa",
+    "single",
+    "page",
+    "application"
+  ],
+  "homepage": "https://github.com/senntyou",
+  "license": "MIT",
+  "moduleType": "globals",
+  "main": [
+    "dist/orchids.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

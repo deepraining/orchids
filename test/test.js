@@ -29,6 +29,9 @@ orchids.registerPage('a', {
     },
     onHide: function () {
         console.log('a: onHide');
+    },
+    onDestroy: function() {
+        console.log('a: onDestroy')
     }
 }, {
     backgroundColor: '#ff0000',
@@ -50,6 +53,9 @@ orchids.registerPage('b', {
     },
     onHide: function () {
         console.log('b: onHide');
+    },
+    onDestroy: function() {
+        console.log('b: onDestroy')
     }
 }, {
     backgroundColor: '#00ff00'
@@ -93,6 +99,90 @@ orchids.registerDialog('i', {
     }
 }, {
     backgroundColor: '#00ff00'
+});
+
+orchids.registerFragment('oo', {
+    onCreate: function() {
+        console.log('oo: onCreate');
+        this.onCreate2();
+    }
+}, {
+    backgroundColor: '#999999'
+});
+
+orchids.registerFragment('o', {
+    onCreate2: function() {
+        console.log('o: onCreate2');
+        $(this.el).html('o');
+        document.title = 'o';
+    },
+    onShow: function () {
+        console.log('o: onShow');
+        document.title = 'o';
+    },
+    onHide: function () {
+        console.log('o: onHide');
+    },
+    onDestroy: function() {
+        console.log('o: onDestroy')
+    }
+}, {
+    backgroundColor: '#ff0000'
+}, 'oo');
+orchids.registerFragment('p', {
+    onCreate: function() {
+        console.log('p: onCreate');
+        $(this.el).html('p');
+        document.title = 'p';
+    },
+    onShow: function () {
+        console.log('p: onShow');
+        document.title = 'p';
+    },
+    onHide: function () {
+        console.log('p: onHide');
+    },
+    onDestroy: function() {
+        console.log('p: onDestroy')
+    }
+}, {
+    backgroundColor: '#00ff00'
+});
+orchids.registerFragment('q', {
+    onCreate: function() {
+        console.log('q: onCreate');
+        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments></div>')
+        document.title = 'q';
+    },
+    onShow: function () {
+        console.log('q: onShow');
+        document.title = 'q';
+    },
+    onHide: function () {
+        console.log('q: onHide');
+    },
+    onDestroy: function() {
+        console.log('q: onDestroy')
+    }
+}, {
+    backgroundColor: '#0000ff',
+    subFragments: [
+        'o', 'p', 'o', 'p'
+    ],
+    subFragmentAnimateDirection: 'vertical'
+});
+
+orchids.registerPage('c', {
+    onCreate: function(data) {
+        console.log('c: onCreate');
+        document.title = 'q';
+        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments></div>')
+    }
+}, {
+    backgroundColor: '#000000',
+    fragments: [
+        'o', 'p', 'q'
+    ]
 });
 
 orchids.start('a', {text: 'a'});

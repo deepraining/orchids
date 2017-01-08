@@ -14,7 +14,6 @@ var newPage = function () {
         var self = this;
         self.option = util.extend(true, {}, option);
         self.__orchids__data = data || {};
-        self.__orchids__init();
         /**
          * current fragment instances
          * @type {{}}
@@ -27,6 +26,7 @@ var newPage = function () {
          * @private
          */
         self.__orchids__currentFragmentId = 1;
+        self.__orchids__init();
     }
 
     Page.prototype = {
@@ -130,6 +130,8 @@ var newPage = function () {
                 instance = new fragment.fragment(fragmentOption);
 
                 self.__orchids__fragmentsInstances[fragmentOption.fragmentId] = instance;
+                // add fragment element to current root fragments container
+                self.__orchids__fragmentsContainerEl.appendChild(instance.el);
             }
         },
         /**
@@ -138,7 +140,7 @@ var newPage = function () {
          */
         showFragment: function (id) {
             var self = this,
-                instance;
+                instance, previousInstance;
             if (!id) {
                 console.error('method showFragment needs a specified fragment id');
                 return;
@@ -152,16 +154,25 @@ var newPage = function () {
                 return;
             }
 
+
+            // create fragment if not created, or call onShow method
+            !instance.__orchids__initialized ?
+                (
+                    !!instance.onCreate && instance.onCreate(),
+                        instance.__orchids__initialized = !0
+                ) :
+            !!instance.onShow && instance.onShow();
+            // call previous fragment onHide method
+            previousInstance = self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId];
+            !!previousInstance.onHide && previousInstance.onHide();
             // update current active fragment id
             self.__orchids__currentFragmentId = id;
-            // create fragment if not created
-            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
             // create sub fragments if not created
             !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
             self.option.fragmentAnimateDirection == 'vertical' ? (
-                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + ')'
+                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + 'px)'
             ) : (
-                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + ')'
+                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + 'px)'
             );
         },
         /**
@@ -203,13 +214,15 @@ var newPage = function () {
                 pageId: self.id
             }, null, '?' + searchString.slice(1));
         },
-        // back a route (current no using)
-        //__orchids__routeBack: function () {
-        //    history.back();
-        //},
-        // hide current page
-        __orchids__hide: function () {
+
+        // destroy current page
+        __orchids__destroy: function () {
             var self = this;
+
+            // call all fragments's __orchids__destroy
+            Object.keys(self.__orchids__fragmentsInstances).map(function (id) {
+                self.__orchids__fragmentsInstances[id].__orchids__destroy();
+            });
             self.onDestroy();
 
             self.el.classList.remove('orchids-active');
@@ -224,13 +237,30 @@ var newPage = function () {
             );
         },
 
-        // show current page (current no using)
-        //__orchids__show: function () {
-        //    var self = this;
-        //    // route
-        //    !!self.option.route && self.__orchids__routeForward();
-        //    self.el.classList.add('orchids-active');
-        //},
+        // hide current page
+        __orchids__hide: function () {
+            var self = this;
+            // call active fragment's __orchids__hide
+            try {
+                self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__hide();
+            }
+            catch (e) {}
+
+            self.onHide();
+        },
+
+        // show current page
+        __orchids__show: function () {
+            var self = this;
+
+            self.onShow();
+            // call active fragment's __orchids__show
+            try {
+                self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__show();
+            }
+            catch (e) {}
+
+        },
 
         /**
          * render a page after a page is initialized

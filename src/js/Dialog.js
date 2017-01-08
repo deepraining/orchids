@@ -56,8 +56,8 @@ var newDialog = function () {
                 self.el.classList.add('orchids-active')
             }, 100);
         },
-        // hide current dialog
-        __orchids__hide: function () {
+        // destroy current dialog
+        __orchids__destroy: function () {
             var self = this;
             self.onDestroy();
 

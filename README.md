@@ -1,4 +1,4 @@
-# orchids, make web app to be felt as native app
+# orchids, make web app be felt as native app
 
 ## how to use
 
@@ -157,6 +157,15 @@ orchids.registerDialog(dialogName, extendAttributes, superDialogName);
  *     {
  *         // render a fragment after a fragment is initialized
  *         onCreate: function(){},
+ *         // pre handle before destroy a fragment
+ *         onDestroy: function() {},
+ *         // called when showed, not include first show while created
+ *         onShow: function () {},
+ *         // called when show another fragment
+ *         onHide: function () {},
+ *     }
+ *     methods to call
+ *     {
  *         // show sub fragment specified by id
  *         showSubFragment: function(id) {},
  *         // get sub fragment specified by id, default return the first fragment
