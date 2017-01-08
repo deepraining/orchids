@@ -48,6 +48,12 @@ orchids.init({
  * register a Page Object
  * @param pageName New name of new Page Object
  * @param extendAttributes Attributes to be extended to new Page Object
+ *     attributes to use
+ *     {
+ *         id, // current page id
+ *         el, // current page root element
+ *         option // current page option
+ *     }
  *     methods to override
  *     {
  *         // render a page after a page is initialized
@@ -67,7 +73,11 @@ orchids.init({
  *     {
  *         // set the result if this page is called by startPageForResult method,
  *         // and the returned value will be used as the param of the onPageResult method of last page
- *         setResult: function(data) {}
+ *         setResult: function(data) {},
+ *         // show fragment specified by id
+ *         showFragment: function(id) {},
+ *         // get fragment specified by id, default return the first fragment
+ *         getFragment: function(id) {}
  *     }
  * @param option Option to initialize a Page
  *     {
@@ -76,7 +86,7 @@ orchids.init({
  *         animateDirection: 'horizontal',
  *         // sub fragments
  *         // note that, current page element should have a child node
- *         // which has 'data-orchids-fragments-container' attribute,
+ *         // which has 'data-orchids-fragments' attribute,
  *         // and it must has position-relative or position-absolute width specified width and height
  *         // or fragments will not be rendered correctly
  *         fragments: [
@@ -128,6 +138,49 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  */
 orchids.registerDialog(dialogName, extendAttributes, option, superDialogName);
 orchids.registerDialog(dialogName, extendAttributes, superDialogName);
+```
+
+### orchids.registerFragment
+
+```
+/**
+ * register a Fragment Object
+ * @param fragmentName New name of new Fragment Object
+ * @param extendAttributes Attributes to be extended to new Fragment Object
+ *     attributes to use
+ *     {
+ *         id, // current fragment id
+ *         el, // current fragment root element
+ *         option // current fragment option
+ *     }
+ *     methods to override
+ *     {
+ *         // render a fragment after a fragment is initialized
+ *         onCreate: function(){},
+ *         // show sub fragment specified by id
+ *         showSubFragment: function(id) {},
+ *         // get sub fragment specified by id, default return the first fragment
+ *         getSubFragment: function(id) {}
+ *     }
+ * @param option Option to initialize a Fragment
+ *     {
+ *         backgroundColor: '#ffffff',
+ *         // sub fragments
+ *         // note that, current fragment element should have a child node
+ *         // which has 'data-orchids-sub-fragments' attribute,
+ *         // and it must has position-relative or position-absolute width specified width and height
+ *         // or fragments will not be rendered correctly
+ *         subFragments: [
+ *             'name1',
+ *             'name2'
+ *         ],
+ *         subFragmentAnimate: !0,
+ *         subFragmentAnimateDirection: 'horizontal'
+ *     }
+ * @param superFragmentName Super Fragment Object, default is Fragment
+ */
+orchids.registerFragment(fragmentName, extendAttributes, option, superFragmentName)
+orchids.registerFragment(fragmentName, extendAttributes, superFragmentName)
 ```
 
 ### orchids.startPage

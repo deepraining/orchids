@@ -10,6 +10,7 @@ var app = require('./app');
 orchids.init = app.init;
 orchids.registerPage = app.registerPage;
 orchids.registerDialog = app.registerDialog;
+orchids.registerFragment = app.registerFragment;
 orchids.startPage = app.startPage;
 orchids.startPageForResult = app.startPageForResult;
 orchids.startDialog = app.startDialog;

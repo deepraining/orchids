@@ -1,6 +1,7 @@
 "use strict";
 
-var util = require('./util');
+var util = require('./util'),
+    container = require('./container');
 
 var newPage = function () {
     /**
@@ -14,6 +15,18 @@ var newPage = function () {
         self.option = util.extend(true, {}, option);
         self.__orchids__data = data || {};
         self.__orchids__init();
+        /**
+         * current fragment instances
+         * @type {{}}
+         * @private
+         */
+        self.__orchids__fragmentsInstances = {};
+        /**
+         * current active fragment id
+         * @type {number}
+         * @private
+         */
+        self.__orchids__currentFragmentId = 1;
     }
 
     Page.prototype = {
@@ -67,16 +80,101 @@ var newPage = function () {
         // render fragments
         __orchids__renderFragments: function () {
             var self = this,
-                fragmentsContainer = self.el.querySelector('[data-orchids-fragments-container]'),
-                i, il, fragmentName;
-            if (!fragmentsContainer) {
-                console.error('Render fragments failed: no fragments container which should has "data-orchids-fragments-container" attribute.');
+                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
+                i, il, fragmentName, fragment,
+                fragmentsContainerClasses = [
+                    'orchids-fragments-container'
+                ],
+                fragmentOption, instance;
+            if (!fragmentsEl) {
+                console.error('Render fragments failed: no fragments container which should has "data-orchids-fragments" attribute.');
                 return;
             }
-            
+
+            // guarantee the root fragments elements has overflow-hidden element
+            fragmentsEl.style.overflow = 'hidden';
+            // fragment's width and height
+            self.__orchids__fragmentWidth = fragmentsEl.offsetWidth;
+            self.__orchids__fragmentHeight = fragmentsEl.offsetHeight;
+
+            // create fragments container element
+            self.__orchids__fragmentsContainerEl = document.createElement('div');
+
+            self.option.fragmentAnimate && fragmentsContainerClasses.push('orchids-with-animation');
+            self.option.fragmentAnimateDirection == 'vertical' ? (
+                fragmentsContainerClasses.push('orchids-vertical'),
+                    self.__orchids__fragmentsContainerEl.style.height = self.option.fragments.length * self.__orchids__fragmentHeight + 'px'
+            ) : (
+                fragmentsContainerClasses.push('orchids-horizontal'),
+                    self.__orchids__fragmentsContainerEl.style.width = self.option.fragments.length * self.__orchids__fragmentWidth + 'px'
+            );
+
+            // class list
+            self.__orchids__fragmentsContainerEl.classList = fragmentsContainerClasses.join(' ');
+            // clear fragments root element inner html
+            fragmentsEl.innerHTML = '';
+            fragmentsEl.appendChild(self.__orchids__fragmentsContainerEl);
+
             for (i = 0, il = self.option.fragments.length; i < il; i++) {
                 fragmentName = self.option.fragments[i];
+                fragment = container.fragments[fragmentName];
+                if (!fragment) {
+                    console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
+                    return;
+                }
+                fragmentOption = util.extend(!0, {}, fragment.option);
+                fragmentOption.fragmentId = i + 1;
+                fragmentOption.fragmentWidth = self.__orchids__fragmentWidth;
+                fragmentOption.fragmentHeight = self.__orchids__fragmentHeight;
+                fragmentOption.fragmentDirection = self.option.fragmentAnimateDirection;
+                instance = new fragment.fragment(fragmentOption);
 
+                self.__orchids__fragmentsInstances[fragmentOption.fragmentId] = instance;
+            }
+        },
+        /**
+         * show fragment specified by id
+         * @param id
+         */
+        showFragment: function (id) {
+            var self = this,
+                instance;
+            if (!id) {
+                console.error('method showFragment needs a specified fragment id');
+                return;
+            }
+            if (id == self.__orchids__currentFragmentId) {
+                return;
+            }
+            instance = self.__orchids__fragmentsInstances[id];
+            if (!instance) {
+                console.error('fragment not found with id: ' + id + '.');
+                return;
+            }
+
+            // update current active fragment id
+            self.__orchids__currentFragmentId = id;
+            // create fragment if not created
+            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
+            // create sub fragments if not created
+            !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
+            self.option.fragmentAnimateDirection == 'vertical' ? (
+                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + ')'
+            ) : (
+                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + ')'
+            );
+        },
+        /**
+         * get fragment specified by id, default return the first fragment
+         * @param id
+         */
+        getFragment: function (id) {
+            var self = this;
+            id = id || 1;
+            try {
+                return self.__orchids__fragmentsInstances[id];
+            } catch (e) {
+                return null;
             }
         },
         // make a forward route

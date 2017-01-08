@@ -72,6 +72,7 @@ var app = {
 var util = require('./util'),
     page = require('./Page'),
     dialog = require('./Dialog'),
+    fragment = require('./Fragment'),
     container = require('./container');
 
 app.pages = container.pages;
@@ -327,6 +328,12 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  * register a Page Object
  * @param pageName New name of new Page Object
  * @param extendAttributes Attributes to be extended to new Page Object
+ *     attributes to use
+ *     {
+ *         id, // current page id
+ *         el, // current page root element
+ *         option // current page option
+ *     }
  *     methods to override
  *     {
  *         // render a page after a page is initialized
@@ -346,7 +353,11 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  *     {
  *         // set the result if this page is called by startPageForResult method,
  *         // and the returned value will be used as the param of the onPageResult method of last page
- *         setResult: function(data) {}
+ *         setResult: function(data) {},
+ *         // show fragment specified by id
+ *         showFragment: function(id) {},
+ *         // get fragment specified by id, default return the first fragment
+ *         getFragment: function(id) {}
  *     }
  * @param option Option to initialize a Page
  *     {
@@ -355,7 +366,7 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  *         animateDirection: 'horizontal',
  *         // sub fragments
  *         // note that, current page element should have a child node
- *         // which has 'data-orchids-fragments-container' attribute,
+ *         // which has 'data-orchids-fragments' attribute,
  *         // and it must has position-relative or position-absolute width specified width and height
  *         // or fragments will not be rendered correctly
  *         fragments: [
@@ -443,6 +454,12 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
  * register a Dialog Object
  * @param dialogName New name of new Dialog Object
  * @param extendAttributes Attributes to be extended to new Dialog Object
+ *     attributes to use
+ *     {
+ *         id, // current dialog id
+ *         el, // current dialog root element
+ *         option // current dialog option
+ *     }
  *     methods to override
  *     {
  *         // render a dialog after a dialog is initialized
@@ -545,14 +562,35 @@ app.registerDialog = function (dialogName, extendAttributes, option, superDialog
  * register a Fragment Object
  * @param fragmentName New name of new Fragment Object
  * @param extendAttributes Attributes to be extended to new Fragment Object
+ *     attributes to use
+ *     {
+ *         id, // current fragment id
+ *         el, // current fragment root element
+ *         option // current fragment option
+ *     }
  *     methods to override
  *     {
  *         // render a fragment after a fragment is initialized
- *         onCreate: function(){}
+ *         onCreate: function(){},
+ *         // show sub fragment specified by id
+ *         showSubFragment: function(id) {},
+ *         // get sub fragment specified by id, default return the first fragment
+ *         getSubFragment: function(id) {}
  *     }
  * @param option Option to initialize a Fragment
  *     {
- *         backgroundColor: '#ffffff'
+ *         backgroundColor: '#ffffff',
+ *         // sub fragments
+ *         // note that, current fragment element should have a child node
+ *         // which has 'data-orchids-sub-fragments' attribute,
+ *         // and it must has position-relative or position-absolute width specified width and height
+ *         // or fragments will not be rendered correctly
+ *         subFragments: [
+ *             'name1',
+ *             'name2'
+ *         ],
+ *         subFragmentAnimate: !0,
+ *         subFragmentAnimateDirection: 'horizontal'
  *     }
  * @param superFragmentName Super Fragment Object, default is Fragment
  */

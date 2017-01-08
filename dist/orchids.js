@@ -56,6 +56,7 @@
 	orchids.init = app.init;
 	orchids.registerPage = app.registerPage;
 	orchids.registerDialog = app.registerDialog;
+	orchids.registerFragment = app.registerFragment;
 	orchids.startPage = app.startPage;
 	orchids.startPageForResult = app.startPageForResult;
 	orchids.startDialog = app.startDialog;
@@ -107,7 +108,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-dialog {\r\n    z-index: 2;\r\n}\r\n/* 动画 */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n/* 水平动画，默认 */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n/* 竖直动画 */\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-dialog {\r\n    z-index: 2;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container {\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
 
 	// exports
 
@@ -452,7 +453,17 @@
 	         * animation direction of switching page
 	         * horizontal/vertical, default: horizontal
 	         */
-	        animateDirection: 'horizontal'
+	        animateDirection: 'horizontal',
+	        /**
+	         * whether to use animation when switch between fragments
+	         * default: true
+	         */
+	        fragmentAnimate: !0,
+	        /**
+	         * animation direction of switching fragment
+	         * horizontal/vertical, default: horizontal
+	         */
+	        fragmentAnimateDirection: 'horizontal'
 	    },
 	    // default dialog option
 	    defaultDialogOption: {
@@ -475,107 +486,31 @@
 	         */
 	        singleton: !0
 	    },
-	    /**
-	     * all registered page Object container
-	     * format: {
-	     *     name: {
-	     *         option: option, // Option to initialize a Page, available option is showed bellow
-	     *             {
-	     *                 backgroundColor: '#ffffff',
-	     *                 animate: !0,
-	     *                 animateDirection: 'horizontal'
-	     *             }
-	     *         superPage: '', // super page name, default is blank string
-	     *         page: Page // Page Object
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    pages: {},
-	    /**
-	     * all registered Pages Attributes
-	     * format: {
-	     *     name: {
-	     *         name1: field1,
-	     *         name2: filed2,
-	     *         name3: func1,
-	     *         name4: func2
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    pagesAttributes: {},
-	    /**
-	     * all initialized Page instances (current page is not supporting singleton)
-	     * format: {
-	     *     id: {
-	     *         name: pageName, // Page name
-	     *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-	     *         page: Page // Page instance
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    pagesInstances: {},
-	    /**
-	     * all registered dialog Object container
-	     * format: {
-	     *     name: {
-	     *         option: option, // Option to initialize a Dialog, available option is showed bellow
-	     *             {
-	     *                 backgroundColor: '#ffffff',
-	     *                 animate: !0,
-	     *                 animateDirection: 'vertical',
-	     *                 singleton: true
-	     *             }
-	     *         superDialog: '', // super dialog name, default is blank string
-	     *         dialog: Dialog // Dialog Object
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    dialogs: {},
-	    /**
-	     * all registered Dialogs Attributes
-	     * format: {
-	     *     name: {
-	     *         name1: field1,
-	     *         name2: filed2,
-	     *         name3: func1,
-	     *         name4: func2
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    dialogsAttributes: {},
-	    /**
-	     * all initialized Dialog instances
-	     * format: {
-	     *     id: {
-	     *         name: dialogName, // Dialog name
-	     *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-	     *         dialog: Dialog // Dialog instance
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    dialogsInstances: {},
-	    /**
-	     * all initialized Dialog singleton instances
-	     * format: {
-	     *     name: {
-	     *         id: id, // dialog id
-	     *         dialog: Dialog // Dialog instance
-	     *     }
-	     * }
-	     * @type {{}}
-	     */
-	    dialogsSingletonInstances: {}
+	    // default fragment option
+	    defaultFragmentOption: {
+	        /**
+	         * background of root element
+	         */
+	        backgroundColor: '#ffffff'
+	    }
 	};
+
 
 	var util = __webpack_require__(6),
 	    page = __webpack_require__(7),
-	    dialog = __webpack_require__(8);
+	    dialog = __webpack_require__(9),
+	    fragment = __webpack_require__(10),
+	    container = __webpack_require__(8);
+
+	app.pages = container.pages;
+	app.pagesAttributes = container.pagesAttributes;
+	app.pagesInstances = container.pagesInstances;
+	app.dialogs = container.dialogs;
+	app.dialogsAttributes = container.dialogsAttributes;
+	app.dialogsInstances = container.dialogsInstances;
+	app.dialogsSingletonInstances = container.dialogsSingletonInstances;
+	app.fragments = container.fragments;
+	app.fragmentsAttributes = container.fragmentsAttributes;
 
 	    /**
 	     * total page count of current app
@@ -820,6 +755,12 @@
 	 * register a Page Object
 	 * @param pageName New name of new Page Object
 	 * @param extendAttributes Attributes to be extended to new Page Object
+	 *     attributes to use
+	 *     {
+	 *         id, // current page id
+	 *         el, // current page root element
+	 *         option // current page option
+	 *     }
 	 *     methods to override
 	 *     {
 	 *         // render a page after a page is initialized
@@ -839,13 +780,28 @@
 	 *     {
 	 *         // set the result if this page is called by startPageForResult method,
 	 *         // and the returned value will be used as the param of the onPageResult method of last page
-	 *         setResult: function(data) {}
+	 *         setResult: function(data) {},
+	 *         // show fragment specified by id
+	 *         showFragment: function(id) {},
+	 *         // get fragment specified by id, default return the first fragment
+	 *         getFragment: function(id) {}
 	 *     }
 	 * @param option Option to initialize a Page
 	 *     {
 	 *         backgroundColor: '#ffffff',
 	 *         animate: !0,
-	 *         animateDirection: 'horizontal'
+	 *         animateDirection: 'horizontal',
+	 *         // sub fragments
+	 *         // note that, current page element should have a child node
+	 *         // which has 'data-orchids-fragments' attribute,
+	 *         // and it must has position-relative or position-absolute width specified width and height
+	 *         // or fragments will not be rendered correctly
+	 *         fragments: [
+	 *             'name1',
+	 *             'name2'
+	 *         ],
+	 *         fragmentAnimate: !0,
+	 *         fragmentAnimateDirection: 'horizontal'
 	 *     }
 	 * @param superPageName Super Page Object, default is Page
 	 */
@@ -925,6 +881,12 @@
 	 * register a Dialog Object
 	 * @param dialogName New name of new Dialog Object
 	 * @param extendAttributes Attributes to be extended to new Dialog Object
+	 *     attributes to use
+	 *     {
+	 *         id, // current dialog id
+	 *         el, // current dialog root element
+	 *         option // current dialog option
+	 *     }
 	 *     methods to override
 	 *     {
 	 *         // render a dialog after a dialog is initialized
@@ -1023,6 +985,113 @@
 	    };
 	};
 
+	/**
+	 * register a Fragment Object
+	 * @param fragmentName New name of new Fragment Object
+	 * @param extendAttributes Attributes to be extended to new Fragment Object
+	 *     attributes to use
+	 *     {
+	 *         id, // current fragment id
+	 *         el, // current fragment root element
+	 *         option // current fragment option
+	 *     }
+	 *     methods to override
+	 *     {
+	 *         // render a fragment after a fragment is initialized
+	 *         onCreate: function(){},
+	 *         // show sub fragment specified by id
+	 *         showSubFragment: function(id) {},
+	 *         // get sub fragment specified by id, default return the first fragment
+	 *         getSubFragment: function(id) {}
+	 *     }
+	 * @param option Option to initialize a Fragment
+	 *     {
+	 *         backgroundColor: '#ffffff',
+	 *         // sub fragments
+	 *         // note that, current fragment element should have a child node
+	 *         // which has 'data-orchids-sub-fragments' attribute,
+	 *         // and it must has position-relative or position-absolute width specified width and height
+	 *         // or fragments will not be rendered correctly
+	 *         subFragments: [
+	 *             'name1',
+	 *             'name2'
+	 *         ],
+	 *         subFragmentAnimate: !0,
+	 *         subFragmentAnimateDirection: 'horizontal'
+	 *     }
+	 * @param superFragmentName Super Fragment Object, default is Fragment
+	 */
+
+	app.registerFragment = function (fragmentName, extendAttributes, option, superFragmentName) {
+	    var newFragment, // new Fragment Object
+	        superFragmentsExtendAttributes = [], // all super extend attributes
+	        superFragmentsOptions = [], // all super options
+	        tempOption,
+	        i, il;
+
+	    /**
+	     * get all super extend attributes
+	     *
+	     * @param superFragmentName
+	     */
+	    function getSuperFragmentsExtendAttributes(superFragmentName) {
+	        var superFragment = app.fragments[superFragmentName],
+	            superOption = superFragment.option,
+	            superExtendAttributes = app.fragmentsAttributes[superFragmentName];
+
+	        !!superExtendAttributes && superFragmentsExtendAttributes.unshift(superExtendAttributes);
+	        !!superOption && superFragmentsOptions.unshift(superOption);
+	        !!superFragment.superFragment && getSuperFragmentsExtendAttributes(superFragment.superFragment);
+	    }
+
+	    if (!fragmentName || typeof fragmentName != 'string') {
+	        console.error('Register a Fragment Object needs a explicit string name');
+	        return;
+	    }
+
+	    if (!!app.fragmentsAttributes[fragmentName]) {
+	        console.error('fragment "' + fragmentName + '" has been registered, and now is override, but this is a incorrect handle, so here is the message');
+	    }
+
+	    if (arguments.length == 1) {
+	        console.error('Register fragment "' + fragmentName + '" with no extend attributes is not ok, please check it');
+	        return;
+	    }
+	    else if (arguments.length == 2) {
+	        option = {};
+	        superFragmentName = '';
+	    }
+	    else if (arguments.length == 3 && typeof arguments[2] == 'string') {
+	        superFragmentName = option;
+	        option = {};
+	    }
+
+	    // put extendAttributes to fragmentsAttributes container
+	    app.fragmentsAttributes[fragmentName] = extendAttributes;
+
+	    newFragment = fragment();
+	    tempOption = util.extend(!0, {}, app.option);
+	    // no superFragment
+	    if (!!superFragmentName) {
+	        getSuperFragmentsExtendAttributes(superFragmentName);
+	        for (i = 0, il = superFragmentsExtendAttributes.length; i < il; i++) {
+	            util.extend(!0, newFragment.prototype, superFragmentsExtendAttributes[i]);
+	        }
+
+	        for (i = 0, il = superFragmentsOptions.length; i < il; i++) {
+	            util.extend(!0, tempOption, superFragmentsOptions[i]);
+	        }
+	    }
+	    util.extend(!0, newFragment.prototype, extendAttributes);
+	    util.extend(!0, tempOption, option);
+
+	    tempOption.fragmentName = fragmentName;
+	    app.fragments[fragmentName] = {
+	        superFragment: superFragmentName,
+	        option: tempOption,
+	        fragment: newFragment
+	    };
+	};
 	/**
 	 * get page object
 	 * @param index
@@ -1350,7 +1419,8 @@
 
 	"use strict";
 
-	var util = __webpack_require__(6);
+	var util = __webpack_require__(6),
+	    container = __webpack_require__(8);
 
 	var newPage = function () {
 	    /**
@@ -1364,6 +1434,18 @@
 	        self.option = util.extend(true, {}, option);
 	        self.__orchids__data = data || {};
 	        self.__orchids__init();
+	        /**
+	         * current fragment instances
+	         * @type {{}}
+	         * @private
+	         */
+	        self.__orchids__fragmentsInstances = {};
+	        /**
+	         * current active fragment id
+	         * @type {number}
+	         * @private
+	         */
+	        self.__orchids__currentFragmentId = 1;
 	    }
 
 	    Page.prototype = {
@@ -1403,12 +1485,116 @@
 	            // route, if it is the first page, no route change
 	            !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();
 
+	            // render fragments
+	            !!self.option.fragments && !!self.option.fragments.length && self.__orchids__renderFragments();
+
 	            /**
 	             * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
 	             */
 	            !self.__orchids__isFirstPage && setTimeout(function () {
 	                self.el.classList.add('orchids-active')
 	            }, 100);
+
+	        },
+	        // render fragments
+	        __orchids__renderFragments: function () {
+	            var self = this,
+	                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
+	                i, il, fragmentName, fragment,
+	                fragmentsContainerClasses = [
+	                    'orchids-fragments-container'
+	                ],
+	                fragmentOption, instance;
+	            if (!fragmentsEl) {
+	                console.error('Render fragments failed: no fragments container which should has "data-orchids-fragments" attribute.');
+	                return;
+	            }
+
+	            // guarantee the root fragments elements has overflow-hidden element
+	            fragmentsEl.style.overflow = 'hidden';
+	            // fragment's width and height
+	            self.__orchids__fragmentWidth = fragmentsEl.offsetWidth;
+	            self.__orchids__fragmentHeight = fragmentsEl.offsetHeight;
+
+	            // create fragments container element
+	            self.__orchids__fragmentsContainerEl = document.createElement('div');
+
+	            self.option.fragmentAnimate && fragmentsContainerClasses.push('orchids-with-animation');
+	            self.option.fragmentAnimateDirection == 'vertical' ? (
+	                fragmentsContainerClasses.push('orchids-vertical'),
+	                    self.__orchids__fragmentsContainerEl.style.height = self.option.fragments.length * self.__orchids__fragmentHeight + 'px'
+	            ) : (
+	                fragmentsContainerClasses.push('orchids-horizontal'),
+	                    self.__orchids__fragmentsContainerEl.style.width = self.option.fragments.length * self.__orchids__fragmentWidth + 'px'
+	            );
+
+	            // class list
+	            self.__orchids__fragmentsContainerEl.classList = fragmentsContainerClasses.join(' ');
+	            // clear fragments root element inner html
+	            fragmentsEl.innerHTML = '';
+	            fragmentsEl.appendChild(self.__orchids__fragmentsContainerEl);
+
+	            for (i = 0, il = self.option.fragments.length; i < il; i++) {
+	                fragmentName = self.option.fragments[i];
+	                fragment = container.fragments[fragmentName];
+	                if (!fragment) {
+	                    console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
+	                    return;
+	                }
+	                fragmentOption = util.extend(!0, {}, fragment.option);
+	                fragmentOption.fragmentId = i + 1;
+	                fragmentOption.fragmentWidth = self.__orchids__fragmentWidth;
+	                fragmentOption.fragmentHeight = self.__orchids__fragmentHeight;
+	                fragmentOption.fragmentDirection = self.option.fragmentAnimateDirection;
+	                instance = new fragment.fragment(fragmentOption);
+
+	                self.__orchids__fragmentsInstances[fragmentOption.fragmentId] = instance;
+	            }
+	        },
+	        /**
+	         * show fragment specified by id
+	         * @param id
+	         */
+	        showFragment: function (id) {
+	            var self = this,
+	                instance;
+	            if (!id) {
+	                console.error('method showFragment needs a specified fragment id');
+	                return;
+	            }
+	            if (id == self.__orchids__currentFragmentId) {
+	                return;
+	            }
+	            instance = self.__orchids__fragmentsInstances[id];
+	            if (!instance) {
+	                console.error('fragment not found with id: ' + id + '.');
+	                return;
+	            }
+
+	            // update current active fragment id
+	            self.__orchids__currentFragmentId = id;
+	            // create fragment if not created
+	            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
+	            // create sub fragments if not created
+	            !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
+	            self.option.fragmentAnimateDirection == 'vertical' ? (
+	                self.__orchids__fragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + ')'
+	            ) : (
+	                self.__orchids__fragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__fragmentWidth * (id - 1)) + ')'
+	            );
+	        },
+	        /**
+	         * get fragment specified by id, default return the first fragment
+	         * @param id
+	         */
+	        getFragment: function (id) {
+	            var self = this;
+	            id = id || 1;
+	            try {
+	                return self.__orchids__fragmentsInstances[id];
+	            } catch (e) {
+	                return null;
+	            }
 	        },
 	        // make a forward route
 	        __orchids__routeForward: function () {
@@ -1513,6 +1699,139 @@
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	var container = {
+	    /**
+	     * all registered page Object container
+	     * format: {
+	     *     name: {
+	     *         option: option, // Option to initialize a Page, available option is showed bellow
+	     *             {
+	     *                 backgroundColor: '#ffffff',
+	     *                 animate: !0,
+	     *                 animateDirection: 'horizontal'
+	     *             }
+	     *         superPage: '', // super page name, default is blank string
+	     *         page: Page // Page Object
+	     *     }
+	     * }
+	     * @type {{}}
+	     */
+	    pages: {},
+	    /**
+	     * all registered Pages Attributes
+	     * format: {
+	         *     name: {
+	         *         name1: field1,
+	         *         name2: filed2,
+	         *         name3: func1,
+	         *         name4: func2
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    pagesAttributes: {},
+	    /**
+	     * all initialized Page instances (current page is not supporting singleton)
+	     * format: {
+	         *     id: {
+	         *         name: pageName, // Page name
+	         *         forResult: true/false, // whether current page is initialized by startPageForResult or not
+	         *         page: Page // Page instance
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    pagesInstances: {},
+	    /**
+	     * all registered dialog Object container
+	     * format: {
+	         *     name: {
+	         *         option: option, // Option to initialize a Dialog, available option is showed bellow
+	         *             {
+	         *                 backgroundColor: '#ffffff',
+	         *                 animate: !0,
+	         *                 animateDirection: 'vertical',
+	         *                 singleton: true
+	         *             }
+	         *         superDialog: '', // super dialog name, default is blank string
+	         *         dialog: Dialog // Dialog Object
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    dialogs: {},
+	    /**
+	     * all registered Dialogs Attributes
+	     * format: {
+	         *     name: {
+	         *         name1: field1,
+	         *         name2: filed2,
+	         *         name3: func1,
+	         *         name4: func2
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    dialogsAttributes: {},
+	    /**
+	     * all initialized Dialog instances
+	     * format: {
+	         *     id: {
+	         *         name: dialogName, // Dialog name
+	         *         forResult: true/false, // whether current page is initialized by startPageForResult or not
+	         *         dialog: Dialog // Dialog instance
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    dialogsInstances: {},
+	    /**
+	     * all initialized Dialog singleton instances
+	     * format: {
+	         *     name: {
+	         *         id: id, // dialog id
+	         *         dialog: Dialog // Dialog instance
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    dialogsSingletonInstances: {},
+	    /**
+	     * all registered fragment Object container
+	     * format: {
+	         *     name: {
+	         *         option: option, // Option to initialize a Fragment, available option is showed bellow
+	         *             {
+	         *                 backgroundColor: '#ffffff'
+	         *             }
+	         *         superFragment: '', // super fragment name, default is blank string
+	         *         fragment: Fragment // Fragment Object
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    fragments: {},
+	    /**
+	     * all registered Fragments Attributes
+	     * format: {
+	         *     name: {
+	         *         name1: field1,
+	         *         name2: filed2,
+	         *         name3: func1,
+	         *         name4: func2
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    fragmentsAttributes: {}
+	};
+
+	module.exports = container;
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1644,6 +1963,190 @@
 	};
 
 	module.exports = newDialog;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var util = __webpack_require__(6),
+	    container = __webpack_require__(8);
+
+	var newFragment = function () {
+	    /**
+	     *
+	     * @param option Option to initialize fragment
+	     * @constructor
+	     */
+	    function Fragment(option) {
+	        var self = this;
+	        self.option = util.extend(true, {}, option);
+	        self.__orchids__init();
+	        // whether current fragment is initialized
+	        self.__orchids__initialized = !1;
+	        /**
+	         * current sub fragment instances
+	         * @type {{}}
+	         * @private
+	         */
+	        self.__orchids__subFragmentsInstances = {};
+	        /**
+	         * current active sub fragment id
+	         * @type {number}
+	         * @private
+	         */
+	        self.__orchids__currentSubFragmentId = 1;
+	    }
+
+	    Fragment.prototype = {
+	        constructor: Fragment,
+	        __orchids__init: function() {
+	            var self = this,
+	                classes = [
+	                    'orchids',
+	                    'orchids-fragment'
+	                ];
+	            // make id
+	            self.id = self.option.fragmentId;
+	            // whether current fragment is the first fragment to render or not
+	            self.__orchids__isFirstFragment = self.id == 1;
+	            // make root el
+	            self.el = document.createElement('div');
+	            // data-orchids-fragment-is
+	            self.el.dataset.orchidsFragmentId = self.id;
+
+	            // background color
+	            self.el.style.backgroundColor = self.option.backgroundColor;
+	            // left, top, width, height
+	            self.option.fragmentDirection == 'vertical' ? (
+	                classes.push('orchids-vertical'),
+	                    self.el.style.top = self.option.fragmentHeight * (self.id - 1) + 'px',
+	                    self.el.style.height = self.option.fragmentHeight
+	            ) : (
+	                classes.push('orchids-horizontal'),
+	                    self.el.style.left = self.option.fragmentWidth * (self.id - 1) + 'px',
+	                    self.el.style.width = self.option.fragmentWidth
+	            );
+	            self.el.classList = classes.join(' ');
+	            // user custom initialization
+	            self.__orchids__isFirstFragment && (
+	                self.__orchids__initialized = !0,
+	                !!self.onCreate && self.onCreate(),
+	                    // render fragments
+	                !!self.option.subFragments && !!self.option.subFragments.length && self.__orchids__renderSubFragments()
+	            );
+	        },
+	        // render sub fragments
+	        __orchids__renderSubFragments: function () {
+	            var self = this,
+	                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
+	                i, il, fragmentName, fragment,
+	                fragmentsContainerClasses = [
+	                    'orchids-fragments-sub-container'
+	                ],
+	                fragmentOption, instance;
+	            if (!fragmentsEl) {
+	                console.error('Render fragments failed: no fragments container which should has "data-orchids-sub-fragments" attribute.');
+	                return;
+	            }
+
+	            // guarantee the root fragments elements has overflow-hidden element
+	            fragmentsEl.style.overflow = 'hidden';
+	            // fragment's width and height
+	            self.__orchids__subFragmentWidth = fragmentsEl.offsetWidth;
+	            self.__orchids__subFragmentHeight = fragmentsEl.offsetHeight;
+
+	            // create fragments container element
+	            self.__orchids__subFragmentsContainerEl = document.createElement('div');
+
+	            self.option.subFragmentAnimate && fragmentsContainerClasses.push('orchids-with-animation');
+	            self.option.subFragmentAnimateDirection == 'vertical' ? (
+	                fragmentsContainerClasses.push('orchids-vertical'),
+	                    self.__orchids__subFragmentsContainerEl.style.height = self.option.subFragments.length * self.__orchids__subFragmentHeight + 'px'
+	            ) : (
+	                fragmentsContainerClasses.push('orchids-horizontal'),
+	                    self.__orchids__subFragmentsContainerEl.style.width = self.option.subFragments.length * self.__orchids__subFragmentWidth + 'px'
+	            );
+
+	            // class list
+	            self.__orchids__subFragmentsContainerEl.classList = fragmentsContainerClasses.join(' ');
+	            // clear fragments root element inner html
+	            fragmentsEl.innerHTML = '';
+	            fragmentsEl.appendChild(self.__orchids__subFragmentsContainerEl);
+
+	            for (i = 0, il = self.option.subFragments.length; i < il; i++) {
+	                fragmentName = self.option.subFragments[i];
+	                fragment = container.fragments[fragmentName];
+	                if (!fragment) {
+	                    console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
+	                    return;
+	                }
+	                fragmentOption = util.extend(!0, {}, fragment.option);
+	                fragmentOption.fragmentId = i + 1;
+	                fragmentOption.fragmentWidth = self.__orchids__subFragmentWidth;
+	                fragmentOption.fragmentHeight = self.__orchids__subFragmentHeight;
+	                fragmentOption.fragmentDirection = self.option.subFragmentAnimateDirection;
+	                instance = new fragment.fragment(fragmentOption);
+
+	                self.__orchids__subFragmentsInstances[fragmentOption.fragmentId] = instance;
+	            }
+	        },
+	        /**
+	         * show sub fragment specified by id
+	         * @param id
+	         */
+	        showSubFragment: function (id) {
+	            var self = this,
+	                instance;
+	            if (!id) {
+	                console.error('method showFragment needs a specified fragment id');
+	                return;
+	            }
+	            if (id == self.__orchids__currentSubFragmentId) {
+	                return;
+	            }
+	            instance = self.__orchids__subFragmentsInstances[id];
+	            if (!instance) {
+	                console.error('fragment not found with id: ' + id + '.');
+	                return;
+	            }
+
+	            // update current active fragment id
+	            self.__orchids__currentSubFragmentId = id;
+	            // create fragment if not created
+	            !instance.__orchids__initialized && !!instance.onCreate && instance.onCreate();
+	            // create sub fragments if not created
+	            !!instance.option.subFragments && !!instance.option.subFragments.length && instance.__orchids__renderSubFragments();
+	            self.option.subFragmentAnimateDirection == 'vertical' ? (
+	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateY(' + (0 - self.__orchids__subFragmentHeight * (id - 1)) + ')'
+	            ) : (
+	                self.__orchids__subFragmentsContainerEl.style.transform = 'translateX(' + (0 - self.__orchids__subFragmentWidth * (id - 1)) + ')'
+	            );
+	        },
+	        /**
+	         * get sub fragment specified by id, default return the first fragment
+	         * @param id
+	         */
+	        getSubFragment: function (id) {
+	            var self = this;
+	            id = id || 1;
+	            try {
+	                return self.__orchids__subFragmentsInstances[id];
+	            } catch (e) {
+	                return null;
+	            }
+	        },
+	        /**
+	         * render a fragment after a fragment is initialized
+	         */
+	        onCreate: function() {}
+	    };
+
+	    return Fragment;
+	};
+
+	module.exports = newFragment;
 
 /***/ }
 /******/ ]);
