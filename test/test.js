@@ -186,3 +186,32 @@ orchids.registerPage('c', {
 });
 
 orchids.start('a', {text: 'a'});
+
+$('#forward-10').click(function (e) {
+    orchids.back();
+});
+
+$('#forward-1').click(function (e) {
+    orchids.startPage('b', {text: 'b'});
+});
+$('#forward-2').click(function (e) {
+    orchids.startPage('c', {text: 'c'});
+});
+$('#forward-2-1').click(function (e) {
+    orchids.getCurrentPage().showFragment(2);
+});
+$('#forward-2-2').click(function (e) {
+    orchids.getCurrentPage().showFragment(3);
+});
+$('#forward-2-2-1').click(function (e) {
+    orchids.getCurrentPage().getFragment(3).showSubFragment(2);
+});
+$('#forward-3').click(function (e) {
+    orchids.startPageForResult('b', {text: 'b'}, {text: 'bbbbb'});
+});
+$('#forward-4').click(function (e) {
+    orchids.startDialog('h', {text: 'h'});
+});
+$('#forward-5').click(function (e) {
+    orchids.startDialogForResult('i', {text: 'i'}, {text: 'iiiii'});
+});
