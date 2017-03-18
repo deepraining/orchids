@@ -36,7 +36,11 @@ var app = {
          * animation direction of switching fragment
          * horizontal/vertical, default: horizontal
          */
-        fragmentAnimateDirection: 'horizontal'
+        fragmentAnimateDirection: 'horizontal',
+        /**
+         * function: called when first page is initialized
+         */
+        onFirstPageInitialized: void 0
     },
     // default dialog option
     defaultDialogOption: {
@@ -177,11 +181,13 @@ app.start = function (pageName, data) {
         }
 
         app.startPage(orchidsPage, orchidsData);
-        return;
+    }
+    else {
+        app.startPage(pageName, data);
     }
 
-    app.startPage(pageName, data);
-
+    // 第一个页面初始化完成
+    !!app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
 };
 /**
  * initialize a Page and show it

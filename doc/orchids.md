@@ -35,7 +35,11 @@ orchids.init({
      * animation direction of switching fragment
      * horizontal/vertical, default: horizontal
      */
-    fragmentAnimateDirection: 'horizontal'
+    fragmentAnimateDirection: 'horizontal',
+    /**
+     * function: called when first page is initialized
+     */
+    onFirstPageInitialized: void 0
 });
 ```
 

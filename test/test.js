@@ -1,6 +1,9 @@
 orchids.init({
     route: !0,
-    animate: !0
+    animate: !0,
+    onFirstPageInitialized: function() {
+        console.log('first page initialized');
+    }
 });
 
 orchids.registerPage('aa', {

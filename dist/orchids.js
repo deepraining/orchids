@@ -89,8 +89,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/.0.26.1@css-loader/index.js!./orchids.css", function() {
-				var newContent = require("!!./../../node_modules/.0.26.1@css-loader/index.js!./orchids.css");
+			module.hot.accept("!!../../node_modules/.0.26.4@css-loader/index.js!./orchids.css", function() {
+				var newContent = require("!!../../node_modules/.0.26.4@css-loader/index.js!./orchids.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -186,7 +186,7 @@
 			};
 		},
 		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
 		}),
 		getHeadElement = memoize(function () {
 			return document.head || document.getElementsByTagName("head")[0];
@@ -463,7 +463,11 @@
 	         * animation direction of switching fragment
 	         * horizontal/vertical, default: horizontal
 	         */
-	        fragmentAnimateDirection: 'horizontal'
+	        fragmentAnimateDirection: 'horizontal',
+	        /**
+	         * called when first page is initialized
+	         */
+	        onFirstPageInitialized: void 0
 	    },
 	    // default dialog option
 	    defaultDialogOption: {
@@ -604,11 +608,13 @@
 	        }
 
 	        app.startPage(orchidsPage, orchidsData);
-	        return;
+	    }
+	    else {
+	        app.startPage(pageName, data);
 	    }
 
-	    app.startPage(pageName, data);
-
+	    // 第一个页面初始化完成
+	    !!app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
 	};
 	/**
 	 * initialize a Page and show it
