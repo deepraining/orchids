@@ -107,6 +107,12 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  * register a Dialog Object
  * @param dialogName New name of new Dialog Object
  * @param extendAttributes Attributes to be extended to new Dialog Object
+ *     attributes to use
+ *     {
+ *         id, // current page id
+ *         el, // current page root element
+ *         option // current page option
+ *     }
  *     methods to override
  *     {
  *         // render a dialog after a dialog is initialized

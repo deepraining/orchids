@@ -14,4 +14,5 @@
 * [Page](./doc/page.md)
 * [Fragment](./doc/fragment.md)
 * [Dialog](./doc/dialog.md)
+* [tips](./doc/tips.md)
 
