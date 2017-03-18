@@ -5,7 +5,7 @@
 * [orchids demo](http://senntyou.github.io/orchids/), 用移动设备打开
 
 * 或者扫描二维码
-![./resources/qrcode.png](1.png)
+![](./resources/qrcode.png)
 
 ## doc
 
