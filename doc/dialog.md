@@ -17,7 +17,7 @@ animate: !0
 * animateDirection
 
 ```
-animateDirection: 'horizontal'
+animateDirection: 'vertical'
 ```
 
 * singleton
@@ -30,9 +30,9 @@ singleton: !0 // whether current dialog is singleton or not, if true,
 
 ## attributes
 
-* id: current page id
-* el: current page root element
-* option: current page option
+* id: current dialog id
+* el: current dialog root element
+* option: current dialog option
 
 ## methods
 
