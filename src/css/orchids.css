@@ -20,8 +20,14 @@
     -webkit-overflow-scrolling: touch;
     z-index: 1;
 }
-.orchids-dialog {
+.orchids-page-singleton {
     z-index: 2;
+}
+.orchids-dialog {
+    z-index: 3;
+}
+.orchids-dialog-singleton {
+    z-index: 4;
 }
 /* animation */
 .orchids-page.orchids-with-animation,

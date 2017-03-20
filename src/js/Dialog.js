@@ -38,6 +38,8 @@ var newDialog = function () {
             self.el.dataset.orchidsDialogId = self.id;
             // direction
             self.option.animateDirection == 'horizontal' ? classes.push('orchids-horizontal') : classes.push('orchids-vertical');
+            // singleton
+            self.option.singleton && classes.push('orchids-dialog-singleton');
             // classList
             self.el.classList = classes.join(' ');
             // background color
@@ -76,23 +78,26 @@ var newDialog = function () {
         // show current dialog
         __orchids__show: function (forResult, prepareResultData) {
             var self = this;
-            // add to body element
-            document.body.appendChild(self.el);
 
             /**
-             * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+             * show dialog
              */
-            self.option.animate ? (
-                // has animation
-                setTimeout(function () {
-                    self.el.classList.add('orchids-active')
-                }, 100)
-            ) : (
-                // no animation
-                self.el.classList.add('orchids-active')
-            );
+            self.el.classList.add('orchids-active');
+
+            self.onShow();
 
             forResult && self.prepareForResult(prepareResultData);
+        },
+
+        // hide current dialog
+        __orchids__hide: function () {
+            var self = this;
+
+            self.onHide();
+            /**
+             * hide dialog
+             */
+            self.el.classList.remove('orchids-active');
         },
 
         // render a dialog after a dialog is initialized
@@ -100,6 +105,15 @@ var newDialog = function () {
 
         // pre handle before destroy a dialog
         onDestroy: function() {},
+
+        /**
+         * called when back dialog from other dialog
+         */
+        onShow: function () {},
+        /**
+         * called when start another dialog
+         */
+        onHide: function () {},
 
         /**
          * set the result if this dialog is called by startDialogForResult method,

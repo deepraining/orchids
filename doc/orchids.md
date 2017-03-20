@@ -7,35 +7,11 @@ register global option
 ```
 orchids.init({
     /**
-     * background of root element
-     */
-    backgroundColor: '#ffffff',
-    /**
      * start page with route or not
      * if set to true, the url will be changed when a page is started
      * like: url?orchidsPage=pageName&orchidsOption=serializedData
      */
     route: !1,
-    /**
-     * whether to use animation when switch between pages
-     * default: true
-     */
-    animate: !0,
-    /**
-     * animation direction of switching page
-     * horizontal/vertical, default: horizontal
-     */
-    animateDirection: 'horizontal',
-    /**
-     * whether to use animation when switch between fragments
-     * default: true
-     */
-    fragmentAnimate: !0,
-    /**
-     * animation direction of switching fragment
-     * horizontal/vertical, default: horizontal
-     */
-    fragmentAnimateDirection: 'horizontal',
     /**
      * function: called when first page is initialized
      */
@@ -96,7 +72,9 @@ orchids.init({
  *             'name2'
  *         ],
  *         fragmentAnimate: !0,
- *         fragmentAnimateDirection: 'horizontal'
+ *         fragmentAnimateDirection: 'horizontal',
+ *         singleton: !1 // whether current page is singleton or not, if true,
+ *                       //it will be only created once, and will not be destroyed
  *     }
  * @param superPageName Super Page Object, default is Page
  */
@@ -123,6 +101,10 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  *         onCreate: function(){},
  *         // pre handle before destroy a dialog
  *         onDestroy: function() {},
+ *         // called when back dialog from other dialog
+ *         onShow: function () {},
+ *         // called when start another dialog
+ *         onHide: function () {},
  *         // called when the child dialog destroyed and return the value by setResult method.
  *         onDialogResult: function(data) {},
  *         // receive data from the previous dialog, startDialogForResult method's second parameter
@@ -139,7 +121,7 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  *         backgroundColor: '#ffffff',
  *         animate: !0,
  *         animateDirection: 'vertical',
- *         singleton: !0 // whether current dialog is singleton or not, if true,
+ *         singleton: !1 // whether current dialog is singleton or not, if true,
  *                       //it will be only created once, and will not be destroyed
  *     }
  * @param superDialogName Super Dialog Object, default is Dialog

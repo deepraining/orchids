@@ -51,6 +51,8 @@ var newPage = function () {
             );
             // direction
             self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
+            // singleton
+            self.option.singleton && classes.push('orchids-page-singleton');
             // classList
             self.__orchids__isFirstPage && classes.push('orchids-active');
             self.el.classList = classes.join(' ');
@@ -238,7 +240,7 @@ var newPage = function () {
         },
 
         // hide current page
-        __orchids__hide: function () {
+        __orchids__hide: function (isSingleton) {
             var self = this;
             // call active fragment's __orchids__hide
             try {
@@ -247,11 +249,19 @@ var newPage = function () {
             catch (e) {}
 
             self.onHide();
+
+            isSingleton && (self.el.classList.remove('orchids-active'));
         },
 
         // show current page
-        __orchids__show: function () {
+        __orchids__show: function (isSingleton, forResult, prepareResultData) {
             var self = this;
+
+            isSingleton && (
+                self.el.classList.add('orchids-active'),
+                    // route, if it is the first page, no route change
+                !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward()
+            );
 
             self.onShow();
             // call active fragment's __orchids__show
@@ -260,6 +270,7 @@ var newPage = function () {
             }
             catch (e) {}
 
+            forResult && self.prepareForResult(prepareResultData);
         },
 
         /**

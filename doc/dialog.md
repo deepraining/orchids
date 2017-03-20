@@ -23,7 +23,7 @@ animateDirection: 'vertical'
 * singleton
 
 ```
-singleton: !0 // whether current dialog is singleton or not, if true,
+singleton: !1 // whether current dialog is singleton or not, if true,
               //it will be only created once, and will not be destroyed
 ```
 
@@ -50,6 +50,20 @@ onCreate: function(){}
 ```
 // pre handle before destroy a dialog
 onDestroy: function() {}
+```
+
+* onShow
+
+```
+// called when back dialog from other dialog
+onShow: function () {}
+```
+
+* onHide
+
+```
+// called when start another dialog
+onHide: function () {}
 ```
 
 * onDialogResult

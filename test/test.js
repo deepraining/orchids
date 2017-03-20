@@ -43,6 +43,7 @@ orchids.registerPage('a', {
 orchids.registerPage('b', {
     onCreate: function(data) {
         $(this.el).html(data.text);
+        console.log('b: onCreate');
         this.setResult({text: 'I\'m come from b.'});
         document.title = 'b';
     },
@@ -61,7 +62,8 @@ orchids.registerPage('b', {
         console.log('b: onDestroy')
     }
 }, {
-    backgroundColor: '#00ff00'
+    backgroundColor: '#00ff00',
+    singleton: !0
 });
 
 orchids.registerDialog('hh', {
@@ -80,6 +82,12 @@ orchids.registerDialog('h', {
         $(this.el).html(data.text);
         this.setResult({text: 'I\'m come from h.'});
     },
+    onShow: function () {
+        console.log('h: onShow');
+    },
+    onHide: function () {
+        console.log('h: onHide');
+    },
     onDialogResult: function(data) {
         console.log('h: onDialogResult success.');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
@@ -93,15 +101,23 @@ orchids.registerDialog('h', {
 }, 'hh');
 orchids.registerDialog('i', {
     onCreate: function(data) {
+        console.log('i: onCreate');
         $(this.el).html(data.text);
         this.setResult({text: 'I\'m come from i.'});
+    },
+    onShow: function () {
+        console.log('i: onShow');
+    },
+    onHide: function () {
+        console.log('i: onHide');
     },
     prepareForResult: function (data) {
         console.log('i: prepareForResult success');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
     }
 }, {
-    backgroundColor: '#00ff00'
+    backgroundColor: '#00ff00',
+    singleton: !0
 });
 
 orchids.registerFragment('oo', {

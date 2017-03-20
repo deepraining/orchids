@@ -46,6 +46,13 @@ fragmentAnimate: !0
 fragmentAnimateDirection: 'horizontal'
 ```
 
+* singleton
+
+```
+singleton: !1 // whether current page is singleton or not, if true,
+              //it will be only created once, and will not be destroyed
+```
+
 ## attributes
 
 * id: current page id

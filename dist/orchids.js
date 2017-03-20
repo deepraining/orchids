@@ -108,7 +108,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-dialog {\r\n    z-index: 2;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
 
 	// exports
 
@@ -435,15 +435,22 @@
 	    // app singleton default option
 	    option: {
 	        /**
-	         * background of root element
-	         */
-	        backgroundColor: '#ffffff',
-	        /**
 	         * start page with route or not
 	         * if set to true, the url will be changed when a page is started
 	         * like: url?orchidsPage=pageName&orchidsOption=serializedData
 	         */
 	        route: !1,
+	        /**
+	         * function: called when first page is initialized
+	         */
+	        onFirstPageInitialized: void 0
+	    },
+	    // default page option
+	    defaultPageOption: {
+	        /**
+	         * background of root element
+	         */
+	        backgroundColor: '#ffffff',
 	        /**
 	         * whether to use animation when switch between pages
 	         * default: true
@@ -465,9 +472,9 @@
 	         */
 	        fragmentAnimateDirection: 'horizontal',
 	        /**
-	         * called when first page is initialized
+	         * whether current dialog is singleton or not
 	         */
-	        onFirstPageInitialized: void 0
+	        singleton: !1
 	    },
 	    // default dialog option
 	    defaultDialogOption: {
@@ -488,7 +495,7 @@
 	        /**
 	         * whether current dialog is singleton or not
 	         */
-	        singleton: !0
+	        singleton: !1
 	    },
 	    // default fragment option
 	    defaultFragmentOption: {
@@ -519,6 +526,7 @@
 	app.pages = container.pages;
 	app.pagesAttributes = container.pagesAttributes;
 	app.pagesInstances = container.pagesInstances;
+	app.pagesSingletonInstances = container.pagesSingletonInstances;
 	app.dialogs = container.dialogs;
 	app.dialogsAttributes = container.dialogsAttributes;
 	app.dialogsInstances = container.dialogsInstances;
@@ -532,6 +540,8 @@
 	     */
 	    var pageCount = 0,
 	        dialogCount = 0;
+
+	var idPrefix = 'id-'; // id prefix for page and dialog
 	/**
 	 * initialize app
 	 */
@@ -640,9 +650,38 @@
 	        return;
 	    }
 
-	    // call prev page's __orchids__hide method
 	    prevPageInstance = app.getCurrentPage();
+
+	    if (!!prevPageInstance && prevPageInstance.singleton) {
+	        console.error('The Page "' + prevPageInstance.name + '" is singleton, and is active in current application, and could not start another page');
+	        return;
+	    }
+
+	    // call prev page's __orchids__hide method
 	    !!prevPageInstance && prevPageInstance.page.__orchids__hide();
+
+	    // singleton
+	    if (pageObject.option.singleton) {
+	        Object.keys(app.pagesSingletonInstances).map(function (name) {
+	            var singletonInstance;
+	            if (name == pageName) {
+	                singletonInstance = app.pagesSingletonInstances[name];
+	                // update forResult and active attribute
+	                instance = singletonInstance;
+	                return !1;
+	            }
+	        });
+	        if (!!instance) {
+	            app.pagesInstances[idPrefix + instance.id] = {
+	                name: pageName,
+	                forResult: !!forResult,
+	                page: instance.page,
+	                singleton: !0
+	            };
+	            forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
+	            return;
+	        }
+	    }
 
 	    option = util.extend(true, {}, pageObject.option);
 	    // pageId
@@ -651,10 +690,19 @@
 	    option.route = app.option.route;
 	    instance = new pageObject.page(option, data || {});
 	    forResult && instance.prepareForResult(prepareResultData);
-	    app.pagesInstances[option.pageId] = {
+
+	    pageObject.option.singleton && (
+	        app.pagesSingletonInstances[pageName] = {
+	            id: option.pageId,
+	            page: instance
+	        }
+	    );
+
+	    app.pagesInstances[idPrefix + option.pageId] = {
 	        name: pageName,
 	        forResult: !!forResult,
-	        page: instance
+	        page: instance,
+	        singleton: option.singleton
 	    };
 	};
 
@@ -687,26 +735,25 @@
 	    var dialogObject = app.dialogs[dialogName], // the Dialog Object
 	        option, // Dialog option
 	        instance, // instance of dialog
-	        existedSingletonInstance; //
+	        prevDialogInstance;
 
 	    if (!dialogObject) {
 	        console.error('The Dialog "' + dialogName + '" you called is not registered, please register it before initialize.');
 	        return;
 	    }
 
+	    prevDialogInstance = app.getCurrentDialog();
+
+	    if (!!prevDialogInstance && prevDialogInstance.singleton) {
+	        console.error('The Dialog "' + prevDialogInstance.name + '" is singleton, and is active in current application, and could not start another dialog');
+	        return;
+	    }
+
+	    // call prev dialog's onHide method
+	    !!prevDialogInstance && prevDialogInstance.dialog.onHide();
+
 	    // singleton
 	    if (dialogObject.option.singleton) {
-	        Object.keys(app.dialogsInstances).map(function (id) {
-	            var dialog = app.dialogsInstances[id];
-	            if (dialog.name == dialogName) {
-	                existedSingletonInstance = dialog;
-	                return !1;
-	            }
-	        });
-	        if (!!existedSingletonInstance) {
-	            console.error('The Dialog "' + dialogName + '" is singleton, and is active in current application, please do not use it twice');
-	            return;
-	        }
 	        Object.keys(app.dialogsSingletonInstances).map(function (name) {
 	            var singletonInstance;
 	            if (name == dialogName) {
@@ -717,16 +764,16 @@
 	            }
 	        });
 	        if (!!instance) {
-	            app.dialogsInstances[instance.id] = {
+	            app.dialogsInstances[idPrefix + instance.id] = {
 	                name: dialogName,
 	                forResult: !!forResult,
-	                dialog: instance.dialog
+	                dialog: instance.dialog,
+	                singleton: !0
 	            };
 	            forResult ? instance.dialog.__orchids__show(!0, prepareResultData) : instance.dialog.__orchids__show();
 	            return;
 	        }
 	    }
-
 
 	    option = util.extend(true, {}, dialogObject.option);
 	    // dialogId
@@ -742,10 +789,11 @@
 	        }
 	    );
 
-	    app.dialogsInstances[option.dialogId] = {
+	    app.dialogsInstances[idPrefix + option.dialogId] = {
 	        name: dialogName,
 	        forResult: !!forResult,
-	        dialog: instance
+	        dialog: instance,
+	        singleton: option.singleton
 	    };
 	};
 
@@ -817,7 +865,8 @@
 	 *             'name2'
 	 *         ],
 	 *         fragmentAnimate: !0,
-	 *         fragmentAnimateDirection: 'horizontal'
+	 *         fragmentAnimateDirection: 'horizontal',
+	 *         singleton: !1 // whether current page is singleton or not, if true, it will be only created once, and will not be destroyed
 	 *     }
 	 * @param superPageName Super Page Object, default is Page
 	 */
@@ -870,7 +919,7 @@
 	    app.pagesAttributes[pageName] = extendAttributes;
 
 	    newPage = page();
-	    tempOption = util.extend(!0, {}, app.option);
+	    tempOption = util.extend(!0, {}, app.defaultPageOption);
 	    // no superPage
 	    if (!!superPageName) {
 	        getSuperPagesExtendAttributes(superPageName);
@@ -886,9 +935,11 @@
 	    util.extend(!0, tempOption, option);
 
 	    tempOption.pageName = pageName;
+	    tempOption.route = app.option.route;
 	    app.pages[pageName] = {
 	        superPage: superPageName,
 	        option: tempOption,
+	        singleton: !!tempOption.singleton,
 	        page: newPage
 	    };
 	};
@@ -925,7 +976,7 @@
 	 *         backgroundColor: '#ffffff',
 	 *         animate: !0,
 	 *         animateDirection: 'vertical',
-	 *         singleton: !0 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
+	 *         singleton: !1 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
 	 *     }
 	 * @param superDialogName Super Dialog Object, default is Dialog
 	 */
@@ -1125,6 +1176,9 @@
 	app.getPage = function (index) {
 	    typeof index == 'undefined' && (index = -1);
 	    var keys = Object.keys(app.pagesInstances);
+
+	    if (keys.length + index < 0) return null;
+
 	    return app.pagesInstances[keys[(keys.length + index) % keys.length]];
 	};
 
@@ -1142,7 +1196,7 @@
 	    }
 	    else {
 	        try {
-	            return app.pagesInstances[id].page;
+	            return app.pagesInstances[idPrefix + id].page;
 	        } catch (e) {
 	            return null;
 	        }
@@ -1204,7 +1258,7 @@
 	    }
 	    else {
 	        try {
-	            return app.dialogsInstances[id].dialog;
+	            return app.dialogsInstances[idPrefix + id].dialog;
 	        } catch (e) {
 	            return null;
 	        }
@@ -1220,6 +1274,9 @@
 	app.getDialog = function (index) {
 	    typeof index == 'undefined' && (index = -1);
 	    var keys = Object.keys(app.dialogsInstances);
+
+	    if (keys.length + index < 0) return null;
+
 	    return app.dialogsInstances[keys[(keys.length + index) % keys.length]];
 	};
 
@@ -1299,8 +1356,8 @@
 	    instance.forResult && (
 	        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
 	    );
-	    // destroy
-	    instance.page.__orchids__destroy();
+	    // destroy or hide
+	    instance.singleton ? instance.page.__orchids__hide(!0) : instance.page.__orchids__destroy();
 	    // call prev page's __orchids__show method
 	    prevInstance.page.__orchids__show();
 	    app.deleteCurrentPage();
@@ -1313,7 +1370,8 @@
 	app.dialogBack = function () {
 	    var instance,
 	        prevInstance,
-	        prevPageInstance;
+	        prevPageInstance,
+	        prevInstanceIsDialog = !1;
 
 	    // if current dialogs remain 0, back action is invalid.
 	    if (Object.keys(app.dialogsInstances).length <= 0) return;
@@ -1323,14 +1381,20 @@
 	    instance.forResult && (
 	        prevInstance = app.getPrevDialog(),
 	            !!prevInstance ? (
-	                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {})
+	                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
+	                    prevInstanceIsDialog = !0
 	            ) : (
-	                prevPageInstance = app.getPrevPage(),
-	                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {})
+	                prevPageInstance = app.getCurrentPage(),
+	                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+	                    prevInstanceIsDialog = !1
 	            )
 	    );
-	    // destroy
-	    instance.dialog.__orchids__destroy();
+	    // destroy or hide
+	    instance.singleton ? instance.dialog.__orchids__hide() : instance.dialog.__orchids__destroy();
+	    prevInstanceIsDialog && (
+	        // call prev dialog's onShow method
+	        prevInstance.dialog.onShow()
+	    );
 	    app.deleteCurrentDialog();
 	};
 
@@ -1495,6 +1559,8 @@
 	            );
 	            // direction
 	            self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
+	            // singleton
+	            self.option.singleton && classes.push('orchids-page-singleton');
 	            // classList
 	            self.__orchids__isFirstPage && classes.push('orchids-active');
 	            self.el.classList = classes.join(' ');
@@ -1682,7 +1748,7 @@
 	        },
 
 	        // hide current page
-	        __orchids__hide: function () {
+	        __orchids__hide: function (isSingleton) {
 	            var self = this;
 	            // call active fragment's __orchids__hide
 	            try {
@@ -1691,11 +1757,19 @@
 	            catch (e) {}
 
 	            self.onHide();
+
+	            isSingleton && (self.el.classList.remove('orchids-active'));
 	        },
 
 	        // show current page
-	        __orchids__show: function () {
+	        __orchids__show: function (isSingleton, forResult, prepareResultData) {
 	            var self = this;
+
+	            isSingleton && (
+	                self.el.classList.add('orchids-active'),
+	                    // route, if it is the first page, no route change
+	                !!self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward()
+	            );
 
 	            self.onShow();
 	            // call active fragment's __orchids__show
@@ -1704,6 +1778,7 @@
 	            }
 	            catch (e) {}
 
+	            forResult && self.prepareForResult(prepareResultData);
 	        },
 
 	        /**
@@ -1765,7 +1840,8 @@
 	     *             {
 	     *                 backgroundColor: '#ffffff',
 	     *                 animate: !0,
-	     *                 animateDirection: 'horizontal'
+	     *                 animateDirection: 'horizontal',
+	     *                 singleton: !1
 	     *             }
 	     *         superPage: '', // super page name, default is blank string
 	     *         page: Page // Page Object
@@ -1790,15 +1866,27 @@
 	    /**
 	     * all initialized Page instances (current page is not supporting singleton)
 	     * format: {
-	         *     id: {
+	         *     'id'-id: { // for instance id-1, id-2. Simple number id is array, could not refactor sequence
 	         *         name: pageName, // Page name
 	         *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-	         *         page: Page // Page instance
+	         *         page: Page, // Page instance
+	         *         singleton: true/false // whether is singleton instance or not.
 	         *     }
 	         * }
 	     * @type {{}}
 	     */
 	    pagesInstances: {},
+	    /**
+	     * all initialized Page singleton instances
+	     * format: {
+	         *     name: {
+	         *         id: id, // page id
+	         *         page: Page // Page instance
+	         *     }
+	         * }
+	     * @type {{}}
+	     */
+	    pagesSingletonInstances: {},
 	    /**
 	     * all registered dialog Object container
 	     * format: {
@@ -1808,7 +1896,7 @@
 	         *                 backgroundColor: '#ffffff',
 	         *                 animate: !0,
 	         *                 animateDirection: 'vertical',
-	         *                 singleton: true
+	         *                 singleton: !1
 	         *             }
 	         *         superDialog: '', // super dialog name, default is blank string
 	         *         dialog: Dialog // Dialog Object
@@ -1833,10 +1921,11 @@
 	    /**
 	     * all initialized Dialog instances
 	     * format: {
-	         *     id: {
+	         *     'id'-id: { // for instance id-1, id-2. Simple number id is array, could not refactor sequence
 	         *         name: dialogName, // Dialog name
 	         *         forResult: true/false, // whether current page is initialized by startPageForResult or not
-	         *         dialog: Dialog // Dialog instance
+	         *         dialog: Dialog, // Dialog instance
+	         *         singleton: true/false // whether is singleton instance or not.
 	         *     }
 	         * }
 	     * @type {{}}
@@ -1929,6 +2018,8 @@
 	            self.el.dataset.orchidsDialogId = self.id;
 	            // direction
 	            self.option.animateDirection == 'horizontal' ? classes.push('orchids-horizontal') : classes.push('orchids-vertical');
+	            // singleton
+	            self.option.singleton && classes.push('orchids-dialog-singleton');
 	            // classList
 	            self.el.classList = classes.join(' ');
 	            // background color
@@ -1967,23 +2058,26 @@
 	        // show current dialog
 	        __orchids__show: function (forResult, prepareResultData) {
 	            var self = this;
-	            // add to body element
-	            document.body.appendChild(self.el);
 
 	            /**
-	             * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+	             * show dialog
 	             */
-	            self.option.animate ? (
-	                // has animation
-	                setTimeout(function () {
-	                    self.el.classList.add('orchids-active')
-	                }, 100)
-	            ) : (
-	                // no animation
-	                self.el.classList.add('orchids-active')
-	            );
+	            self.el.classList.add('orchids-active');
+
+	            self.onShow();
 
 	            forResult && self.prepareForResult(prepareResultData);
+	        },
+
+	        // hide current dialog
+	        __orchids__hide: function () {
+	            var self = this;
+
+	            self.onHide();
+	            /**
+	             * hide dialog
+	             */
+	            self.el.classList.remove('orchids-active');
 	        },
 
 	        // render a dialog after a dialog is initialized
@@ -1991,6 +2085,15 @@
 
 	        // pre handle before destroy a dialog
 	        onDestroy: function() {},
+
+	        /**
+	         * called when back dialog from other dialog
+	         */
+	        onShow: function () {},
+	        /**
+	         * called when start another dialog
+	         */
+	        onHide: function () {},
 
 	        /**
 	         * set the result if this dialog is called by startDialogForResult method,

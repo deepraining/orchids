@@ -8,15 +8,22 @@ var app = {
     // app singleton default option
     option: {
         /**
-         * background of root element
-         */
-        backgroundColor: '#ffffff',
-        /**
          * start page with route or not
          * if set to true, the url will be changed when a page is started
          * like: url?orchidsPage=pageName&orchidsOption=serializedData
          */
         route: !1,
+        /**
+         * function: called when first page is initialized
+         */
+        onFirstPageInitialized: void 0
+    },
+    // default page option
+    defaultPageOption: {
+        /**
+         * background of root element
+         */
+        backgroundColor: '#ffffff',
         /**
          * whether to use animation when switch between pages
          * default: true
@@ -38,9 +45,9 @@ var app = {
          */
         fragmentAnimateDirection: 'horizontal',
         /**
-         * function: called when first page is initialized
+         * whether current dialog is singleton or not
          */
-        onFirstPageInitialized: void 0
+        singleton: !1
     },
     // default dialog option
     defaultDialogOption: {
@@ -61,7 +68,7 @@ var app = {
         /**
          * whether current dialog is singleton or not
          */
-        singleton: !0
+        singleton: !1
     },
     // default fragment option
     defaultFragmentOption: {
@@ -92,6 +99,7 @@ var util = require('./util'),
 app.pages = container.pages;
 app.pagesAttributes = container.pagesAttributes;
 app.pagesInstances = container.pagesInstances;
+app.pagesSingletonInstances = container.pagesSingletonInstances;
 app.dialogs = container.dialogs;
 app.dialogsAttributes = container.dialogsAttributes;
 app.dialogsInstances = container.dialogsInstances;
@@ -105,6 +113,8 @@ app.fragmentsAttributes = container.fragmentsAttributes;
      */
     var pageCount = 0,
         dialogCount = 0;
+
+var idPrefix = 'id-'; // id prefix for page and dialog
 /**
  * initialize app
  */
@@ -213,9 +223,38 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
         return;
     }
 
-    // call prev page's __orchids__hide method
     prevPageInstance = app.getCurrentPage();
+
+    if (!!prevPageInstance && prevPageInstance.singleton) {
+        console.error('The Page "' + prevPageInstance.name + '" is singleton, and is active in current application, and could not start another page');
+        return;
+    }
+
+    // call prev page's __orchids__hide method
     !!prevPageInstance && prevPageInstance.page.__orchids__hide();
+
+    // singleton
+    if (pageObject.option.singleton) {
+        Object.keys(app.pagesSingletonInstances).map(function (name) {
+            var singletonInstance;
+            if (name == pageName) {
+                singletonInstance = app.pagesSingletonInstances[name];
+                // update forResult and active attribute
+                instance = singletonInstance;
+                return !1;
+            }
+        });
+        if (!!instance) {
+            app.pagesInstances[idPrefix + instance.id] = {
+                name: pageName,
+                forResult: !!forResult,
+                page: instance.page,
+                singleton: !0
+            };
+            forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
+            return;
+        }
+    }
 
     option = util.extend(true, {}, pageObject.option);
     // pageId
@@ -224,10 +263,19 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
     option.route = app.option.route;
     instance = new pageObject.page(option, data || {});
     forResult && instance.prepareForResult(prepareResultData);
-    app.pagesInstances[option.pageId] = {
+
+    pageObject.option.singleton && (
+        app.pagesSingletonInstances[pageName] = {
+            id: option.pageId,
+            page: instance
+        }
+    );
+
+    app.pagesInstances[idPrefix + option.pageId] = {
         name: pageName,
         forResult: !!forResult,
-        page: instance
+        page: instance,
+        singleton: option.singleton
     };
 };
 
@@ -260,26 +308,25 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
     var dialogObject = app.dialogs[dialogName], // the Dialog Object
         option, // Dialog option
         instance, // instance of dialog
-        existedSingletonInstance; //
+        prevDialogInstance;
 
     if (!dialogObject) {
         console.error('The Dialog "' + dialogName + '" you called is not registered, please register it before initialize.');
         return;
     }
 
+    prevDialogInstance = app.getCurrentDialog();
+
+    if (!!prevDialogInstance && prevDialogInstance.singleton) {
+        console.error('The Dialog "' + prevDialogInstance.name + '" is singleton, and is active in current application, and could not start another dialog');
+        return;
+    }
+
+    // call prev dialog's onHide method
+    !!prevDialogInstance && prevDialogInstance.dialog.onHide();
+
     // singleton
     if (dialogObject.option.singleton) {
-        Object.keys(app.dialogsInstances).map(function (id) {
-            var dialog = app.dialogsInstances[id];
-            if (dialog.name == dialogName) {
-                existedSingletonInstance = dialog;
-                return !1;
-            }
-        });
-        if (!!existedSingletonInstance) {
-            console.error('The Dialog "' + dialogName + '" is singleton, and is active in current application, please do not use it twice');
-            return;
-        }
         Object.keys(app.dialogsSingletonInstances).map(function (name) {
             var singletonInstance;
             if (name == dialogName) {
@@ -290,16 +337,16 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
             }
         });
         if (!!instance) {
-            app.dialogsInstances[instance.id] = {
+            app.dialogsInstances[idPrefix + instance.id] = {
                 name: dialogName,
                 forResult: !!forResult,
-                dialog: instance.dialog
+                dialog: instance.dialog,
+                singleton: !0
             };
             forResult ? instance.dialog.__orchids__show(!0, prepareResultData) : instance.dialog.__orchids__show();
             return;
         }
     }
-
 
     option = util.extend(true, {}, dialogObject.option);
     // dialogId
@@ -315,10 +362,11 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
         }
     );
 
-    app.dialogsInstances[option.dialogId] = {
+    app.dialogsInstances[idPrefix + option.dialogId] = {
         name: dialogName,
         forResult: !!forResult,
-        dialog: instance
+        dialog: instance,
+        singleton: option.singleton
     };
 };
 
@@ -390,7 +438,8 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  *             'name2'
  *         ],
  *         fragmentAnimate: !0,
- *         fragmentAnimateDirection: 'horizontal'
+ *         fragmentAnimateDirection: 'horizontal',
+ *         singleton: !1 // whether current page is singleton or not, if true, it will be only created once, and will not be destroyed
  *     }
  * @param superPageName Super Page Object, default is Page
  */
@@ -443,7 +492,7 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
     app.pagesAttributes[pageName] = extendAttributes;
 
     newPage = page();
-    tempOption = util.extend(!0, {}, app.option);
+    tempOption = util.extend(!0, {}, app.defaultPageOption);
     // no superPage
     if (!!superPageName) {
         getSuperPagesExtendAttributes(superPageName);
@@ -459,9 +508,11 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
     util.extend(!0, tempOption, option);
 
     tempOption.pageName = pageName;
+    tempOption.route = app.option.route;
     app.pages[pageName] = {
         superPage: superPageName,
         option: tempOption,
+        singleton: !!tempOption.singleton,
         page: newPage
     };
 };
@@ -498,7 +549,7 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
  *         backgroundColor: '#ffffff',
  *         animate: !0,
  *         animateDirection: 'vertical',
- *         singleton: !0 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
+ *         singleton: !1 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
  *     }
  * @param superDialogName Super Dialog Object, default is Dialog
  */
@@ -698,6 +749,9 @@ app.registerFragment = function (fragmentName, extendAttributes, option, superFr
 app.getPage = function (index) {
     typeof index == 'undefined' && (index = -1);
     var keys = Object.keys(app.pagesInstances);
+
+    if (keys.length + index < 0) return null;
+
     return app.pagesInstances[keys[(keys.length + index) % keys.length]];
 };
 
@@ -715,7 +769,7 @@ app.getPageById = function (id) {
     }
     else {
         try {
-            return app.pagesInstances[id].page;
+            return app.pagesInstances[idPrefix + id].page;
         } catch (e) {
             return null;
         }
@@ -777,7 +831,7 @@ app.getDialogById = function (id) {
     }
     else {
         try {
-            return app.dialogsInstances[id].dialog;
+            return app.dialogsInstances[idPrefix + id].dialog;
         } catch (e) {
             return null;
         }
@@ -793,6 +847,9 @@ app.getDialogById = function (id) {
 app.getDialog = function (index) {
     typeof index == 'undefined' && (index = -1);
     var keys = Object.keys(app.dialogsInstances);
+
+    if (keys.length + index < 0) return null;
+
     return app.dialogsInstances[keys[(keys.length + index) % keys.length]];
 };
 
@@ -872,8 +929,8 @@ app.pageBack = function () {
     instance.forResult && (
         !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
     );
-    // destroy
-    instance.page.__orchids__destroy();
+    // destroy or hide
+    instance.singleton ? instance.page.__orchids__hide(!0) : instance.page.__orchids__destroy();
     // call prev page's __orchids__show method
     prevInstance.page.__orchids__show();
     app.deleteCurrentPage();
@@ -886,7 +943,8 @@ app.pageBack = function () {
 app.dialogBack = function () {
     var instance,
         prevInstance,
-        prevPageInstance;
+        prevPageInstance,
+        prevInstanceIsDialog = !1;
 
     // if current dialogs remain 0, back action is invalid.
     if (Object.keys(app.dialogsInstances).length <= 0) return;
@@ -896,14 +954,20 @@ app.dialogBack = function () {
     instance.forResult && (
         prevInstance = app.getPrevDialog(),
             !!prevInstance ? (
-                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {})
+                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
+                    prevInstanceIsDialog = !0
             ) : (
-                prevPageInstance = app.getPrevPage(),
-                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {})
+                prevPageInstance = app.getCurrentPage(),
+                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+                    prevInstanceIsDialog = !1
             )
     );
-    // destroy
-    instance.dialog.__orchids__destroy();
+    // destroy or hide
+    instance.singleton ? instance.dialog.__orchids__hide() : instance.dialog.__orchids__destroy();
+    prevInstanceIsDialog && (
+        // call prev dialog's onShow method
+        prevInstance.dialog.onShow()
+    );
     app.deleteCurrentDialog();
 };
 
