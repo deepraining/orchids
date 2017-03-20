@@ -4,9 +4,6 @@ var orchids = {};
 
 var app = require('./app');
 
-// for debug
-//orchids.app = app;
-
 orchids.init = app.init;
 orchids.registerPage = app.registerPage;
 orchids.registerDialog = app.registerDialog;
@@ -24,5 +21,8 @@ orchids.getCurrentPage = app.getCurrentPageInstance;
 orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
 window.orchids = orchids;
+
+// for debug
+//orchids.app = app;
 
 module.exports = orchids;
