@@ -16,7 +16,11 @@ var app = {
         /**
          * function: called when first page is initialized
          */
-        onFirstPageInitialized: void 0
+        onFirstPageInitialized: void 0,
+        /**
+         * function: called when route changed
+         */
+        onRouteChange: void 0
     },
     // default page option
     defaultPageOption: {
@@ -252,6 +256,8 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
                 singleton: !0
             };
             forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
+
+            !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
             return;
         }
     }
@@ -277,6 +283,8 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
         page: instance,
         singleton: option.singleton
     };
+
+    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 };
 
 /**
@@ -934,6 +942,8 @@ app.pageBack = function () {
     // call prev page's __orchids__show method
     prevInstance.page.__orchids__show();
     app.deleteCurrentPage();
+
+    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 };
 
 

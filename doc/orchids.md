@@ -15,7 +15,11 @@ orchids.init({
     /**
      * function: called when first page is initialized
      */
-    onFirstPageInitialized: void 0
+    onFirstPageInitialized: void 0,
+    /**
+     * function: called when route changed
+     */
+    onRouteChange: void 0
 });
 ```
 

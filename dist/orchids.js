@@ -50,9 +50,6 @@
 
 	var app = __webpack_require__(5);
 
-	// for debug
-	//orchids.app = app;
-
 	orchids.init = app.init;
 	orchids.registerPage = app.registerPage;
 	orchids.registerDialog = app.registerDialog;
@@ -70,6 +67,9 @@
 	orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
 	window.orchids = orchids;
+
+	// for debug
+	//orchids.app = app;
 
 	module.exports = orchids;
 
@@ -443,7 +443,11 @@
 	        /**
 	         * function: called when first page is initialized
 	         */
-	        onFirstPageInitialized: void 0
+	        onFirstPageInitialized: void 0,
+	        /**
+	         * 路由发生变化的回调
+	         */
+	        onRouteChange: void 0
 	    },
 	    // default page option
 	    defaultPageOption: {
@@ -679,6 +683,8 @@
 	                singleton: !0
 	            };
 	            forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
+
+	            !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 	            return;
 	        }
 	    }
@@ -704,6 +710,8 @@
 	        page: instance,
 	        singleton: option.singleton
 	    };
+
+	    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 	};
 
 	/**
@@ -1361,6 +1369,8 @@
 	    // call prev page's __orchids__show method
 	    prevInstance.page.__orchids__show();
 	    app.deleteCurrentPage();
+
+	    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 	};
 
 
