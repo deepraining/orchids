@@ -6,6 +6,7 @@
 "use strict";
 
 var util = require('./util');
+var directionClasses = require('./directionClasses');
 
 var newDialog = function () {
     /**
@@ -27,8 +28,7 @@ var newDialog = function () {
             var self = this,
                 classes = [
                     'orchids',
-                    'orchids-dialog',
-                    'orchids-with-animation'
+                    'orchids-dialog'
                 ];
             // make id
             self.id = self.option.dialogId;
@@ -36,8 +36,12 @@ var newDialog = function () {
             self.el = document.createElement('div');
             // data-orchids-dialog-is
             self.el.dataset.orchidsDialogId = self.id;
+            // animation
+            !!self.option.animate && classes.push('orchids-with-animation');
             // direction
-            self.option.animateDirection == 'horizontal' ? classes.push('orchids-horizontal') : classes.push('orchids-vertical');
+            classes.push(directionClasses[self.option.animateDirection || 'b2t']);
+            // fade
+            self.option.animateFade && classes.push('orchids-with-fade');
             // singleton
             self.option.singleton && classes.push('orchids-dialog-singleton');
             // classList

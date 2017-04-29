@@ -108,7 +108,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-horizontal,\r\n.orchids-dialog.orchids-horizontal {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-horizontal.orchids-active,\r\n.orchids-dialog.orchids-horizontal.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-vertical,\r\n.orchids-dialog.orchids-vertical {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-vertical.orchids-active,\r\n.orchids-dialog.orchids-vertical.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-right-to-left,\r\n.orchids-dialog.orchids-right-to-left {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-left-to-right,\r\n.orchids-dialog.orchids-left-to-right {\r\n    transform: translateX(-100%);\r\n}\r\n.orchids-page.orchids-right-to-left.orchids-active,\r\n.orchids-dialog.orchids-right-to-left.orchids-active,\r\n.orchids-page.orchids-left-to-right.orchids-active,\r\n.orchids-dialog.orchids-left-to-right.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-bottom-to-top,\r\n.orchids-dialog.orchids-bottom-to-top {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-top-to-bottom,\r\n.orchids-dialog.orchids-top-to-bottom {\r\n    transform: translateY(-100%);\r\n}\r\n.orchids-page.orchids-bottom-to-top.orchids-active,\r\n.orchids-dialog.orchids-bottom-to-top.orchids-active,\r\n.orchids-page.orchids-top-to-bottom.orchids-active,\r\n.orchids-dialog.orchids-top-to-bottom.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    -webkit-overflow-scrolling: touch;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
 
 	// exports
 
@@ -445,7 +445,7 @@
 	         */
 	        onFirstPageInitialized: void 0,
 	        /**
-	         * 路由发生变化的回调
+	         * function: called when route changed
 	         */
 	        onRouteChange: void 0
 	    },
@@ -461,10 +461,15 @@
 	         */
 	        animate: !0,
 	        /**
-	         * animation direction of switching page
-	         * horizontal/vertical, default: horizontal
+	         * whether to fade page when switch between pages
+	         * default: false
 	         */
-	        animateDirection: 'horizontal',
+	        animateFade: !1,
+	        /**
+	         * animation direction of switching page
+	         * l2r/r2l/t2b/b2t(left-right, top-bottom), default: r2l
+	         */
+	        animateDirection: 'r2l',
 	        /**
 	         * whether to use animation when switch between fragments
 	         * default: true
@@ -487,15 +492,20 @@
 	         */
 	        backgroundColor: '#ffffff',
 	        /**
-	         * whether to use animation when switch between pages
+	         * whether to use animation when switch between dialogs
 	         * default: true
 	         */
 	        animate: !0,
 	        /**
-	         * animation direction of switching page
-	         * horizontal/vertical, default: horizontal
+	         * whether to fade dialog when switch between dialogs
+	         * default: false
 	         */
-	        animateDirection: 'vertical',
+	        animateFade: !1,
+	        /**
+	         * animation direction of switching dialog
+	         * l2r/r2l/t2b/b2t(left-right, top-bottom), default: b2t
+	         */
+	        animateDirection: 'b2t',
 	        /**
 	         * whether current dialog is singleton or not
 	         */
@@ -523,8 +533,8 @@
 
 	var util = __webpack_require__(6),
 	    page = __webpack_require__(7),
-	    dialog = __webpack_require__(9),
-	    fragment = __webpack_require__(10),
+	    dialog = __webpack_require__(10),
+	    fragment = __webpack_require__(11),
 	    container = __webpack_require__(8);
 
 	app.pages = container.pages;
@@ -1518,8 +1528,9 @@
 
 	"use strict";
 
-	var util = __webpack_require__(6),
-	    container = __webpack_require__(8);
+	var util = __webpack_require__(6)
+	var container = __webpack_require__(8);
+	var directionClasses = __webpack_require__(9);
 
 	var newPage = function () {
 	    /**
@@ -1564,11 +1575,11 @@
 	            // data-orchids-page-is
 	            self.el.dataset.orchidsPageId = self.id;
 	            // animation
-	            !!self.option.animate && (
-	                classes.push('orchids-with-animation')
-	            );
+	            !!self.option.animate && classes.push('orchids-with-animation');
 	            // direction
-	            self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
+	            classes.push(directionClasses[self.option.animateDirection || 'r2l']);
+	            // fade
+	            self.option.animateFade && classes.push('orchids-with-fade');
 	            // singleton
 	            self.option.singleton && classes.push('orchids-page-singleton');
 	            // classList
@@ -1986,6 +1997,20 @@
 
 /***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	
+	var directionClasses = {
+	    l2r: 'orchids-left-to-right',
+	    r2l: 'orchids-right-to-left',
+	    t2b: 'orchids-top-to-bottom',
+	    b2t: 'orchids-bottom-to-top'
+	};
+
+	module.exports = directionClasses;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1996,6 +2021,7 @@
 	"use strict";
 
 	var util = __webpack_require__(6);
+	var directionClasses = __webpack_require__(9);
 
 	var newDialog = function () {
 	    /**
@@ -2017,8 +2043,7 @@
 	            var self = this,
 	                classes = [
 	                    'orchids',
-	                    'orchids-dialog',
-	                    'orchids-with-animation'
+	                    'orchids-dialog'
 	                ];
 	            // make id
 	            self.id = self.option.dialogId;
@@ -2026,8 +2051,12 @@
 	            self.el = document.createElement('div');
 	            // data-orchids-dialog-is
 	            self.el.dataset.orchidsDialogId = self.id;
+	            // animation
+	            !!self.option.animate && classes.push('orchids-with-animation');
 	            // direction
-	            self.option.animateDirection == 'horizontal' ? classes.push('orchids-horizontal') : classes.push('orchids-vertical');
+	            classes.push(directionClasses[self.option.animateDirection || 'b2t']);
+	            // fade
+	            self.option.animateFade && classes.push('orchids-with-fade');
 	            // singleton
 	            self.option.singleton && classes.push('orchids-dialog-singleton');
 	            // classList
@@ -2133,7 +2162,7 @@
 	module.exports = newDialog;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

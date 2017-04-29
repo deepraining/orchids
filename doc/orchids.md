@@ -63,9 +63,12 @@ orchids.init({
  *     }
  * @param option Option to initialize a Page
  *     {
- *         backgroundColor: '#ffffff',
- *         animate: !0,
- *         animateDirection: 'horizontal',
+ *         backgroundColor: '#ffffff', // background color
+ *         animate: !0, // whether to use animation
+ *         // animation direction of switching page
+ *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: r2l
+ *         animateDirection: 'r2l', 
+ *         animateFade: !1, // whether to fade page when switch between pages
  *         // sub fragments
  *         // note that, current page element should have a child node
  *         // which has 'data-orchids-fragments' attribute,
@@ -75,8 +78,8 @@ orchids.init({
  *             'name1',
  *             'name2'
  *         ],
- *         fragmentAnimate: !0,
- *         fragmentAnimateDirection: 'horizontal',
+ *         fragmentAnimate: !0, // whether to use animation in fragments
+ *         fragmentAnimateDirection: 'horizontal', // fragments direction horizontal/vertical
  *         singleton: !1 // whether current page is singleton or not, if true,
  *                       //it will be only created once, and will not be destroyed
  *     }
@@ -122,9 +125,12 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  *     }
  * @param option Option to initialize a Dialog
  *     {
- *         backgroundColor: '#ffffff',
- *         animate: !0,
- *         animateDirection: 'vertical',
+ *         backgroundColor: '#ffffff', // background color
+ *         animate: !0, // whether to use animation
+ *         // animation direction of switching dialog
+ *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: b2t
+ *         animateDirection: 'b2t',
+ *         animateFade: !1, // whether to fade page when switch between dialogs
  *         singleton: !1 // whether current dialog is singleton or not, if true,
  *                       //it will be only created once, and will not be destroyed
  *     }
@@ -167,7 +173,7 @@ orchids.registerDialog(dialogName, extendAttributes, superDialogName);
  *     }
  * @param option Option to initialize a Fragment
  *     {
- *         backgroundColor: '#ffffff',
+ *         backgroundColor: '#ffffff', // background color
  *         // sub fragments
  *         // note that, current fragment element should have a child node
  *         // which has 'data-orchids-sub-fragments' attribute,
@@ -177,8 +183,8 @@ orchids.registerDialog(dialogName, extendAttributes, superDialogName);
  *             'name1',
  *             'name2'
  *         ],
- *         subFragmentAnimate: !0,
- *         subFragmentAnimateDirection: 'horizontal'
+ *         subFragmentAnimate: !0, // whether to use animation in sub fragments
+ *         subFragmentAnimateDirection: 'horizontal' // sub fragments direction horizontal/vertical
  *     }
  * @param superFragmentName Super Fragment Object, default is Fragment
  */

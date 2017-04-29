@@ -34,10 +34,15 @@ var app = {
          */
         animate: !0,
         /**
-         * animation direction of switching page
-         * horizontal/vertical, default: horizontal
+         * whether to fade page when switch between pages
+         * default: false
          */
-        animateDirection: 'horizontal',
+        animateFade: !1,
+        /**
+         * animation direction of switching page
+         * l2r/r2l/t2b/b2t(left-right, top-bottom), default: r2l
+         */
+        animateDirection: 'r2l',
         /**
          * whether to use animation when switch between fragments
          * default: true
@@ -60,15 +65,20 @@ var app = {
          */
         backgroundColor: '#ffffff',
         /**
-         * whether to use animation when switch between pages
+         * whether to use animation when switch between dialogs
          * default: true
          */
         animate: !0,
         /**
-         * animation direction of switching page
-         * horizontal/vertical, default: horizontal
+         * whether to fade dialog when switch between dialogs
+         * default: false
          */
-        animateDirection: 'vertical',
+        animateFade: !1,
+        /**
+         * animation direction of switching dialog
+         * l2r/r2l/t2b/b2t(left-right, top-bottom), default: b2t
+         */
+        animateDirection: 'b2t',
         /**
          * whether current dialog is singleton or not
          */

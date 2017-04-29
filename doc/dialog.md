@@ -17,7 +17,13 @@ animate: !0
 * animateDirection
 
 ```
-animateDirection: 'vertical'
+animateDirection: 'b2t'
+```
+
+* animateFade
+
+```
+animateFade: !1
 ```
 
 * singleton

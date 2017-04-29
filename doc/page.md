@@ -17,7 +17,13 @@ animate: !0
 * animateDirection
 
 ```
-animateDirection: 'horizontal'
+animateDirection: 'r2l'
+```
+
+* animateFade
+
+```
+animateFade: !1
 ```
 
 * fragments

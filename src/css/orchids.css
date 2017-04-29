@@ -33,26 +33,41 @@
 .orchids-page.orchids-with-animation,
 .orchids-dialog.orchids-with-animation {
     transition: all .5s;
+}
+.orchids-page.orchids-with-animation.orchids-with-fade,
+.orchids-dialog.orchids-with-animation.orchids-with-fade {
     opacity: 0;
 }
-.orchids-page.orchids-with-animation.orchids-active,
-.orchids-dialog.orchids-with-animation.orchids-active {
+.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {
     opacity: 1;
 }
-.orchids-page.orchids-horizontal,
-.orchids-dialog.orchids-horizontal {
+.orchids-page.orchids-right-to-left,
+.orchids-dialog.orchids-right-to-left {
     transform: translateX(100%);
 }
-.orchids-page.orchids-horizontal.orchids-active,
-.orchids-dialog.orchids-horizontal.orchids-active {
+.orchids-page.orchids-left-to-right,
+.orchids-dialog.orchids-left-to-right {
+    transform: translateX(-100%);
+}
+.orchids-page.orchids-right-to-left.orchids-active,
+.orchids-dialog.orchids-right-to-left.orchids-active,
+.orchids-page.orchids-left-to-right.orchids-active,
+.orchids-dialog.orchids-left-to-right.orchids-active {
     transform: translateX(0);
 }
-.orchids-page.orchids-vertical,
-.orchids-dialog.orchids-vertical {
+.orchids-page.orchids-bottom-to-top,
+.orchids-dialog.orchids-bottom-to-top {
     transform: translateY(100%);
 }
-.orchids-page.orchids-vertical.orchids-active,
-.orchids-dialog.orchids-vertical.orchids-active {
+.orchids-page.orchids-top-to-bottom,
+.orchids-dialog.orchids-top-to-bottom {
+    transform: translateY(-100%);
+}
+.orchids-page.orchids-bottom-to-top.orchids-active,
+.orchids-dialog.orchids-bottom-to-top.orchids-active,
+.orchids-page.orchids-top-to-bottom.orchids-active,
+.orchids-dialog.orchids-top-to-bottom.orchids-active {
     transform: translateY(0);
 }
 

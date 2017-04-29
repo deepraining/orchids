@@ -1,7 +1,8 @@
 "use strict";
 
-var util = require('./util'),
-    container = require('./container');
+var util = require('./util')
+var container = require('./container');
+var directionClasses = require('./directionClasses');
 
 var newPage = function () {
     /**
@@ -46,11 +47,11 @@ var newPage = function () {
             // data-orchids-page-is
             self.el.dataset.orchidsPageId = self.id;
             // animation
-            !!self.option.animate && (
-                classes.push('orchids-with-animation')
-            );
+            !!self.option.animate && classes.push('orchids-with-animation');
             // direction
-            self.option.animateDirection == 'vertical' ? classes.push('orchids-vertical') : classes.push('orchids-horizontal');
+            classes.push(directionClasses[self.option.animateDirection || 'r2l']);
+            // fade
+            self.option.animateFade && classes.push('orchids-with-fade');
             // singleton
             self.option.singleton && classes.push('orchids-page-singleton');
             // classList
