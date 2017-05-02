@@ -25,27 +25,22 @@ var newDialog = function () {
     Dialog.prototype = {
         constructor: Dialog,
         __orchids__init: function() {
-            var self = this,
-                classes = [
-                    'orchids',
-                    'orchids-dialog'
-                ];
+            var self = this;
             // make id
             self.id = self.option.dialogId;
             // make root el
             self.el = document.createElement('div');
             // data-orchids-dialog-is
             self.el.dataset.orchidsDialogId = self.id;
+            self.el.classList.add('orchids', 'orchids-dialog');
             // animation
-            !!self.option.animate && classes.push('orchids-with-animation');
+            !!self.option.animate && self.el.classList.add('orchids-with-animation');
             // direction
-            classes.push(directionClasses[self.option.animateDirection || 'b2t']);
+            self.el.classList.add(directionClasses[self.option.animateDirection || 'b2t']);
             // fade
-            self.option.animateFade && classes.push('orchids-with-fade');
+            self.option.animateFade && self.el.classList.add('orchids-with-fade');
             // singleton
-            self.option.singleton && classes.push('orchids-dialog-singleton');
-            // classList
-            self.el.classList = classes.join(' ');
+            self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
             // background color
             self.el.style.backgroundColor = self.option.backgroundColor;
 

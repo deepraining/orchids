@@ -1561,11 +1561,7 @@
 	    Page.prototype = {
 	        constructor: Page,
 	        __orchids__init: function() {
-	            var self = this,
-	                classes = [
-	                    'orchids',
-	                    'orchids-page'
-	                ];
+	            var self = this;
 	            // make id
 	            self.id = self.option.pageId;
 	            // whether current page is the first page to render or not, for confirming to start current page with or without animation.
@@ -1574,17 +1570,17 @@
 	            self.el = document.createElement('div');
 	            // data-orchids-page-is
 	            self.el.dataset.orchidsPageId = self.id;
+	            self.el.classList.add('orchids', 'orchids-page');
 	            // animation
-	            !!self.option.animate && classes.push('orchids-with-animation');
+	            !!self.option.animate && self.el.classList.add('orchids-with-animation');
 	            // direction
-	            classes.push(directionClasses[self.option.animateDirection || 'r2l']);
+	            self.el.classList.add(directionClasses[self.option.animateDirection || 'r2l']);
 	            // fade
-	            self.option.animateFade && classes.push('orchids-with-fade');
+	            self.option.animateFade && self.el.classList.add('orchids-with-fade');
 	            // singleton
-	            self.option.singleton && classes.push('orchids-page-singleton');
-	            // classList
-	            self.__orchids__isFirstPage && classes.push('orchids-active');
-	            self.el.classList = classes.join(' ');
+	            self.option.singleton && self.el.classList.add('orchids-page-singleton');
+	            // active
+	            self.__orchids__isFirstPage && self.el.classList.add('orchids-active');
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
 
@@ -1613,9 +1609,6 @@
 	            var self = this,
 	                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
 	                i, il, fragmentName, fragment,
-	                fragmentsContainerClasses = [
-	                    'orchids-fragments-container'
-	                ],
 	                fragmentOption, instance;
 	            if (!fragmentsEl) {
 	                console.error('Render fragments failed: no fragments container which should has "data-orchids-fragments" attribute.');
@@ -1630,18 +1623,16 @@
 
 	            // create fragments container element
 	            self.__orchids__fragmentsContainerEl = document.createElement('div');
-
-	            self.option.fragmentAnimate && fragmentsContainerClasses.push('orchids-with-animation');
+	            self.__orchids__fragmentsContainerEl.classList.add('orchids-fragments-container');
+	            self.option.fragmentAnimate && self.__orchids__fragmentsContainerEl.classList.add('orchids-with-animation');
 	            self.option.fragmentAnimateDirection == 'vertical' ? (
-	                fragmentsContainerClasses.push('orchids-vertical'),
+	                self.__orchids__fragmentsContainerEl.classList.add('orchids-vertical'),
 	                    self.__orchids__fragmentsContainerEl.style.height = self.option.fragments.length * self.__orchids__fragmentHeight + 'px'
 	            ) : (
-	                fragmentsContainerClasses.push('orchids-horizontal'),
+	                self.__orchids__fragmentsContainerEl.classList.add('orchids-horizontal'),
 	                    self.__orchids__fragmentsContainerEl.style.width = self.option.fragments.length * self.__orchids__fragmentWidth + 'px'
 	            );
 
-	            // class list
-	            self.__orchids__fragmentsContainerEl.classList = fragmentsContainerClasses.join(' ');
 	            // clear fragments root element inner html
 	            fragmentsEl.innerHTML = '';
 	            fragmentsEl.appendChild(self.__orchids__fragmentsContainerEl);
@@ -2040,27 +2031,22 @@
 	    Dialog.prototype = {
 	        constructor: Dialog,
 	        __orchids__init: function() {
-	            var self = this,
-	                classes = [
-	                    'orchids',
-	                    'orchids-dialog'
-	                ];
+	            var self = this;
 	            // make id
 	            self.id = self.option.dialogId;
 	            // make root el
 	            self.el = document.createElement('div');
 	            // data-orchids-dialog-is
 	            self.el.dataset.orchidsDialogId = self.id;
+	            self.el.classList.add('orchids', 'orchids-dialog');
 	            // animation
-	            !!self.option.animate && classes.push('orchids-with-animation');
+	            !!self.option.animate && self.el.classList.add('orchids-with-animation');
 	            // direction
-	            classes.push(directionClasses[self.option.animateDirection || 'b2t']);
+	            self.el.classList.add(directionClasses[self.option.animateDirection || 'b2t']);
 	            // fade
-	            self.option.animateFade && classes.push('orchids-with-fade');
+	            self.option.animateFade && self.el.classList.add('orchids-with-fade');
 	            // singleton
-	            self.option.singleton && classes.push('orchids-dialog-singleton');
-	            // classList
-	            self.el.classList = classes.join(' ');
+	            self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
 
@@ -2199,11 +2185,7 @@
 	    Fragment.prototype = {
 	        constructor: Fragment,
 	        __orchids__init: function() {
-	            var self = this,
-	                classes = [
-	                    'orchids',
-	                    'orchids-fragment'
-	                ];
+	            var self = this;
 	            // make id
 	            self.id = self.option.fragmentId;
 	            // whether current fragment is the first fragment to render or not
@@ -2215,17 +2197,17 @@
 
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
+	            self.el.classList.add('orchids', 'orchids-fragment');
 	            // left, top, width, height
 	            self.option.fragmentDirection == 'vertical' ? (
-	                classes.push('orchids-vertical'),
+	                self.el.classList.add('orchids-vertical'),
 	                    self.el.style.top = self.option.fragmentHeight * (self.id - 1) + 'px',
 	                    self.el.style.height = self.option.fragmentHeight + 'px'
 	            ) : (
-	                classes.push('orchids-horizontal'),
+	                self.el.classList.add('orchids-horizontal'),
 	                    self.el.style.left = self.option.fragmentWidth * (self.id - 1) + 'px',
 	                    self.el.style.width = self.option.fragmentWidth + 'px'
 	            );
-	            self.el.classList = classes.join(' ');
 	            // user custom initialization
 	            self.__orchids__isFirstFragment && (
 	                self.__orchids__initialized = !0,
@@ -2239,9 +2221,6 @@
 	            var self = this,
 	                fragmentsEl = self.el.querySelector('[data-orchids-fragments]'),
 	                i, il, fragmentName, fragment,
-	                fragmentsContainerClasses = [
-	                    'orchids-sub-fragments-container'
-	                ],
 	                fragmentOption, instance;
 	            if (!fragmentsEl) {
 	                console.error('Render fragments failed: no fragments container which should has "data-orchids-sub-fragments" attribute.');
@@ -2256,18 +2235,16 @@
 
 	            // create fragments container element
 	            self.__orchids__subFragmentsContainerEl = document.createElement('div');
-
-	            self.option.subFragmentAnimate && fragmentsContainerClasses.push('orchids-with-animation');
+	            self.__orchids__subFragmentsContainerEl.classList.add('orchids-sub-fragments-container');
+	            self.option.subFragmentAnimate && self.__orchids__subFragmentsContainerEl.classList.add('orchids-with-animation');
 	            self.option.subFragmentAnimateDirection == 'vertical' ? (
-	                fragmentsContainerClasses.push('orchids-vertical'),
+	                self.__orchids__subFragmentsContainerEl.classList.add('orchids-vertical'),
 	                    self.__orchids__subFragmentsContainerEl.style.height = self.option.subFragments.length * self.__orchids__subFragmentHeight + 'px'
 	            ) : (
-	                fragmentsContainerClasses.push('orchids-horizontal'),
+	                self.__orchids__subFragmentsContainerEl.classList.add('orchids-horizontal'),
 	                    self.__orchids__subFragmentsContainerEl.style.width = self.option.subFragments.length * self.__orchids__subFragmentWidth + 'px'
 	            );
 
-	            // class list
-	            self.__orchids__subFragmentsContainerEl.classList = fragmentsContainerClasses.join(' ');
 	            // clear fragments root element inner html
 	            fragmentsEl.innerHTML = '';
 	            fragmentsEl.appendChild(self.__orchids__subFragmentsContainerEl);
