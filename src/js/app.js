@@ -29,6 +29,10 @@ var app = {
          */
         backgroundColor: '#ffffff',
         /**
+         * style of page root element
+         */
+        style: void 0,
+        /**
          * whether to use animation when switch between pages
          * default: true
          */
@@ -65,6 +69,10 @@ var app = {
          */
         backgroundColor: '#ffffff',
         /**
+         * style of page root element
+         */
+        style: void 0,
+        /**
          * whether to use animation when switch between dialogs
          * default: true
          */
@@ -90,6 +98,10 @@ var app = {
          * background of root element
          */
         backgroundColor: '#ffffff',
+        /**
+         * style of page root element
+         */
+        style: void 0,
         /**
          * whether to use animation when switch between sub fragments
          * default: true
@@ -444,6 +456,7 @@ app.startDialogForResult = function (dialogName, data, prepareResultData) {
  * @param option Option to initialize a Page
  *     {
  *         backgroundColor: '#ffffff',
+ *         style: void 0, // {key: value}
  *         animate: !0,
  *         animateDirection: 'horizontal',
  *         // sub fragments
@@ -565,6 +578,7 @@ app.registerPage = function (pageName, extendAttributes, option, superPageName) 
  * @param option Option to initialize a Dialog
  *     {
  *         backgroundColor: '#ffffff',
+ *         style: void 0, // {key: value}
  *         animate: !0,
  *         animateDirection: 'vertical',
  *         singleton: !1 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
@@ -674,6 +688,7 @@ app.registerDialog = function (dialogName, extendAttributes, option, superDialog
  * @param option Option to initialize a Fragment
  *     {
  *         backgroundColor: '#ffffff',
+ *         style: void 0, // {key: value}
  *         // sub fragments
  *         // note that, current fragment element should have a child node
  *         // which has 'data-orchids-sub-fragments' attribute,

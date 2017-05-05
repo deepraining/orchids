@@ -456,6 +456,10 @@
 	         */
 	        backgroundColor: '#ffffff',
 	        /**
+	         * style of page root element
+	         */
+	        style: void 0,
+	        /**
 	         * whether to use animation when switch between pages
 	         * default: true
 	         */
@@ -492,6 +496,10 @@
 	         */
 	        backgroundColor: '#ffffff',
 	        /**
+	         * style of page root element
+	         */
+	        style: void 0,
+	        /**
 	         * whether to use animation when switch between dialogs
 	         * default: true
 	         */
@@ -517,6 +525,10 @@
 	         * background of root element
 	         */
 	        backgroundColor: '#ffffff',
+	        /**
+	         * style of page root element
+	         */
+	        style: void 0,
 	        /**
 	         * whether to use animation when switch between sub fragments
 	         * default: true
@@ -871,6 +883,7 @@
 	 * @param option Option to initialize a Page
 	 *     {
 	 *         backgroundColor: '#ffffff',
+	 *         style: void 0, // {key: value}
 	 *         animate: !0,
 	 *         animateDirection: 'horizontal',
 	 *         // sub fragments
@@ -992,6 +1005,7 @@
 	 * @param option Option to initialize a Dialog
 	 *     {
 	 *         backgroundColor: '#ffffff',
+	 *         style: void 0, // {key: value}
 	 *         animate: !0,
 	 *         animateDirection: 'vertical',
 	 *         singleton: !1 // whether current dialog is singleton or not, if true, it will be only created once, and will not be destroyed
@@ -1101,6 +1115,7 @@
 	 * @param option Option to initialize a Fragment
 	 *     {
 	 *         backgroundColor: '#ffffff',
+	 *         style: void 0, // {key: value}
 	 *         // sub fragments
 	 *         // note that, current fragment element should have a child node
 	 *         // which has 'data-orchids-sub-fragments' attribute,
@@ -1562,6 +1577,7 @@
 	        constructor: Page,
 	        __orchids__init: function() {
 	            var self = this;
+	            var styleKeys;
 	            // make id
 	            self.id = self.option.pageId;
 	            // whether current page is the first page to render or not, for confirming to start current page with or without animation.
@@ -1583,6 +1599,13 @@
 	            self.__orchids__isFirstPage && self.el.classList.add('orchids-active');
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
+
+	            // extra style
+	            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
+	                styleKeys.map(function (key) {
+	                    self.el.style[key] = self.option.style[key]
+	                })
+	            );
 
 	            // add to body element
 	            document.body.appendChild(self.el);
@@ -2032,6 +2055,7 @@
 	        constructor: Dialog,
 	        __orchids__init: function() {
 	            var self = this;
+	            var styleKeys;
 	            // make id
 	            self.id = self.option.dialogId;
 	            // make root el
@@ -2049,6 +2073,13 @@
 	            self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
+
+	            // extra style
+	            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
+	                styleKeys.map(function (key) {
+	                    self.el.style[key] = self.option.style[key]
+	                })
+	            );
 
 	            // add to body element
 	            document.body.appendChild(self.el);
@@ -2186,6 +2217,7 @@
 	        constructor: Fragment,
 	        __orchids__init: function() {
 	            var self = this;
+	            var styleKeys;
 	            // make id
 	            self.id = self.option.fragmentId;
 	            // whether current fragment is the first fragment to render or not
@@ -2197,6 +2229,14 @@
 
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;
+
+	            // extra style
+	            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
+	                styleKeys.map(function (key) {
+	                    self.el.style[key] = self.option.style[key]
+	                })
+	            );
+
 	            self.el.classList.add('orchids', 'orchids-fragment');
 	            // left, top, width, height
 	            self.option.fragmentDirection == 'vertical' ? (

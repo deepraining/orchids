@@ -33,6 +33,7 @@ var newFragment = function () {
         constructor: Fragment,
         __orchids__init: function() {
             var self = this;
+            var styleKeys;
             // make id
             self.id = self.option.fragmentId;
             // whether current fragment is the first fragment to render or not
@@ -44,6 +45,14 @@ var newFragment = function () {
 
             // background color
             self.el.style.backgroundColor = self.option.backgroundColor;
+
+            // extra style
+            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
+                styleKeys.map(function (key) {
+                    self.el.style[key] = self.option.style[key]
+                })
+            );
+
             self.el.classList.add('orchids', 'orchids-fragment');
             // left, top, width, height
             self.option.fragmentDirection == 'vertical' ? (

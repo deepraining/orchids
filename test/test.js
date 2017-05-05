@@ -14,6 +14,9 @@ orchids.registerPage('aa', {
 }, {
     backgroundColor: '#000000',
     animate: !0,
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerPage('a', {
@@ -39,7 +42,10 @@ orchids.registerPage('a', {
 }, {
     backgroundColor: '#ff0000',
     animateDirection: 'l2r',
-    animateFade: !0
+    animateFade: !0,
+    style: {
+        marginLeft: '1px'
+    }
 }, 'aa');
 orchids.registerPage('b', {
     onCreate: function(data) {
@@ -65,7 +71,10 @@ orchids.registerPage('b', {
 }, {
     backgroundColor: '#00ff00',
     animateDirection: 'l2r',
-    animateFade: !0
+    animateFade: !0,
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerDialog('hh', {
@@ -75,7 +84,10 @@ orchids.registerDialog('hh', {
     }
 }, {
     backgroundColor: '#000000',
-    animate: !0
+    animate: !0,
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerDialog('h', {
@@ -101,7 +113,10 @@ orchids.registerDialog('h', {
 }, {
     backgroundColor: '#0000ff',
     animateDirection: 't2b',
-    animateFade: !0
+    animateFade: !0,
+    style: {
+        marginLeft: '1px'
+    }
 }, 'hh');
 orchids.registerDialog('i', {
     onCreate: function(data) {
@@ -123,7 +138,10 @@ orchids.registerDialog('i', {
     backgroundColor: '#00ff00',
     singleton: !0,
     animateDirection: 't2b',
-    animateFade: !0
+    animateFade: !0,
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerFragment('oo', {
@@ -132,7 +150,10 @@ orchids.registerFragment('oo', {
         this.onCreate2();
     }
 }, {
-    backgroundColor: '#999999'
+    backgroundColor: '#999999',
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerFragment('o', {
@@ -152,7 +173,10 @@ orchids.registerFragment('o', {
         console.log('o: onDestroy')
     }
 }, {
-    backgroundColor: '#ff0000'
+    backgroundColor: '#ff0000',
+    style: {
+        marginLeft: '1px'
+    }
 }, 'oo');
 orchids.registerFragment('p', {
     onCreate: function() {
@@ -171,7 +195,10 @@ orchids.registerFragment('p', {
         console.log('p: onDestroy')
     }
 }, {
-    backgroundColor: '#00ff00'
+    backgroundColor: '#00ff00',
+    style: {
+        marginLeft: '1px'
+    }
 });
 orchids.registerFragment('q', {
     onCreate: function() {
@@ -194,7 +221,10 @@ orchids.registerFragment('q', {
     subFragments: [
         'o', 'p', 'o', 'p'
     ],
-    subFragmentAnimateDirection: 'vertical'
+    subFragmentAnimateDirection: 'vertical',
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.registerPage('c', {
@@ -207,7 +237,10 @@ orchids.registerPage('c', {
     backgroundColor: '#000000',
     fragments: [
         'o', 'p', 'q'
-    ]
+    ],
+    style: {
+        marginLeft: '1px'
+    }
 });
 
 orchids.start('a', {text: 'a'});

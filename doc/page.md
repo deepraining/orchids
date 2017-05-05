@@ -8,6 +8,15 @@
 backgroundColor: '#ffffff'
 ```
 
+* style
+
+```
+style: void 0 // {key: value}
+```
+
+key: origin dom css key, like marginLeft
+value: origin dom css value, like 1px
+
 * animate
 
 ```

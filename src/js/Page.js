@@ -34,6 +34,7 @@ var newPage = function () {
         constructor: Page,
         __orchids__init: function() {
             var self = this;
+            var styleKeys;
             // make id
             self.id = self.option.pageId;
             // whether current page is the first page to render or not, for confirming to start current page with or without animation.
@@ -55,6 +56,13 @@ var newPage = function () {
             self.__orchids__isFirstPage && self.el.classList.add('orchids-active');
             // background color
             self.el.style.backgroundColor = self.option.backgroundColor;
+
+            // extra style
+            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
+                styleKeys.map(function (key) {
+                    self.el.style[key] = self.option.style[key]
+                })
+            );
 
             // add to body element
             document.body.appendChild(self.el);

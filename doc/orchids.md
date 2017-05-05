@@ -64,6 +64,7 @@ orchids.init({
  * @param option Option to initialize a Page
  *     {
  *         backgroundColor: '#ffffff', // background color
+ *         style: void 0, // {key: value}
  *         animate: !0, // whether to use animation
  *         // animation direction of switching page
  *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: r2l
@@ -126,6 +127,7 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  * @param option Option to initialize a Dialog
  *     {
  *         backgroundColor: '#ffffff', // background color
+ *         style: void 0, // {key: value}
  *         animate: !0, // whether to use animation
  *         // animation direction of switching dialog
  *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: b2t
@@ -174,6 +176,7 @@ orchids.registerDialog(dialogName, extendAttributes, superDialogName);
  * @param option Option to initialize a Fragment
  *     {
  *         backgroundColor: '#ffffff', // background color
+ *         style: void 0, // {key: value}
  *         // sub fragments
  *         // note that, current fragment element should have a child node
  *         // which has 'data-orchids-sub-fragments' attribute,
