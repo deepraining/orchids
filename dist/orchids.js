@@ -627,15 +627,18 @@
 	            return params;
 	        })(),
 	        orchidsPage,
-	        orchidsData;
+	        orchidsData,
+	        existedPagesCount = util.getPagesCount();
 
 
 	    // if user call back page by phone button, keep it
 	    // here we do not consider other action, like forward, refresh, for this is main for wechat webapp using
 	    window.onpopstate = app.onpopstate;
 
+	    util.resetPagesCount(); // every time start application, will change reset pages count
+
 	    // tell the first page and option by the parameter
-	    if (!!params.orchidsPage) {
+	    if (!!params.orchidsPage && !existedPagesCount) {
 	        orchidsPage = decodeURIComponent(params.orchidsPage);
 	        try {
 	            orchidsData = JSON.parse(decodeURIComponent(params.orchidsData));
@@ -646,6 +649,7 @@
 	        app.startPage(orchidsPage, orchidsData);
 	    }
 	    else {
+	        !!app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
 	        app.startPage(pageName, data);
 	    }
 
@@ -707,6 +711,9 @@
 	            forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
 
 	            !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+	            util.increasePagesCount();
+
 	            return;
 	        }
 	    }
@@ -734,6 +741,8 @@
 	    };
 
 	    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+	    util.increasePagesCount();
 	};
 
 	/**
@@ -1396,6 +1405,8 @@
 	    app.deleteCurrentPage();
 
 	    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+	    util.decreasePagesCount();
 	};
 
 
@@ -1533,8 +1544,67 @@
 	        return target;
 	    };
 
+	function getUrlParams() {
+	    var params = (function () {
+	        var params = {};
+	        !!location.search && (
+	            location.search.slice(1).split('&').map(function (item) {
+	                params[item.split('=')[0]] = item.split('=')[1]
+	            })
+	        );
+	        return params;
+	    })();
+
+	    return params;
+	}
+
+	function getPureUrlSearch() {
+	    var params = getUrlParams(),
+	        keys = Object.keys(params),
+	        query = '';
+
+	    var exclude = {
+	        orchidsPage: !0,
+	        orchidsData: !0
+	    };
+
+	    keys.map(function (key) {
+	        !exclude[key] && (query += (key + '=' + params[key]));
+	    });
+
+	    return !!query ? '?' + query : '';
+
+	}
+
+	function getOriginalUrl() {
+	    return location.origin + location.pathname + getPureUrlSearch();
+	}
+
+	var pagesCountCacheKey = 'orchids-pages-count: ' + getOriginalUrl(),
+	    // increase pages count in sessionStorage
+	    increasePagesCount = function () {
+	        window.sessionStorage[pagesCountCacheKey] = !window.sessionStorage[pagesCountCacheKey] ? 1 :
+	            parseInt(window.sessionStorage[pagesCountCacheKey]) + 1;
+	    },
+	    // decrease pages count in sessionStorage
+	    decreasePagesCount = function () {
+	        window.sessionStorage[pagesCountCacheKey] = parseInt(window.sessionStorage[pagesCountCacheKey]) - 1;
+	    },
+	    // get pages count in sessionStorage
+	    getPagesCount = function () {
+	        return parseInt(window.sessionStorage[pagesCountCacheKey]) || 0;
+	    },
+	    // reset pages count in sessionStorage
+	    resetPagesCount = function () {
+	        return window.sessionStorage[pagesCountCacheKey] = 0;
+	    };
+
 	module.exports = {
-	    extend: extend
+	    extend: extend,
+	    increasePagesCount: increasePagesCount,
+	    decreasePagesCount: decreasePagesCount,
+	    getPagesCount: getPagesCount,
+	    resetPagesCount: resetPagesCount
 	};
 
 /***/ },

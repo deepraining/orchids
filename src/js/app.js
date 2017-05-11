@@ -200,15 +200,18 @@ app.start = function (pageName, data) {
             return params;
         })(),
         orchidsPage,
-        orchidsData;
+        orchidsData,
+        existedPagesCount = util.getPagesCount();
 
 
     // if user call back page by phone button, keep it
     // here we do not consider other action, like forward, refresh, for this is main for wechat webapp using
     window.onpopstate = app.onpopstate;
 
+    util.resetPagesCount(); // every time start application, will change reset pages count
+
     // tell the first page and option by the parameter
-    if (!!params.orchidsPage) {
+    if (!!params.orchidsPage && !existedPagesCount) {
         orchidsPage = decodeURIComponent(params.orchidsPage);
         try {
             orchidsData = JSON.parse(decodeURIComponent(params.orchidsData));
@@ -219,6 +222,7 @@ app.start = function (pageName, data) {
         app.startPage(orchidsPage, orchidsData);
     }
     else {
+        !!app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
         app.startPage(pageName, data);
     }
 
@@ -280,6 +284,9 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
             forResult ? instance.page.__orchids__show(!0, !0, prepareResultData) : instance.page.__orchids__show(!0);
 
             !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+            util.increasePagesCount();
+
             return;
         }
     }
@@ -307,6 +314,8 @@ app.startPageInner = function (pageName, data, forResult, prepareResultData) {
     };
 
     !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+    util.increasePagesCount();
 };
 
 /**
@@ -969,6 +978,8 @@ app.pageBack = function () {
     app.deleteCurrentPage();
 
     !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+    util.decreasePagesCount();
 };
 
 

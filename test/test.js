@@ -3,6 +3,9 @@ orchids.init({
     animate: !0,
     onFirstPageInitialized: function() {
         console.log('first page initialized');
+    },
+    onRouteChange: function () {
+        console.log('route change');
     }
 });
 
@@ -72,6 +75,7 @@ orchids.registerPage('b', {
     backgroundColor: '#00ff00',
     animateDirection: 'l2r',
     animateFade: !0,
+    singleton: !0,
     style: {
         marginLeft: '1px'
     }
