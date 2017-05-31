@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var ContentReplacerWebpackPlugin = require('webpack-content-replacer-plugin')
 module.exports = {
 
   /*
@@ -30,15 +31,31 @@ module.exports = {
       test: /\.css$/,
       loader:  'style-loader!css-loader'
     }
-  ]
+  ],
+  plugins: [
+    new ContentReplacerWebpackPlugin({
+      modifiedFile: './dist/orchids.js',
+      modifications: [
+        {
+          regex: /\/\*\s*expose_to_amd_&_window\s*\*\//g,
+          modification: 'if ( typeof define === "function" && define.amd ) { \n\
+          define( "orchids", [], function() {\n\
+            return orchids;\n\
+          } );\n\
+        }\n\
+        else if (window) {\n\
+          window.orchids = orchids;\n\
+        }'
+        }
+      ]
+    })
   /**
    * 压缩
    */
-  //plugins: [
-  //  new webpack.optimize.UglifyJsPlugin({
-  //    compress: {
-  //      warnings: false
-  //    }
-  //  })
-  //]
+    //new webpack.optimize.UglifyJsPlugin({
+    //  compress: {
+    //    warnings: false
+    //  }
+    //})
+  ]
 };

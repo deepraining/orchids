@@ -66,7 +66,15 @@
 	orchids.getCurrentPage = app.getCurrentPageInstance;
 	orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
-	window.orchids = orchids;
+
+	if ( typeof define === "function" && define.amd ) { 
+          define( "orchids", [], function() {
+            return orchids;
+          } );
+        }
+        else if (window) {
+          window.orchids = orchids;
+        }
 
 	// for debug
 	//orchids.app = app;

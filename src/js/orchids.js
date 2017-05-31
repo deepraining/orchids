@@ -20,7 +20,8 @@ orchids.getDialog = app.getDialogById;
 orchids.getCurrentPage = app.getCurrentPageInstance;
 orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
-window.orchids = orchids;
+
+/* expose_to_amd_&_window */
 
 // for debug
 //orchids.app = app;
