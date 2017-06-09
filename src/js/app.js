@@ -347,7 +347,8 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
     var dialogObject = app.dialogs[dialogName], // the Dialog Object
         option, // Dialog option
         instance, // instance of dialog
-        prevDialogInstance;
+        prevDialogInstance,
+        currentPageInstance = app.getCurrentPage();
 
     if (!dialogObject) {
         console.error('The Dialog "' + dialogName + '" you called is not registered, please register it before initialize.');
@@ -362,7 +363,7 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
     }
 
     // call prev dialog's onHide method
-    !!prevDialogInstance && prevDialogInstance.dialog.onHide();
+    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : (currentPageInstance.page.onHide && currentPageInstance.page.onHide());
 
     // singleton
     if (dialogObject.option.singleton) {
@@ -1005,6 +1006,7 @@ app.dialogBack = function () {
             ) : (
                 prevPageInstance = app.getCurrentPage(),
                 !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+                prevPageInstance.page.onShow && prevPageInstance.page.onShow(),
                     prevInstanceIsDialog = !1
             )
     );
