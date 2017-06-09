@@ -363,7 +363,7 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
     }
 
     // call prev dialog's onHide method
-    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : (currentPageInstance.page.onHide && currentPageInstance.page.onHide());
+    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : currentPageInstance.page.onHide();
 
     // singleton
     if (dialogObject.option.singleton) {
@@ -989,8 +989,8 @@ app.pageBack = function () {
  */
 app.dialogBack = function () {
     var instance,
-        prevInstance,
-        prevPageInstance,
+        prevInstance = app.getPrevDialog(),
+        prevPageInstance = app.getCurrentPage(),
         prevInstanceIsDialog = !1;
 
     // if current dialogs remain 0, back action is invalid.
@@ -999,23 +999,17 @@ app.dialogBack = function () {
     instance = app.getCurrentDialog();
     // for result
     instance.forResult && (
-        prevInstance = app.getPrevDialog(),
-            !!prevInstance ? (
-                !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
-                    prevInstanceIsDialog = !0
-            ) : (
-                prevPageInstance = app.getCurrentPage(),
-                !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
-                prevPageInstance.page.onShow && prevPageInstance.page.onShow(),
-                    prevInstanceIsDialog = !1
-            )
+        !!prevInstance ? (
+            !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
+                prevInstanceIsDialog = !0
+        ) : (
+            !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+                prevInstanceIsDialog = !1
+        )
     );
     // destroy or hide
     instance.singleton ? instance.dialog.__orchids__hide() : instance.dialog.__orchids__destroy();
-    prevInstanceIsDialog && (
-        // call prev dialog's onShow method
-        prevInstance.dialog.onShow()
-    );
+    prevInstanceIsDialog ? prevInstance.dialog.onShow() : prevPageInstance.page.onShow();
     app.deleteCurrentDialog();
 };
 
