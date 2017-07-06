@@ -17,7 +17,6 @@
     height: 100%;
     background: #ffffff;
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
     z-index: 1;
 }
 .orchids-page-singleton {
@@ -76,7 +75,6 @@
     position: absolute;
     background: #ffffff;
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
     z-index: 1;
 }
 .orchids-fragment.orchids-horizontal {
