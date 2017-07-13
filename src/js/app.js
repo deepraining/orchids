@@ -145,6 +145,24 @@ var idPrefix = 'id-'; // id prefix for page and dialog
  * initialize app
  */
 app.init = function(option) {
+
+    if (option && option.parentContainer) {
+        var domContainer,
+            type = typeof option.parentContainer;
+        // selector
+        if (type == 'string') domContainer = document.getElementById(option.parentContainer);
+        // dom
+        else if(type == 'object' && option.parentContainer.nodeType == 1 && typeof option.parentContainer.nodeName == 'string')
+            domContainer = option.parentContainer;
+        else
+            console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+
+        domContainer && (
+            container.parentContainer = domContainer,
+                document.body.classList.add('orchids-custom-container')
+        );
+    }
+
     util.extend(true, app.option, option || {});
 };
 /**

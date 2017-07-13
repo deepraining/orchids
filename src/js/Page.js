@@ -65,7 +65,7 @@ var newPage = function () {
             );
 
             // add to body element
-            document.body.appendChild(self.el);
+            (container.parentContainer || document.body).appendChild(self.el);
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);

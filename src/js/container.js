@@ -1,5 +1,9 @@
 var container = {
     /**
+     * custom parent container, default is document.body
+     */
+    parentContainer: void 0,
+    /**
      * all registered page Object container
      * format: {
      *     name: {

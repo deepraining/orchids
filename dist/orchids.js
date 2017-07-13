@@ -116,7 +116,7 @@
 
 
 	// module
-	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-right-to-left,\r\n.orchids-dialog.orchids-right-to-left {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-left-to-right,\r\n.orchids-dialog.orchids-left-to-right {\r\n    transform: translateX(-100%);\r\n}\r\n.orchids-page.orchids-right-to-left.orchids-active,\r\n.orchids-dialog.orchids-right-to-left.orchids-active,\r\n.orchids-page.orchids-left-to-right.orchids-active,\r\n.orchids-dialog.orchids-left-to-right.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-bottom-to-top,\r\n.orchids-dialog.orchids-bottom-to-top {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-top-to-bottom,\r\n.orchids-dialog.orchids-top-to-bottom {\r\n    transform: translateY(-100%);\r\n}\r\n.orchids-page.orchids-bottom-to-top.orchids-active,\r\n.orchids-dialog.orchids-bottom-to-top.orchids-active,\r\n.orchids-page.orchids-top-to-bottom.orchids-active,\r\n.orchids-dialog.orchids-top-to-bottom.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}", ""]);
+	exports.push([module.id, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-right-to-left,\r\n.orchids-dialog.orchids-right-to-left {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-left-to-right,\r\n.orchids-dialog.orchids-left-to-right {\r\n    transform: translateX(-100%);\r\n}\r\n.orchids-page.orchids-right-to-left.orchids-active,\r\n.orchids-dialog.orchids-right-to-left.orchids-active,\r\n.orchids-page.orchids-left-to-right.orchids-active,\r\n.orchids-dialog.orchids-left-to-right.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-bottom-to-top,\r\n.orchids-dialog.orchids-bottom-to-top {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-top-to-bottom,\r\n.orchids-dialog.orchids-top-to-bottom {\r\n    transform: translateY(-100%);\r\n}\r\n.orchids-page.orchids-bottom-to-top.orchids-active,\r\n.orchids-dialog.orchids-bottom-to-top.orchids-active,\r\n.orchids-page.orchids-top-to-bottom.orchids-active,\r\n.orchids-dialog.orchids-top-to-bottom.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}\r\n\r\n\r\n\r\n.orchids-custom-container .orchids-page,\r\n.orchids-custom-container .orchids-dialog {\r\n    position: absolute;\r\n}", ""]);
 
 	// exports
 
@@ -580,6 +580,24 @@
 	 * initialize app
 	 */
 	app.init = function(option) {
+
+	    if (option && option.parentContainer) {
+	        var domContainer,
+	            type = typeof option.parentContainer;
+	        // selector
+	        if (type == 'string') domContainer = document.getElementById(option.parentContainer);
+	        // dom
+	        else if(type == 'object' && option.parentContainer.nodeType == 1 && typeof option.parentContainer.nodeName == 'string')
+	            domContainer = option.parentContainer;
+	        else
+	            console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+
+	        domContainer && (
+	            container.parentContainer = domContainer,
+	                document.body.classList.add('orchids-custom-container')
+	        );
+	    }
+
 	    util.extend(true, app.option, option || {});
 	};
 	/**
@@ -1682,7 +1700,7 @@
 	            );
 
 	            // add to body element
-	            document.body.appendChild(self.el);
+	            (container.parentContainer || document.body).appendChild(self.el);
 
 	            // user custom initialization
 	            !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -1942,6 +1960,10 @@
 
 	var container = {
 	    /**
+	     * custom parent container, default is document.body
+	     */
+	    parentContainer: void 0,
+	    /**
 	     * all registered page Object container
 	     * format: {
 	     *     name: {
@@ -2109,6 +2131,7 @@
 	"use strict";
 
 	var util = __webpack_require__(6);
+	var container = __webpack_require__(8);
 	var directionClasses = __webpack_require__(9);
 
 	var newDialog = function () {
@@ -2156,7 +2179,7 @@
 	            );
 
 	            // add to body element
-	            document.body.appendChild(self.el);
+	            (container.parentContainer || document.body).appendChild(self.el);
 
 	            // user custom initialization
 	            !!self.onCreate && self.onCreate(self.__orchids__data);

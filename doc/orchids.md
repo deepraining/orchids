@@ -19,7 +19,11 @@ orchids.init({
     /**
      * function: called when route changed
      */
-    onRouteChange: void 0
+    onRouteChange: void 0,
+    /**
+     * id selector / dom: custom parent container for pages and dialogs, default id document.body
+     */
+    parentContainer: void 0
 });
 ```
 

@@ -6,6 +6,7 @@
 "use strict";
 
 var util = require('./util');
+var container = require('./container');
 var directionClasses = require('./directionClasses');
 
 var newDialog = function () {
@@ -53,7 +54,7 @@ var newDialog = function () {
             );
 
             // add to body element
-            document.body.appendChild(self.el);
+            (container.parentContainer || document.body).appendChild(self.el);
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);
