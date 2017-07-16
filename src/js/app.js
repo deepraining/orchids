@@ -60,7 +60,11 @@ var app = {
         /**
          * whether current dialog is singleton or not
          */
-        singleton: !1
+        singleton: !1,
+        /**
+         * id selector / dom: custom parent container for current page
+         */
+        parentContainer: void 0
     },
     // default dialog option
     defaultDialogOption: {
@@ -90,7 +94,11 @@ var app = {
         /**
          * whether current dialog is singleton or not
          */
-        singleton: !1
+        singleton: !1,
+        /**
+         * id selector / dom: custom parent container for current dialog
+         */
+        parentContainer: void 0
     },
     // default fragment option
     defaultFragmentOption: {
@@ -381,7 +389,7 @@ app.startDialogInner = function (dialogName, data, forResult, prepareResultData)
     }
 
     // call prev dialog's onHide method
-    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : currentPageInstance.page.onHide();
+    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : currentPageInstance && currentPageInstance.page.onHide();
 
     // singleton
     if (dialogObject.option.singleton) {
@@ -1021,13 +1029,13 @@ app.dialogBack = function () {
             !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
                 prevInstanceIsDialog = !0
         ) : (
-            !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+            !!prevPageInstance && !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
                 prevInstanceIsDialog = !1
         )
     );
     // destroy or hide
     instance.singleton ? instance.dialog.__orchids__hide() : instance.dialog.__orchids__destroy();
-    prevInstanceIsDialog ? prevInstance.dialog.onShow() : prevPageInstance.page.onShow();
+    prevInstanceIsDialog ? prevInstance.dialog.onShow() : !!prevPageInstance && prevPageInstance.page.onShow();
     app.deleteCurrentDialog();
 };
 

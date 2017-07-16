@@ -42,6 +42,11 @@ singleton: !1 // whether current dialog is singleton or not, if true,
               //it will be only created once, and will not be destroyed
 ```
 
+* parentContainer
+
+```
+parentContainer: void 0 // id selector / dom: custom parent container for current dialog
+```
 
 ## attributes
 

@@ -27,6 +27,7 @@ var newPage = function () {
          * @private
          */
         self.__orchids__currentFragmentId = 1;
+        self.__orchids__getParentContainer();
         self.__orchids__init();
     }
 
@@ -64,8 +65,8 @@ var newPage = function () {
                 })
             );
 
-            // add to body element
-            (container.parentContainer || document.body).appendChild(self.el);
+            // add to container
+            self.parentContainer.appendChild(self.el);
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -83,6 +84,27 @@ var newPage = function () {
                 self.el.classList.add('orchids-active')
             }, 100);
 
+        },
+        // 获取父容器
+        __orchids__getParentContainer: function () {
+            var self = this;
+            var type = typeof self.option.parentContainer;
+            // 当前自定义父容器
+            if (self.option.parentContainer) {
+                // selector
+                if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
+                // dom
+                else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
+                    self.parentContainer = self.option.parentContainer;
+                else {
+                    console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+                    self.parentContainer = document.body;
+                }
+            }
+            else if (container.parentContainer) {
+                self.parentContainer = container.parentContainer;
+            }
+            else self.parentContainer = document.body;
         },
         // render fragments
         __orchids__renderFragments: function () {

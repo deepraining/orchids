@@ -68,6 +68,12 @@ singleton: !1 // whether current page is singleton or not, if true,
               //it will be only created once, and will not be destroyed
 ```
 
+* parentContainer
+
+```
+parentContainer: void 0 // id selector / dom: custom parent container for current page
+```
+
 ## attributes
 
 * id: current page id

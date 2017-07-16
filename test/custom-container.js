@@ -144,6 +144,7 @@ orchids.registerDialog('i', {
     singleton: !0,
     animateDirection: 't2b',
     animateFade: !0,
+    parentContainer: document.body,
     style: {
         marginLeft: '1px'
     }
@@ -243,6 +244,7 @@ orchids.registerPage('c', {
     fragments: [
         'o', 'p', 'q'
     ],
+    parentContainer: document.body,
     style: {
         marginLeft: '1px'
     }

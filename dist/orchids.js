@@ -495,7 +495,11 @@
 	        /**
 	         * whether current dialog is singleton or not
 	         */
-	        singleton: !1
+	        singleton: !1,
+	        /**
+	         * id selector / dom: custom parent container for current page
+	         */
+	        parentContainer: void 0
 	    },
 	    // default dialog option
 	    defaultDialogOption: {
@@ -525,7 +529,11 @@
 	        /**
 	         * whether current dialog is singleton or not
 	         */
-	        singleton: !1
+	        singleton: !1,
+	        /**
+	         * id selector / dom: custom parent container for current dialog
+	         */
+	        parentContainer: void 0
 	    },
 	    // default fragment option
 	    defaultFragmentOption: {
@@ -816,7 +824,7 @@
 	    }
 
 	    // call prev dialog's onHide method
-	    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : currentPageInstance.page.onHide();
+	    !!prevDialogInstance ? prevDialogInstance.dialog.onHide() : currentPageInstance && currentPageInstance.page.onHide();
 
 	    // singleton
 	    if (dialogObject.option.singleton) {
@@ -1456,13 +1464,13 @@
 	            !!prevInstance.dialog.onDialogResult && prevInstance.dialog.onDialogResult(instance.dialog.__orchids__result || {}),
 	                prevInstanceIsDialog = !0
 	        ) : (
-	            !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
+	            !!prevPageInstance && !!prevPageInstance.page.onPageResult && prevPageInstance.page.onPageResult(instance.dialog.__orchids__result || {}),
 	                prevInstanceIsDialog = !1
 	        )
 	    );
 	    // destroy or hide
 	    instance.singleton ? instance.dialog.__orchids__hide() : instance.dialog.__orchids__destroy();
-	    prevInstanceIsDialog ? prevInstance.dialog.onShow() : prevPageInstance.page.onShow();
+	    prevInstanceIsDialog ? prevInstance.dialog.onShow() : !!prevPageInstance && prevPageInstance.page.onShow();
 	    app.deleteCurrentDialog();
 	};
 
@@ -1662,6 +1670,7 @@
 	         * @private
 	         */
 	        self.__orchids__currentFragmentId = 1;
+	        self.__orchids__getParentContainer();
 	        self.__orchids__init();
 	    }
 
@@ -1699,8 +1708,8 @@
 	                })
 	            );
 
-	            // add to body element
-	            (container.parentContainer || document.body).appendChild(self.el);
+	            // add to container
+	            self.parentContainer.appendChild(self.el);
 
 	            // user custom initialization
 	            !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -1718,6 +1727,27 @@
 	                self.el.classList.add('orchids-active')
 	            }, 100);
 
+	        },
+	        // 获取父容器
+	        __orchids__getParentContainer: function () {
+	            var self = this;
+	            var type = typeof self.option.parentContainer;
+	            // 当前自定义父容器
+	            if (self.option.parentContainer) {
+	                // selector
+	                if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
+	                // dom
+	                else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
+	                    self.parentContainer = self.option.parentContainer;
+	                else {
+	                    console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+	                    self.parentContainer = document.body;
+	                }
+	            }
+	            else if (container.parentContainer) {
+	                self.parentContainer = container.parentContainer;
+	            }
+	            else self.parentContainer = document.body;
 	        },
 	        // render fragments
 	        __orchids__renderFragments: function () {
@@ -2145,6 +2175,7 @@
 	        var self = this;
 	        self.option = util.extend(true, {}, option);
 	        self.__orchids__data = data || {};
+	        self.__orchids__getParentContainer();
 	        self.__orchids__init();
 	    }
 
@@ -2178,8 +2209,8 @@
 	                })
 	            );
 
-	            // add to body element
-	            (container.parentContainer || document.body).appendChild(self.el);
+	            // add to container
+	            self.parentContainer.appendChild(self.el);
 
 	            // user custom initialization
 	            !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -2190,6 +2221,27 @@
 	            setTimeout(function () {
 	                self.el.classList.add('orchids-active')
 	            }, 100);
+	        },
+	        // 获取父容器
+	        __orchids__getParentContainer: function () {
+	            var self = this;
+	            var type = typeof self.option.parentContainer;
+	            // 当前自定义父容器
+	            if (self.option.parentContainer) {
+	                // selector
+	                if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
+	                // dom
+	                else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
+	                    self.parentContainer = self.option.parentContainer;
+	                else {
+	                    console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+	                    self.parentContainer = document.body;
+	                }
+	            }
+	            else if (container.parentContainer) {
+	                self.parentContainer = container.parentContainer;
+	            }
+	            else self.parentContainer = document.body;
 	        },
 	        // destroy current dialog
 	        __orchids__destroy: function () {
