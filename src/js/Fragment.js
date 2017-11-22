@@ -42,6 +42,7 @@ var newFragment = function () {
             self.el = document.createElement('div');
             // data-orchids-fragment-is
             self.el.dataset.orchidsFragmentId = self.id;
+            self.el.dataset.orchidsFragmentName = self.option.fragmentName;
 
             // background color
             self.el.style.backgroundColor = self.option.backgroundColor;

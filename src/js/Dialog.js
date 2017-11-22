@@ -35,6 +35,7 @@ var newDialog = function () {
             self.el = document.createElement('div');
             // data-orchids-dialog-is
             self.el.dataset.orchidsDialogId = self.id;
+            self.el.dataset.orchidsDialogName = self.option.dialogName;
             self.el.classList.add('orchids', 'orchids-dialog');
             // animation
             !!self.option.animate && self.el.classList.add('orchids-with-animation');

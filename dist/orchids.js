@@ -1687,6 +1687,7 @@
 	            self.el = document.createElement('div');
 	            // data-orchids-page-is
 	            self.el.dataset.orchidsPageId = self.id;
+	            self.el.dataset.orchidsPageName = self.option.pageName;
 	            self.el.classList.add('orchids', 'orchids-page');
 	            // animation
 	            !!self.option.animate && self.el.classList.add('orchids-with-animation');
@@ -2190,6 +2191,7 @@
 	            self.el = document.createElement('div');
 	            // data-orchids-dialog-is
 	            self.el.dataset.orchidsDialogId = self.id;
+	            self.el.dataset.orchidsDialogName = self.option.dialogName;
 	            self.el.classList.add('orchids', 'orchids-dialog');
 	            // animation
 	            !!self.option.animate && self.el.classList.add('orchids-with-animation');
@@ -2375,6 +2377,7 @@
 	            self.el = document.createElement('div');
 	            // data-orchids-fragment-is
 	            self.el.dataset.orchidsFragmentId = self.id;
+	            self.el.dataset.orchidsFragmentName = self.option.fragmentName;
 
 	            // background color
 	            self.el.style.backgroundColor = self.option.backgroundColor;

@@ -44,6 +44,7 @@ var newPage = function () {
             self.el = document.createElement('div');
             // data-orchids-page-is
             self.el.dataset.orchidsPageId = self.id;
+            self.el.dataset.orchidsPageName = self.option.pageName;
             self.el.classList.add('orchids', 'orchids-page');
             // animation
             !!self.option.animate && self.el.classList.add('orchids-with-animation');
