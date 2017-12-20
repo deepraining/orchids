@@ -21,9 +21,9 @@ orchids.init({
      */
     onRouteChange: void 0,
     /**
-     * id selector / dom: custom parent container for pages and dialogs, default id document.body
+     * id selector / dom: custom root container for pages and dialogs, default id document.body
      */
-    parentContainer: void 0
+    rootContainer: void 0
 });
 ```
 
@@ -73,7 +73,7 @@ orchids.init({
  *         // animation direction of switching page
  *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: r2l
  *         animateDirection: 'r2l', 
- *         animateFade: !1, // whether to fade page when switch between pages
+ *         fadeInOut: !1, // whether to fade page when switch between pages
  *         // sub fragments
  *         // note that, current page element should have a child node
  *         // which has 'data-orchids-fragments' attribute,
@@ -88,10 +88,10 @@ orchids.init({
  *         singleton: !1 // whether current page is singleton or not, if true,
  *                       //it will be only created once, and will not be destroyed
  *     }
- * @param superPageName Super Page Object, default is Page
+ * @param parentName Parent Page Object, default is Page
  */
-orchids.registerPage(pageName, extendAttributes, option, superPageName);
-orchids.registerPage(pageName, extendAttributes, superPageName);
+orchids.registerPage(pageName, extendAttributes, option, parentName);
+orchids.registerPage(pageName, extendAttributes, parentName);
 ```
 
 ## orchids.registerDialog
@@ -136,14 +136,14 @@ orchids.registerPage(pageName, extendAttributes, superPageName);
  *         // animation direction of switching dialog
  *         // l2r/r2l/t2b/b2t(left-right, top-bottom), default: b2t
  *         animateDirection: 'b2t',
- *         animateFade: !1, // whether to fade page when switch between dialogs
+ *         fadeInOut: !1, // whether to fade page when switch between dialogs
  *         singleton: !1 // whether current dialog is singleton or not, if true,
  *                       //it will be only created once, and will not be destroyed
  *     }
- * @param superDialogName Super Dialog Object, default is Dialog
+ * @param parentName Parent Dialog Object, default is Dialog
  */
-orchids.registerDialog(dialogName, extendAttributes, option, superDialogName);
-orchids.registerDialog(dialogName, extendAttributes, superDialogName);
+orchids.registerDialog(dialogName, extendAttributes, option, parentName);
+orchids.registerDialog(dialogName, extendAttributes, parentName);
 ```
 
 ## orchids.registerFragment
@@ -193,10 +193,10 @@ orchids.registerDialog(dialogName, extendAttributes, superDialogName);
  *         subFragmentAnimate: !0, // whether to use animation in sub fragments
  *         subFragmentAnimateDirection: 'horizontal' // sub fragments direction horizontal/vertical
  *     }
- * @param superFragmentName Super Fragment Object, default is Fragment
+ * @param parentName Parent Fragment Object, default is Fragment
  */
-orchids.registerFragment(fragmentName, extendAttributes, option, superFragmentName)
-orchids.registerFragment(fragmentName, extendAttributes, superFragmentName)
+orchids.registerFragment(fragmentName, extendAttributes, option, parentName)
+orchids.registerFragment(fragmentName, extendAttributes, parentName)
 ```
 
 ## orchids.startPage

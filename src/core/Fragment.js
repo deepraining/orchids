@@ -1,7 +1,7 @@
 "use strict";
 
 var util = require('./util'),
-    container = require('./container');
+    container = require('../data/container');
 
 var newFragment = function () {
     /**

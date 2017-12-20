@@ -7,7 +7,7 @@ orchids.init({
     onRouteChange: function () {
         console.log('route change');
     },
-    parentContainer: 'container'
+    rootContainer: 'container'
 });
 
 orchids.registerPage('aa', {
@@ -46,7 +46,7 @@ orchids.registerPage('a', {
 }, {
     backgroundColor: '#ff0000',
     animateDirection: 'l2r',
-    animateFade: !0,
+    fadeInOut: !0,
     style: {
         marginLeft: '1px'
     }
@@ -75,7 +75,7 @@ orchids.registerPage('b', {
 }, {
     backgroundColor: '#00ff00',
     animateDirection: 'l2r',
-    animateFade: !0,
+    fadeInOut: !0,
     singleton: !0,
     style: {
         marginLeft: '1px'
@@ -118,7 +118,7 @@ orchids.registerDialog('h', {
 }, {
     backgroundColor: '#0000ff',
     animateDirection: 't2b',
-    animateFade: !0,
+    fadeInOut: !0,
     style: {
         marginLeft: '1px'
     }
@@ -143,8 +143,8 @@ orchids.registerDialog('i', {
     backgroundColor: '#00ff00',
     singleton: !0,
     animateDirection: 't2b',
-    animateFade: !0,
-    parentContainer: document.body,
+    fadeInOut: !0,
+    rootContainer: document.body,
     style: {
         marginLeft: '1px'
     }
@@ -244,7 +244,7 @@ orchids.registerPage('c', {
     fragments: [
         'o', 'p', 'q'
     ],
-    parentContainer: document.body,
+    rootContainer: document.body,
     style: {
         marginLeft: '1px'
     }

@@ -45,7 +45,7 @@ orchids.registerPage('a', {
 }, {
     backgroundColor: '#ff0000',
     animateDirection: 'l2r',
-    animateFade: !0,
+    fadeInOut: !0,
     style: {
         marginLeft: '1px'
     }
@@ -74,7 +74,7 @@ orchids.registerPage('b', {
 }, {
     backgroundColor: '#00ff00',
     animateDirection: 'l2r',
-    animateFade: !0,
+    fadeInOut: !0,
     singleton: !0,
     style: {
         marginLeft: '1px'
@@ -117,7 +117,7 @@ orchids.registerDialog('h', {
 }, {
     backgroundColor: '#0000ff',
     animateDirection: 't2b',
-    animateFade: !0,
+    fadeInOut: !0,
     style: {
         marginLeft: '1px'
     }
@@ -142,7 +142,7 @@ orchids.registerDialog('i', {
     backgroundColor: '#00ff00',
     singleton: !0,
     animateDirection: 't2b',
-    animateFade: !0,
+    fadeInOut: !0,
     style: {
         marginLeft: '1px'
     }

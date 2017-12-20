@@ -1,11 +1,14 @@
 "use strict";
 
-var util = require('./util')
-var container = require('./container');
-var directionClasses = require('./directionClasses');
+var extend = require('../util/extend');
+var container = require('../data/container');
+var directionClasses = require('../data/direction_classes');
+var logger = require('../util/logger');
+var getRootContainer = require('../util/get_root_container');
 
-var newPage = function () {
+module.exports = () => {
     /**
+     * constructor
      *
      * @param option Option to initialize page
      * @param data Parameter to be used by onCreate method
@@ -13,7 +16,7 @@ var newPage = function () {
      */
     function Page(option, data) {
         var self = this;
-        self.option = util.extend(true, {}, option);
+        self.option = extend(true, {}, option);
         self.__orchids__data = data || {};
         /**
          * current fragment instances
@@ -27,19 +30,19 @@ var newPage = function () {
          * @private
          */
         self.__orchids__currentFragmentId = 1;
-        self.__orchids__getParentContainer();
+        self.__orchids__getRootContainer();
         self.__orchids__init();
     }
 
     Page.prototype = {
         constructor: Page,
-        __orchids__init: function() {
+        __orchids__init: () => {
             var self = this;
             var styleKeys;
             // make id
             self.id = self.option.pageId;
             // whether current page is the first page to render or not, for confirming to start current page with or without animation.
-            self.__orchids__isFirstPage = self.id == 1;
+            self.__orchids__isFirstPage = self.id === 1;
             // make root el
             self.el = document.createElement('div');
             // data-orchids-page-is
@@ -47,11 +50,11 @@ var newPage = function () {
             self.el.dataset.orchidsPageName = self.option.pageName;
             self.el.classList.add('orchids', 'orchids-page');
             // animation
-            !!self.option.animate && self.el.classList.add('orchids-with-animation');
+            self.option.animate && self.el.classList.add('orchids-with-animation');
             // direction
             self.el.classList.add(directionClasses[self.option.animateDirection || 'r2l']);
             // fade
-            self.option.animateFade && self.el.classList.add('orchids-with-fade');
+            self.option.fadeInOut && self.el.classList.add('orchids-with-fade');
             // singleton
             self.option.singleton && self.el.classList.add('orchids-page-singleton');
             // active
@@ -67,7 +70,7 @@ var newPage = function () {
             );
 
             // add to container
-            self.parentContainer.appendChild(self.el);
+            self.rootContainer.appendChild(self.el);
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -86,26 +89,10 @@ var newPage = function () {
             }, 100);
 
         },
-        // get parent container
-        __orchids__getParentContainer: function () {
+        // get root container
+        __orchids__getRootContainer: function () {
             var self = this;
-            var type = typeof self.option.parentContainer;
-            // defined a custom parent container
-            if (self.option.parentContainer) {
-                // selector
-                if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
-                // dom
-                else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
-                    self.parentContainer = self.option.parentContainer;
-                else {
-                    console.error('orchids: unknown parent container, it should be one of follows: id selector, dom object.');
-                    self.parentContainer = document.body;
-                }
-            }
-            else if (container.parentContainer) {
-                self.parentContainer = container.parentContainer;
-            }
-            else self.parentContainer = document.body;
+            self.rootContainer = getRootContainer(self.option.rootContainer);
         },
         // render fragments
         __orchids__renderFragments: function () {
@@ -147,7 +134,7 @@ var newPage = function () {
                     console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
                     return;
                 }
-                fragmentOption = util.extend(!0, {}, fragment.option);
+                fragmentOption = extend(!0, {}, fragment.option);
                 fragmentOption.fragmentId = i + 1;
                 fragmentOption.fragmentWidth = self.__orchids__fragmentWidth;
                 fragmentOption.fragmentHeight = self.__orchids__fragmentHeight;
@@ -339,5 +326,3 @@ var newPage = function () {
 
     return Page;
 };
-
-module.exports = newPage;

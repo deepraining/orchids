@@ -29,10 +29,10 @@ animate: !0
 animateDirection: 'b2t'
 ```
 
-* animateFade
+* fadeInOut
 
 ```
-animateFade: !1
+fadeInOut: !1
 ```
 
 * singleton
@@ -42,10 +42,10 @@ singleton: !1 // whether current dialog is singleton or not, if true,
               //it will be only created once, and will not be destroyed
 ```
 
-* parentContainer
+* rootContainer
 
 ```
-parentContainer: void 0 // id selector / dom: custom parent container for current dialog
+rootContainer: void 0 // id selector / dom: custom root container for current dialog
 ```
 
 ## attributes

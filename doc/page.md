@@ -29,10 +29,10 @@ animate: !0
 animateDirection: 'r2l'
 ```
 
-* animateFade
+* fadeInOut
 
 ```
-animateFade: !1
+fadeInOut: !1
 ```
 
 * fragments
@@ -68,10 +68,10 @@ singleton: !1 // whether current page is singleton or not, if true,
               //it will be only created once, and will not be destroyed
 ```
 
-* parentContainer
+* rootContainer
 
 ```
-parentContainer: void 0 // id selector / dom: custom parent container for current page
+rootContainer: void 0 // id selector / dom: custom root container for current page
 ```
 
 ## attributes

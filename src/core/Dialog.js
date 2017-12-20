@@ -6,7 +6,7 @@
 "use strict";
 
 var util = require('./util');
-var container = require('./container');
+var container = require('../data/container');
 var directionClasses = require('./directionClasses');
 
 var newDialog = function () {
@@ -20,7 +20,7 @@ var newDialog = function () {
         var self = this;
         self.option = util.extend(true, {}, option);
         self.__orchids__data = data || {};
-        self.__orchids__getParentContainer();
+        self.__orchids__getRootContainer();
         self.__orchids__init();
     }
 
@@ -42,7 +42,7 @@ var newDialog = function () {
             // direction
             self.el.classList.add(directionClasses[self.option.animateDirection || 'b2t']);
             // fade
-            self.option.animateFade && self.el.classList.add('orchids-with-fade');
+            self.option.fadeInOut && self.el.classList.add('orchids-with-fade');
             // singleton
             self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
             // background color
@@ -56,7 +56,7 @@ var newDialog = function () {
             );
 
             // add to container
-            self.parentContainer.appendChild(self.el);
+            self.rootContainer.appendChild(self.el);
 
             // user custom initialization
             !!self.onCreate && self.onCreate(self.__orchids__data);
@@ -68,26 +68,26 @@ var newDialog = function () {
                 self.el.classList.add('orchids-active')
             }, 100);
         },
-        // get parent container
-        __orchids__getParentContainer: function () {
+        // get root container
+        __orchids__getRootContainer: function () {
             var self = this;
-            var type = typeof self.option.parentContainer;
-            // defined a custom parent container
-            if (self.option.parentContainer) {
+            var type = typeof self.option.rootContainer;
+            // defined a custom root container
+            if (self.option.rootContainer) {
                 // selector
-                if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
+                if (type == 'string') self.rootContainer = document.getElementById(self.option.rootContainer);
                 // dom
-                else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
-                    self.parentContainer = self.option.parentContainer;
+                else if(type == 'object' && self.option.rootContainer.nodeType == 1 && typeof self.option.rootContainer.nodeName == 'string')
+                    self.rootContainer = self.option.rootContainer;
                 else {
-                    console.error('orchids: unknown parent container, it should be one of follows: id selector, dom object.');
-                    self.parentContainer = document.body;
+                    console.error('orchids: unknown root container, it should be one of follows: id selector, dom object.');
+                    self.rootContainer = document.body;
                 }
             }
-            else if (container.parentContainer) {
-                self.parentContainer = container.parentContainer;
+            else if (container.rootContainer) {
+                self.rootContainer = container.rootContainer;
             }
-            else self.parentContainer = document.body;
+            else self.rootContainer = document.body;
         },
         // destroy current dialog
         __orchids__destroy: function () {
