@@ -90,41 +90,6 @@ app.start = function (pageName, data) {
 };
 
 /**
- * get page object
- * @param index
- * @returns {*}
- */
-app.getPage = function (index) {
-    typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(app.pagesInstances);
-
-    if (keys.length + index < 0) return null;
-
-    return app.pagesInstances[keys[(keys.length + index) % keys.length]];
-};
-
-/**
- * get page object
- * @param id Page id, if not set, return current page
- * @returns {*}
- */
-app.getPageById = function (id) {
-    var keys;
-    if (!id) {
-        keys = Object.keys(app.pagesInstances);
-        if (!keys.length) return null;
-        return app.pagesInstances[keys[keys.length - 1]].page;
-    }
-    else {
-        try {
-            return app.pagesInstances[idPrefix + id].page;
-        } catch (e) {
-            return null;
-        }
-
-    }
-};
-/**
  * get current page object
  * @returns {*}
  */
