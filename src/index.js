@@ -1,4 +1,4 @@
-require('./css/orchids.css');
+require('./css/index.css');
 
 var orchids = {};
 

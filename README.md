@@ -2,11 +2,11 @@
 
 ## demo
 
-* [orchids demo](http://senntyou.github.io/orchids/) (mobile is the best)
+* [orchids demo](http://senntyou.github.io/orchids/)
 
 * or scan below
 
-* ![](./qrcode.png)
+![](./qrcode.png)
 
 ## documents
 
