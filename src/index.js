@@ -1,4 +1,4 @@
-require('style!css!../css/orchids.css');
+require('./css/orchids.css');
 
 var orchids = {};
 
@@ -20,8 +20,6 @@ orchids.getDialog = app.getDialogById;
 orchids.getCurrentPage = app.getCurrentPageInstance;
 orchids.getCurrentDialog = app.getCurrentDialogInstance;
 
-
-/* expose_to_amd_&_window */
 
 // for debug
 //orchids.app = app;

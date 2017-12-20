@@ -68,11 +68,11 @@ var newDialog = function () {
                 self.el.classList.add('orchids-active')
             }, 100);
         },
-        // 获取父容器
+        // get parent container
         __orchids__getParentContainer: function () {
             var self = this;
             var type = typeof self.option.parentContainer;
-            // 当前自定义父容器
+            // defined a custom parent container
             if (self.option.parentContainer) {
                 // selector
                 if (type == 'string') self.parentContainer = document.getElementById(self.option.parentContainer);
@@ -80,7 +80,7 @@ var newDialog = function () {
                 else if(type == 'object' && self.option.parentContainer.nodeType == 1 && typeof self.option.parentContainer.nodeName == 'string')
                     self.parentContainer = self.option.parentContainer;
                 else {
-                    console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+                    console.error('orchids: unknown parent container, it should be one of follows: id selector, dom object.');
                     self.parentContainer = document.body;
                 }
             }

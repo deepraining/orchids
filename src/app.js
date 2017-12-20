@@ -163,7 +163,7 @@ app.init = function(option) {
         else if(type == 'object' && option.parentContainer.nodeType == 1 && typeof option.parentContainer.nodeName == 'string')
             domContainer = option.parentContainer;
         else
-            console.error('orchids: 未知父容器；父容器必须是：id selector选择器, dom对象。');
+            console.error('orchids: unknown parent container, it should be one of follows: id selector, dom object.');
 
         domContainer && (
             container.parentContainer = domContainer,
@@ -252,7 +252,7 @@ app.start = function (pageName, data) {
         app.startPage(pageName, data);
     }
 
-    // 第一个页面初始化完成
+    // first page initialize complete
     !!app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
 };
 /**

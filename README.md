@@ -2,13 +2,13 @@
 
 ## demo
 
-* [orchids demo](http://senntyou.github.io/orchids/), 用移动设备打开
+* [orchids demo](http://senntyou.github.io/orchids/) (mobile is the best)
 
-* 或者扫描二维码
+* or scan below
 
-* ![](./resources/qrcode.png)
+* ![](./qrcode.png)
 
-## doc
+## documents
 
 * [orchids](./doc/orchids.md)
 * [Page](./doc/page.md)
