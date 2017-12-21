@@ -1,10 +1,12 @@
 "use strict";
 
+var extend = require('../util/extend');
+
 var init = require('./fragment/init');
 var renderSubFragments = require('./fragment/render_sub_fragments');
 var showSubFragment = require('./fragment/show_sub_fragment');
 
-var newFragment = function () {
+var newFragment = () => {
     /**
      *
      * @param option Option to initialize fragment
@@ -12,7 +14,7 @@ var newFragment = function () {
      */
     function Fragment(option) {
         var self = this;
-        self.option = util.extend(true, {}, option);
+        self.option = extend(true, {}, option);
         // whether current fragment is initialized
         self.__orchids__initialized = !1;
         /**

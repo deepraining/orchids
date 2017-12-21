@@ -207,7 +207,7 @@ orchids.registerFragment('p', {
 orchids.registerFragment('q', {
     onCreate: function() {
         console.log('q: onCreate');
-        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments></div>')
+        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-sub-fragments="1"></div>')
         document.title = 'q';
     },
     onShow: function () {
@@ -235,7 +235,7 @@ orchids.registerPage('c', {
     onCreate: function(data) {
         console.log('c: onCreate');
         document.title = 'q';
-        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments></div>')
+        $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments="1"></div>')
     }
 }, {
     backgroundColor: '#000000',

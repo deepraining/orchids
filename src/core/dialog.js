@@ -10,7 +10,7 @@ var container = require('../data/container');
 
 var init = require('./dialog/init');
 
-var newDialog = function () {
+var newDialog = () => {
     /**
      * constructor
      * @param option Option to initialize dialog

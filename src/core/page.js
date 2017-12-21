@@ -39,13 +39,13 @@ module.exports = () => {
 
     Page.prototype = {
         constructor: Page,
-        __orchids__init: () => {
+        __orchids__init: function() {
             var self = this;
 
             init(self);
         },
         // render fragments
-        __orchids__renderFragments: () => {
+        __orchids__renderFragments: function() {
             var self = this;
 
             renderFragments(self);
@@ -54,7 +54,7 @@ module.exports = () => {
          * show fragment specified by id
          * @param id
          */
-        showFragment: (id) => {
+        showFragment: function(id) {
             var self = this;
 
             showFragment(self, id)
@@ -63,7 +63,7 @@ module.exports = () => {
          * get fragment specified by id, default return the first fragment
          * @param id
          */
-        getFragment: (id) => {
+        getFragment: function(id) {
             var self = this;
             id = id || 1;
             try {
@@ -73,28 +73,28 @@ module.exports = () => {
             }
         },
         // make a forward route
-        __orchids__routeForward: () => {
+        __orchids__routeForward: function() {
             var self = this;
 
             routeForward(self);
         },
 
         // destroy current page
-        __orchids__destroy: () => {
+        __orchids__destroy: function() {
             var self = this;
 
             destroy(self);
         },
 
         // hide current page
-        __orchids__hide: (isSingleton) => {
+        __orchids__hide: function(isSingleton) {
             var self = this;
 
             hide(self, isSingleton);
         },
 
         // show current page
-        __orchids__show: (isSingleton, forResult, prepareResultData) => {
+        __orchids__show: function(isSingleton, forResult, prepareResultData) {
             var self = this;
 
             show(self, isSingleton, forResult, prepareResultData);
