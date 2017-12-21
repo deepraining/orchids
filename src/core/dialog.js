@@ -5,22 +5,22 @@
 
 "use strict";
 
-var util = require('./util');
+var extend = require('../util/extend');
 var container = require('../data/container');
-var directionClasses = require('./directionClasses');
+
+var init = require('./dialog/init');
 
 var newDialog = function () {
     /**
-     *
+     * constructor
      * @param option Option to initialize dialog
      * @param data Parameter to be used by onCreate method
      * @constructor
      */
     function Dialog(option, data) {
         var self = this;
-        self.option = util.extend(true, {}, option);
+        self.option = extend(true, {}, option);
         self.__orchids__data = data || {};
-        self.__orchids__getRootContainer();
         self.__orchids__init();
     }
 
@@ -28,66 +28,8 @@ var newDialog = function () {
         constructor: Dialog,
         __orchids__init: function() {
             var self = this;
-            var styleKeys;
-            // make id
-            self.id = self.option.dialogId;
-            // make root el
-            self.el = document.createElement('div');
-            // data-orchids-dialog-is
-            self.el.dataset.orchidsDialogId = self.id;
-            self.el.dataset.orchidsDialogName = self.option.dialogName;
-            self.el.classList.add('orchids', 'orchids-dialog');
-            // animation
-            !!self.option.animate && self.el.classList.add('orchids-with-animation');
-            // direction
-            self.el.classList.add(directionClasses[self.option.animateDirection || 'b2t']);
-            // fade
-            self.option.fadeInOut && self.el.classList.add('orchids-with-fade');
-            // singleton
-            self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
-            // background color
-            self.el.style.backgroundColor = self.option.backgroundColor;
 
-            // extra style
-            self.option.style && (styleKeys = Object.keys(self.option.style)).length && (
-                styleKeys.map(function (key) {
-                    self.el.style[key] = self.option.style[key]
-                })
-            );
-
-            // add to container
-            self.rootContainer.appendChild(self.el);
-
-            // user custom initialization
-            !!self.onCreate && self.onCreate(self.__orchids__data);
-
-            /**
-             * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
-             */
-            setTimeout(function () {
-                self.el.classList.add('orchids-active')
-            }, 100);
-        },
-        // get root container
-        __orchids__getRootContainer: function () {
-            var self = this;
-            var type = typeof self.option.rootContainer;
-            // defined a custom root container
-            if (self.option.rootContainer) {
-                // selector
-                if (type == 'string') self.rootContainer = document.getElementById(self.option.rootContainer);
-                // dom
-                else if(type == 'object' && self.option.rootContainer.nodeType == 1 && typeof self.option.rootContainer.nodeName == 'string')
-                    self.rootContainer = self.option.rootContainer;
-                else {
-                    console.error('orchids: unknown root container, it should be one of follows: id selector, dom object.');
-                    self.rootContainer = document.body;
-                }
-            }
-            else if (container.rootContainer) {
-                self.rootContainer = container.rootContainer;
-            }
-            else self.rootContainer = document.body;
+            init(self);
         },
         // destroy current dialog
         __orchids__destroy: function () {
@@ -95,15 +37,15 @@ var newDialog = function () {
             self.onDestroy();
 
             self.el.classList.remove('orchids-active');
-            self.option.animate ? (
+
+            if (self.option.animate)
                 // has animation
                 setTimeout(function () {
                     self.el.remove()
-                }, 500)
-            ) : (
+                }, 500);
+            else
                 // no animation
-                self.el.remove()
-            );
+                self.el.remove();
         },
 
         // show current dialog

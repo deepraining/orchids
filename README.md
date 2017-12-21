@@ -10,9 +10,9 @@
 
 ## documents
 
-* [orchids](./doc/orchids.md)
-* [Page](./doc/page.md)
-* [Fragment](./doc/fragment.md)
-* [Dialog](./doc/dialog.md)
-* [tips](./doc/tips.md)
+* [orchids](./docs/orchids.md)
+* [Page](./docs/page.md)
+* [Fragment](./docs/fragment.md)
+* [Dialog](./docs/dialog.md)
+* [tips](./docs/tips.md)
 
