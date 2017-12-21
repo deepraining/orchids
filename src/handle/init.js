@@ -3,7 +3,7 @@
 
 var defaultAppOption = require('../option/app');
 var extend = require('../util/extend');
-var container = require('../util/container');
+var container = require('../data/container');
 var getRootContainer = require('../util/get_root_container');
 var app = require('../app');
 

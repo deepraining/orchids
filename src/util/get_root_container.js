@@ -8,7 +8,7 @@ module.exports = (container) => {
     var type = typeof container;
 
     // no container
-    if (!container) return;
+    if (!container) return null;
     // selector
     else if (type == 'string') return document.getElementById(container);
     // dom
@@ -17,5 +17,7 @@ module.exports = (container) => {
     else {
         logger.error('unknown root container, it should be one of follows: id selector, dom object.');
         logger.info('choose document.body instead.');
+
+        return null;
     }
 };

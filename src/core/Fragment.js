@@ -108,7 +108,7 @@ var newFragment = function () {
 
             for (i = 0, il = self.option.subFragments.length; i < il; i++) {
                 fragmentName = self.option.subFragments[i];
-                fragment = container.fragments[fragmentName];
+                fragment = container.fragmentDefinitions[fragmentName];
                 if (!fragment) {
                     console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
                     return;

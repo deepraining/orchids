@@ -4,6 +4,7 @@
 var container = require('../data/container');
 var logger = require('../util/logger');
 var extend = require('../util/extend');
+var makeDialogDefinition = require('../make/dialog_definition');
 var makeNewDialog = require('../core/dialog');
 var defaultDialogOption = require('../option/dialog');
 var app = require('../app');
@@ -28,9 +29,9 @@ module.exports = (name, attributes, option, parentName) => {
      * @param parentName
      */
     var getParentAttributes = (parentName) => {
-        var parent = container.dialogs[parentName],
+        var parent = container.dialogDefinitions[parentName],
             parentOption = parent.option,
-            parentAttributes = container.dialogsAttributes[parentName];
+            parentAttributes = container.dialogAttributes[parentName];
 
         parentAttributes && allParentAttributes.unshift(parentAttributes);
         parentOption && allParentOption.unshift(parentOption);
@@ -42,18 +43,18 @@ module.exports = (name, attributes, option, parentName) => {
         return;
     }
 
-    if (container.dialogsAttributes[name]) {
+    if (container.dialogAttributes[name]) {
         logger.throwError('dialog "' + name + '" has been registered.');
     }
 
     if (arguments.length == 1) {
-        logger.error('Register dialog "' + name + '" with no extend attributes is not ok, please check it.');
+        logger.error('Register dialog "' + name + '" with no extend attributes.');
         return;
     }
     // (name, attr)
     else if (arguments.length == 2) {
         option = {};
-        parentName = '';
+        parentName = void 0;
     }
     // (name, attr, parent)
     else if (arguments.length == 3 && typeof arguments[2] == 'string') {
@@ -61,8 +62,8 @@ module.exports = (name, attributes, option, parentName) => {
         option = {};
     }
 
-    // put attributes to dialogsAttributes container
-    container.dialogsAttributes[name] = attributes;
+    // put attributes to dialogAttributes container
+    container.dialogAttributes[name] = attributes;
 
     // new Dialog Object
     var newDialog = makeNewDialog();
@@ -86,10 +87,5 @@ module.exports = (name, attributes, option, parentName) => {
 
     dialogOption.name = name;
     dialogOption.route = app.option.route;
-    container.dialogs[name] = {
-        parent: parentName,
-        option: dialogOption,
-        singleton: !!dialogOption.singleton,
-        dialog: newDialog
-    };
+    container.dialogDefinitions[name] = makeDialogDefinition(dialogOption, newDialog, parentName, dialogOption.singleton);
 };

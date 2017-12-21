@@ -14,24 +14,24 @@ app.onpopstate = function (event) {
     var dialogInstance,
         prevDialogInstance,
         pageInstance,
-        i, il, dialogsInstancesKeys;
+        i, il, dialogModelsKeys;
 
     // if user page back by press back button of phone, close all dialogs first
-    dialogsInstancesKeys = Object.keys(app.dialogsInstances);
-    if (!!dialogsInstancesKeys.length) {
-        for (il = dialogsInstancesKeys.length, i = il - 1; i >= 0; i--) {
+    dialogModelsKeys = Object.keys(app.dialogModels);
+    if (!!dialogModelsKeys.length) {
+        for (il = dialogModelsKeys.length, i = il - 1; i >= 0; i--) {
             // first dialog
             i <= 0 ? (
                 pageInstance = app.getCurrentPage(),
-                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
+                    dialogInstance = app.dialogModels[dialogModelsKeys[i]],
                     dialogInstance.forResult && !!pageInstance.page.onPageResult && pageInstance.page.onPageResult(dialogInstance.dialog.__orchids__result || {}),
                     // destroy
                     dialogInstance.dialog.__orchids__destroy(),
                     app.deleteCurrentDialog()
             ) : (
                 // at least two dialogs
-                prevDialogInstance = app.dialogsInstances[dialogsInstancesKeys[i - 1]],
-                    dialogInstance = app.dialogsInstances[dialogsInstancesKeys[i]],
+                prevDialogInstance = app.dialogModels[dialogModelsKeys[i - 1]],
+                    dialogInstance = app.dialogModels[dialogModelsKeys[i]],
                     dialogInstance.forResult && !!prevDialogInstance.dialog.onDialogResult && prevDialogInstance.dialog.onDialogResult(dialogInstance.dialog.__orchids__result || {}),
                     // destroy
                     dialogInstance.dialog.__orchids__destroy(),
@@ -118,8 +118,8 @@ app.getPrevPage = function () {
  */
 app.deletePage = function (index) {
     typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(app.pagesInstances);
-    delete app.pagesInstances[keys[(keys.length + index) % keys.length]];
+    var keys = Object.keys(app.pageModels);
+    delete app.pageModels[keys[(keys.length + index) % keys.length]];
 };
 
 /**
@@ -138,13 +138,13 @@ app.deleteCurrentPage = function () {
 app.getDialogById = function (id) {
     var keys;
     if (!id) {
-        keys = Object.keys(app.dialogsInstances);
+        keys = Object.keys(app.dialogModels);
         if (!keys.length) return null;
-        return app.dialogsInstances[keys[keys.length - 1]].dialog;
+        return app.dialogModels[keys[keys.length - 1]].dialog;
     }
     else {
         try {
-            return app.dialogsInstances[idPrefix + id].dialog;
+            return app.dialogModels[idPrefix + id].dialog;
         } catch (e) {
             return null;
         }
@@ -159,11 +159,11 @@ app.getDialogById = function (id) {
  */
 app.getDialog = function (index) {
     typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(app.dialogsInstances);
+    var keys = Object.keys(app.dialogModels);
 
     if (keys.length + index < 0) return null;
 
-    return app.dialogsInstances[keys[(keys.length + index) % keys.length]];
+    return app.dialogModels[keys[(keys.length + index) % keys.length]];
 };
 
 /**
@@ -200,8 +200,8 @@ app.getPrevDialog = function () {
  */
 app.deleteDialog = function (index) {
     typeof index == 'undefined' && (index = -1);
-    var keys = Object.keys(app.dialogsInstances);
-    delete app.dialogsInstances[keys[(keys.length + index) % keys.length]];
+    var keys = Object.keys(app.dialogModels);
+    delete app.dialogModels[keys[(keys.length + index) % keys.length]];
 };
 
 /**
@@ -216,13 +216,13 @@ app.deleteCurrentDialog = function () {
  */
 app.back = function () {
     // has dialog active
-    if (Object.keys(app.dialogsInstances).length >= 1) {
+    if (Object.keys(app.dialogModels).length >= 1) {
         app.dialogBack();
         return;
     }
 
     app.option.route ? (
-        Object.keys(app.pagesInstances).length >= 2 && history.back()
+        Object.keys(app.pageModels).length >= 2 && history.back()
     ) : app.pageBack();
 };
 
@@ -234,7 +234,7 @@ app.pageBack = function () {
         prevInstance;
 
     // if current pages remain only 1, back action is invalid.
-    if (Object.keys(app.pagesInstances).length <= 1) return;
+    if (Object.keys(app.pageModels).length <= 1) return;
 
     instance = app.getCurrentPage();
     prevInstance = app.getPrevPage();
@@ -264,7 +264,7 @@ app.dialogBack = function () {
         prevInstanceIsDialog = !1;
 
     // if current dialogs remain 0, back action is invalid.
-    if (Object.keys(app.dialogsInstances).length <= 0) return;
+    if (Object.keys(app.dialogModels).length <= 0) return;
 
     instance = app.getCurrentDialog();
     // for result

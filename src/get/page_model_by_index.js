@@ -5,17 +5,17 @@ var container = require('../data/container');
 var vars = require('../data/vars');
 
 /**
- * get page instance
- * @param index Page index
+ * get page model
+ * @param index Page index, if not set, return current page
  * @returns {*}
  */
 module.exports = (index) => {
     typeof index == 'undefined' && (index = -1);
 
-    var keys = Object.keys(container.pagesInstances);
+    var keys = Object.keys(container.pageModels);
     var keysLength = keys.length;
 
     if (keysLength + index < 0 || index > keysLength - 1) return null;
 
-    return container.pagesInstances[keys[(keysLength + index) % keysLength]];
+    return container.pageModels[keys[(keysLength + index) % keysLength]];
 };

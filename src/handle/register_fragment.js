@@ -4,6 +4,7 @@
 var container = require('../data/container');
 var logger = require('../util/logger');
 var extend = require('../util/extend');
+var makeFragmentDefinition = require('../make/fragment_definition');
 var makeNewFragment = require('../core/fragment');
 var defaultFragmentOption = require('../option/fragment');
 
@@ -27,9 +28,9 @@ module.exports = (name, attributes, option, parentName) => {
      * @param parentName
      */
     var getParentAttributes = (parentName) => {
-        var parent = container.fragments[parentName],
+        var parent = container.fragmentDefinitions[parentName],
             parentOption = parent.option,
-            parentAttributes = container.fragmentsAttributes[parentName];
+            parentAttributes = container.fragmentAttributes[parentName];
 
         parentAttributes && allParentAttributes.unshift(parentAttributes);
         parentOption && allParentOption.unshift(parentOption);
@@ -41,18 +42,18 @@ module.exports = (name, attributes, option, parentName) => {
         return;
     }
 
-    if (container.fragmentsAttributes[name]) {
+    if (container.fragmentAttributes[name]) {
         logger.throwError('fragment "' + name + '" has been registered.');
     }
 
     if (arguments.length == 1) {
-        logger.error('Register fragment "' + name + '" with no extend attributes is not ok, please check it.');
+        logger.error('Register fragment "' + name + '" with no extend attributes.');
         return;
     }
     // (name, attr)
     else if (arguments.length == 2) {
         option = {};
-        parentName = '';
+        parentName = void 0;
     }
     // (name, attr, parent)
     else if (arguments.length == 3 && typeof arguments[2] == 'string') {
@@ -60,8 +61,8 @@ module.exports = (name, attributes, option, parentName) => {
         option = {};
     }
 
-    // put attributes to fragmentsAttributes container
-    container.fragmentsAttributes[name] = attributes;
+    // put attributes to fragmentAttributes container
+    container.fragmentAttributes[name] = attributes;
 
     // new Fragment Object
     var newFragment = makeNewFragment();
@@ -84,9 +85,5 @@ module.exports = (name, attributes, option, parentName) => {
     extend(!0, fragmentOption, option);
 
     fragmentOption.name = name;
-    container.fragments[name] = {
-        parent: parentName,
-        option: fragmentOption,
-        fragment: newFragment
-    };
+    container.fragmentDefinitions[name] = makeFragmentDefinition(fragmentOption, newFragment, parentName);
 };

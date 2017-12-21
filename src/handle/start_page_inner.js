@@ -5,9 +5,11 @@ var container = require('../data/container');
 var vars = require('../data/vars');
 var logger = require('../util/logger');
 var extend = require('../util/extend');
+var makePageModel = require('../make/page_model');
+var makeSingletonPageModel = require('../make/singleton_page_model');
 var util = require('../util');
 var app = require('../app');
-var getCurrentPage = require('./get_current_page');
+var getCurrentPageModel = require('../get/current_page_model');
 
 /**
  * initialize a Page and show it
@@ -19,44 +21,39 @@ var getCurrentPage = require('./get_current_page');
 module.exports = (name, data, forResult, prepareResultData) => {
 
     // has dialog active
-    if (Object.keys(container.dialogsInstances).length) {
+    if (Object.keys(container.dialogModels).length) {
         logger.error('Currently has dialog in present, can not start a page.');
         return;
     }
 
-    var page = container.pages[name]; // the Page Object
+    var pageDefinition = container.pageDefinitions[name]; // the Page Object
 
-    if (!page) {
+    if (!pageDefinition) {
         logger.error('The Page "' + name + '" you called is not registered.');
         return;
     }
 
-    // current page instance
-    var currentPageInstance = getCurrentPage();
+    // current page model
+    var currentPageModel = getCurrentPageModel();
 
-    if (currentPageInstance && currentPageInstance.singleton) {
-        logger.error('The Page "' + currentPageInstance.name + '" is singleton, and is active currently, can not start another page.');
+    if (currentPageModel && currentPageModel.singleton) {
+        logger.error('The Page "' + currentPageModel.name + '" is singleton, and is active currently, can not start another page.');
         return;
     }
 
     // call current page's __orchids__hide method
-    currentPageInstance && currentPageInstance.page.__orchids__hide();
+    currentPageModel && currentPageModel.page.__orchids__hide();
 
     // singleton
-    if (page.option.singleton) {
-        // singleton instance of the page
-        var singletonInstance = container.singletonPagesInstances[name];
+    if (pageDefinition.option.singleton) {
+        // singleton model of the page
+        var singletonModel = container.singletonPageModels[name];
 
         // has initialized before
-        if (singletonInstance) {
-            container.pagesInstances[vars.idPrefix + singletonInstance.id] = {
-                name: name,
-                forResult: !!forResult,
-                page: singletonInstance.page,
-                singleton: !0
-            };
+        if (singletonModel) {
+            container.pageModels[vars.idPrefix + singletonModel.id] = makePageModel(name, forResult, singletonModel.page, !0);
 
-            forResult ? singletonInstance.page.__orchids__show(!0, !0, prepareResultData) : singletonInstance.page.__orchids__show(!0);
+            forResult ? singletonModel.page.__orchids__show(!0, !0, prepareResultData) : singletonModel.page.__orchids__show(!0);
 
             typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
@@ -67,31 +64,23 @@ module.exports = (name, data, forResult, prepareResultData) => {
     }
 
     // Page option
-    var pageOption = extend(true, {}, page.option);
+    var pageOption = extend(true, {}, pageDefinition.option);
     // pageId
     pageOption.pageId = ++vars.pageCount;
     // route
     pageOption.route = app.option.route;
 
     // initialize page
-    var instance = new page.page(pageOption, data || {});
+    var instance = new pageDefinition.page(pageOption, data || {});
 
 
     forResult && instance.prepareForResult(prepareResultData);
 
-    if (page.option.singleton)
-        container.singletonPagesInstances[name] = {
-            id: pageOption.pageId,
-            page: instance
-        };
+    if (pageDefinition.option.singleton)
+        container.singletonPageModels[name] = makeSingletonPageModel(pageOption.pageId, instance);
 
 
-    container.pagesInstances[vars.idPrefix + pageOption.pageId] = {
-        name: name,
-        forResult: !!forResult,
-        page: instance,
-        singleton: !!pageOption.singleton
-    };
+    container.pageModels[vars.idPrefix + pageOption.pageId] = makePageModel(name, forResult, instance, pageOption.singleton);
 
     typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 

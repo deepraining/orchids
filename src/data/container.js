@@ -7,25 +7,26 @@ module.exports = {
      */
     rootContainer: document.body,
     /**
-     * container of all registered pages
+     * container of all registered page definitions
      *
      * @type {{}}
      */
-    pages: {
+    pageDefinitions: {
         /**
          * pageName: {
          *     option: option,
          *     parent: void 0, // parent page name
-         *     page: Page // Page Object
+         *     page: Page, // Page Object
+         *     singleton: true/false // whether is singleton instance
          * }
          */
     },
     /**
-     * container of all registered Pages Attributes
+     * container of all registered Page Attributes
      *
      * @type {{}}
      */
-    pagesAttributes: {
+    pageAttributes: {
         /**
          * pageName: {
          *     fieldName: attr/method
@@ -33,13 +34,13 @@ module.exports = {
          */
     },
     /**
-     * container of all initialized Page instances
+     * container of all initialized Page models
      *
      * @type {{}}
      */
-    pagesInstances: {
+    pageModels: {
         /**
-         * // for instance id-1, id-2. Simple number id is array, could not refactor sequence
+         * // example: id-1, id-2. Simple number id is array, could not refactor sequence
          * 'id'-id: {
          *     name: pageName, // Page name
          *     forResult: true/false, // whether current page is initialized by startPageForResult
@@ -49,11 +50,11 @@ module.exports = {
          */
     },
     /**
-     * container of all initialized singleton Page instances
+     * container of all initialized singleton Page models
      *
      * @type {{}}
      */
-    singletonPagesInstances: {
+    singletonPageModels: {
         /**
          * pageName: {
          *     id: id, // page id
@@ -62,25 +63,26 @@ module.exports = {
          */
     },
     /**
-     * container of all registered dialogs
+     * container of all registered dialog definitions
      *
      * @type {{}}
      */
-    dialogs: {
+    dialogDefinitions: {
         /**
          * dialogName: {
          *     option: option,
          *     parent: void 0, // parent dialog name
-         *     dialog: Dialog // Dialog Object
+         *     dialog: Dialog, // Dialog Object
+         *     singleton: true/false // whether is singleton instance.
          * }
          */
     },
     /**
-     * container of all registered Dialogs Attributes
+     * container of all registered Dialog Attributes
      *
      * @type {{}}
      */
-    dialogsAttributes: {
+    dialogAttributes: {
         /**
          * dialogName: {
          *     fieldName: attr/method
@@ -88,13 +90,13 @@ module.exports = {
          */
     },
     /**
-     * container of all initialized Dialog instances
+     * container of all initialized Dialog models
      *
      * @type {{}}
      */
-    dialogsInstances: {
+    dialogModels: {
         /**
-         * // for instance id-1, id-2. Simple number id is array, could not refactor sequence
+         * // example: id-1, id-2. Simple number id is array, could not refactor sequence
          * 'id'-id: {
          *     name: dialogName, // Dialog name
          *     forResult: true/false, // whether current dialog is initialized by startDialogForResult
@@ -104,11 +106,11 @@ module.exports = {
          */
     },
     /**
-     * container of all initialized singleton Dialog instances
+     * container of all initialized singleton Dialog models
      *
      * @type {{}}
      */
-    singletonDialogsInstances: {
+    singletonDialogModels: {
         /**
          * dialogName: {
          *     id: id, // dialog id
@@ -117,11 +119,11 @@ module.exports = {
          */
     },
     /**
-     * container of all registered fragments
+     * container of all registered fragment definitions
      *
      * @type {{}}
      */
-    fragments: {
+    fragmentDefinitions: {
         /**
          * fragmentName: {
          *     option: option,
@@ -131,11 +133,11 @@ module.exports = {
          */
     },
     /**
-     * container of all registered Fragments Attributes
+     * container of all registered Fragment Attributes
      *
      * @type {{}}
      */
-    fragmentsAttributes: {
+    fragmentAttributes: {
         /**
          * fragmentName: {
          *     fieldName: attr/method

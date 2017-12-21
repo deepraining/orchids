@@ -5,8 +5,10 @@ var container = require('../data/container');
 var vars = require('../data/vars');
 var logger = require('../util/logger');
 var extend = require('../util/extend');
-var getCurrentPage = require('./get_current_page');
-var getCurrentDialog = require('./get_current_dialog');
+var makeDialogModel = require('../make/dialog_model');
+var makeSingletonDialogModel = require('../make/singleton_dialog_model');
+var getCurrentPageModel = require('../get/current_page_model');
+var getCurrentDialogModel = require('../get/current_dialog_model');
 
 /**
  * initialize a Dialog and show it
@@ -17,44 +19,39 @@ var getCurrentDialog = require('./get_current_dialog');
  */
 module.exports = (name, data, forResult, prepareResultData) => {
 
-    var dialog = container.dialogs[name]; // the Dialog Object
+    var dialog = container.dialogDefinitions[name]; // the Dialog Object
 
     if (!dialog) {
         logger.error('The Dialog "' + name + '" you called is not registered.');
         return;
     }
 
-    // current dialog instance
-    var currentDialogInstance = getCurrentDialog();
+    // current dialog model
+    var currentDialogModel = getCurrentDialogModel();
 
-    if (currentDialogInstance && currentDialogInstance.singleton) {
-        logger.error('The Dialog "' + currentDialogInstance.name + '" is singleton, and is active currently, can not start another dialog.');
+    if (currentDialogModel && currentDialogModel.singleton) {
+        logger.error('The Dialog "' + currentDialogModel.name + '" is singleton, and is active currently, can not start another dialog.');
         return;
     }
 
-    // current page instance
-    var currentPageInstance = getCurrentPage();
+    // current page model
+    var currentPageModel = getCurrentPageModel();
 
     // call current dialog's __orchids__hide method
-    if (currentDialogInstance) currentDialogInstance.dialog.onHide();
+    if (currentDialogModel) currentDialogModel.dialog.onHide();
     // call current page's __orchids__hide method
-    else if (currentPageInstance) currentPageInstance.page.onHide();
+    else if (currentPageModel) currentPageModel.page.onHide();
 
     // singleton
     if (dialog.option.singleton) {
-        // singleton instance of the dialog
-        var singletonInstance = container.singletonDialogsInstances[name];
+        // singleton model of the dialog
+        var singletonModel = container.singletonDialogModels[name];
 
         // has initialized before
-        if (singletonInstance) {
-            container.dialogsInstances[vars.idPrefix + singletonInstance.id] = {
-                name: name,
-                forResult: !!forResult,
-                dialog: singletonInstance.dialog,
-                singleton: !0
-            };
+        if (singletonModel) {
+            container.dialogModels[vars.idPrefix + singletonModel.id] = makeDialogModel(name, forResult, singletonModel.dialog, !0);
 
-            forResult ? singletonInstance.dialog.__orchids__show(!0, !0, prepareResultData) : singletonInstance.dialog.__orchids__show(!0);
+            forResult ? singletonModel.dialog.__orchids__show(!0, !0, prepareResultData) : singletonModel.dialog.__orchids__show(!0);
 
             return;
         }
@@ -72,16 +69,8 @@ module.exports = (name, data, forResult, prepareResultData) => {
     forResult && instance.prepareForResult(prepareResultData);
 
     if (dialog.option.singleton)
-        container.singletonDialogsInstances[name] = {
-            id: dialogOption.dialogId,
-            dialog: instance
-        };
+        container.singletonDialogModels[name] = makeSingletonDialogModel(dialogOption.dialogId, instance);
 
 
-    container.dialogsInstances[vars.idPrefix + dialogOption.dialogId] = {
-        name: name,
-        forResult: !!forResult,
-        dialog: instance,
-        singleton: !!dialogOption.singleton
-    };
+    container.dialogModels[vars.idPrefix + dialogOption.dialogId] = makeDialogModel(name, forResult, instance, dialogOption.singleton);
 };

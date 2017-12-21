@@ -4,6 +4,7 @@
 var container = require('../data/container');
 var logger = require('../util/logger');
 var extend = require('../util/extend');
+var makePageDefinition = require('../make/page_definition');
 var makeNewPage = require('../core/page');
 var defaultPageOption = require('../option/page');
 var app = require('../app');
@@ -28,9 +29,9 @@ module.exports = (name, attributes, option, parentName) => {
      * @param parentName
      */
     var getParentAttributes = (parentName) => {
-        var parent = container.pages[parentName],
+        var parent = container.pageDefinitions[parentName],
             parentOption = parent.option,
-            parentAttributes = container.pagesAttributes[parentName];
+            parentAttributes = container.pageAttributes[parentName];
 
         parentAttributes && allParentAttributes.unshift(parentAttributes);
         parentOption && allParentOption.unshift(parentOption);
@@ -42,18 +43,18 @@ module.exports = (name, attributes, option, parentName) => {
         return;
     }
 
-    if (container.pagesAttributes[name]) {
+    if (container.pageAttributes[name]) {
         logger.throwError('page "' + name + '" has been registered.');
     }
 
     if (arguments.length == 1) {
-        logger.error('Register page "' + name + '" with no extend attributes is not ok, please check it.');
+        logger.error('Register page "' + name + '" with no extend attributes.');
         return;
     }
     // (name, attr)
     else if (arguments.length == 2) {
         option = {};
-        parentName = '';
+        parentName = void 0;
     }
     // (name, attr, parent)
     else if (arguments.length == 3 && typeof arguments[2] == 'string') {
@@ -61,8 +62,8 @@ module.exports = (name, attributes, option, parentName) => {
         option = {};
     }
 
-    // put attributes to pagesAttributes container
-    container.pagesAttributes[name] = attributes;
+    // put attributes to pageAttributes container
+    container.pageAttributes[name] = attributes;
 
     // new Page Object
     var newPage = makeNewPage();
@@ -86,10 +87,5 @@ module.exports = (name, attributes, option, parentName) => {
 
     pageOption.name = name;
     pageOption.route = app.option.route;
-    container.pages[name] = {
-        parent: parentName,
-        option: pageOption,
-        singleton: !!pageOption.singleton,
-        page: newPage
-    };
+    container.pageDefinitions[name] = makePageDefinition(pageOption, newPage, parentName, pageOption.singleton);
 };

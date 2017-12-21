@@ -5,19 +5,19 @@ var container = require('../data/container');
 var vars = require('../data/vars');
 
 /**
- * get page instance
+ * get page model
  * @param id Page id, if not set, return current page
  * @returns {*}
  */
 module.exports = (id) => {
     if (!id) {
-        var keys = Object.keys(container.pagesInstances);
+        var keys = Object.keys(container.pageModels);
         if (!keys.length) return null;
-        return container.pagesInstances[keys[keys.length - 1]];
+        return container.pageModels[keys[keys.length - 1]];
     }
     else {
         try {
-            return container.pagesInstances[vars.idPrefix + id];
+            return container.pageModels[vars.idPrefix + id];
         } catch (e) {
             return null;
         }

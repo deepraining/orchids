@@ -129,7 +129,7 @@ module.exports = () => {
 
             for (i = 0, il = self.option.fragments.length; i < il; i++) {
                 fragmentName = self.option.fragments[i];
-                fragment = container.fragments[fragmentName];
+                fragment = container.fragmentDefinitions[fragmentName];
                 if (!fragment) {
                     console.error('Render fragment "' + fragmentName + '" failed: no such a fragment registered.');
                     return;
