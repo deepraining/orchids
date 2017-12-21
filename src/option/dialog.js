@@ -33,9 +33,5 @@ module.exports = {
     /**
      * whether current dialog is singleton or not
      */
-    singleton: !1,
-    /**
-     * id selector / dom: custom root container for current dialog
-     */
-    rootContainer: void 0
+    singleton: !1
 };

@@ -43,9 +43,5 @@ module.exports = {
     /**
      * whether current page is singleton
      */
-    singleton: !1,
-    /**
-     * id selector / dom: custom root container for current page
-     */
-    rootContainer: void 0
+    singleton: !1
 };

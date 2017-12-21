@@ -1,29 +1,35 @@
 
 'use strict';
 
+var container = require('../data/container');
+var app = require('../app');
+var util = require('../util');
+var getCurrentPageModel = require('../get/current_page_model');
+var getPrevPageModel = require('../get/prev_page_model');
+var deleteCurrentPageModel = require('../delete/current_page_model');
+
 /**
  * back to prev page
  */
 module.exports = () => {
-    var instance,
-        prevInstance;
 
     // if current pages remain only 1, back action is invalid.
-    if (Object.keys(app.pageModels).length <= 1) return;
+    if (Object.keys(container.pageModels).length <= 1) return;
 
-    instance = app.getCurrentPage();
-    prevInstance = app.getPrevPage();
+    var currentModel = getCurrentPageModel();
+    var prevModel = getPrevPageModel();
     // for result
-    instance.forResult && (
-        !!prevInstance.page.onPageResult && prevInstance.page.onPageResult(instance.page.__orchids__result || {})
-    );
+    if (currentModel.forResult) {
+        prevModel.page.onPageResult && prevModel.page.onPageResult(currentModel.page.__orchids__result || {});
+    }
     // destroy or hide
-    instance.singleton ? instance.page.__orchids__hide(!0) : instance.page.__orchids__destroy();
+    currentModel.singleton ? currentModel.page.__orchids__hide(!0) : currentModel.page.__orchids__destroy();
     // call prev page's __orchids__show method
-    prevInstance.page.__orchids__show();
-    app.deleteCurrentPage();
+    prevModel.page.__orchids__show();
 
-    !!app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+    deleteCurrentPageModel();
+
+    app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
     util.decreasePagesCount();
 };
