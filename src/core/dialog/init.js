@@ -47,7 +47,7 @@ module.exports = (self) => {
     /**
      * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
      */
-    setTimeout(function () {
+    setTimeout(() => {
         self.el.classList.add('orchids-active')
     }, 100);
 };

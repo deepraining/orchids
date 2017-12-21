@@ -27,6 +27,8 @@ module.exports = (self, id) => {
     // create fragment if not created, or call onShow method
     if (!instance.__orchids__initialized) {
         instance.onCreate && instance.onCreate();
+        // create sub fragments
+        instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
         instance.__orchids__initialized = !0;
     }
     else {
@@ -39,8 +41,6 @@ module.exports = (self, id) => {
 
     // update current active fragment id
     self.__orchids__currentFragmentId = id;
-    // create sub fragments if not created
-    instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
 
     if (self.option.fragmentAnimateDirection == 'vertical')
         self.__orchids__fragmentsContainer.style.transform = 'translateY(' + (0 - self.__orchids__fragmentHeight * (id - 1)) + 'px)';

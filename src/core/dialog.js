@@ -26,12 +26,19 @@ var newDialog = () => {
 
     Dialog.prototype = {
         constructor: Dialog,
+        /**
+         * init dialog
+         * @private
+         */
         __orchids__init: function() {
             var self = this;
 
             init(self);
         },
-        // destroy current dialog
+        /**
+         * destroy current dialog
+         * @private
+         */
         __orchids__destroy: function () {
             var self = this;
             self.onDestroy();
@@ -40,15 +47,19 @@ var newDialog = () => {
 
             if (self.option.animate)
                 // has animation
-                setTimeout(function () {
+                setTimeout(() => {
                     self.el.remove()
                 }, 500);
             else
                 // no animation
                 self.el.remove();
         },
-
-        // show current dialog
+        /**
+         * show current dialog
+         * @param forResult
+         * @param prepareResultData
+         * @private
+         */
         __orchids__show: function (forResult, prepareResultData) {
             var self = this;
 
@@ -61,8 +72,10 @@ var newDialog = () => {
 
             forResult && self.prepareForResult(prepareResultData);
         },
-
-        // hide current dialog
+        /**
+         * hide current dialog
+         * @private
+         */
         __orchids__hide: function () {
             var self = this;
 
@@ -72,13 +85,15 @@ var newDialog = () => {
              */
             self.el.classList.remove('orchids-active');
         },
-
-        // render a dialog after a dialog is initialized
+        /**
+         * render a dialog after a dialog is initialized
+         * @param data
+         */
         onCreate: function(data) {},
-
-        // pre handle before destroy a dialog
+        /**
+         * pre handle before destroy a dialog
+         */
         onDestroy: function() {},
-
         /**
          * called when back dialog from other dialog
          */
@@ -87,10 +102,9 @@ var newDialog = () => {
          * called when start another dialog
          */
         onHide: function () {},
-
         /**
          * set the result if this dialog is called by startDialogForResult method,
-         * and the returned value will be used as the param of the onDialogResult method of last dialog
+         * and the returned value will be used as the param of the onDialogResult method of last dialog or page
          *
          * @param {*} data
          */

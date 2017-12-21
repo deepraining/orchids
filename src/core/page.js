@@ -39,12 +39,19 @@ module.exports = () => {
 
     Page.prototype = {
         constructor: Page,
+        /**
+         * init page
+         * @private
+         */
         __orchids__init: function() {
             var self = this;
 
             init(self);
         },
-        // render fragments
+        /**
+         * render fragments
+         * @private
+         */
         __orchids__renderFragments: function() {
             var self = this;
 
@@ -66,57 +73,64 @@ module.exports = () => {
         getFragment: function(id) {
             var self = this;
             id = id || 1;
-            try {
-                return self.__orchids__fragmentsInstances[id];
-            } catch (e) {
-                return null;
-            }
+
+            return self.__orchids__fragmentsInstances[id] || null;
         },
-        // make a forward route
+        /**
+         * make a forward route
+         * @private
+         */
         __orchids__routeForward: function() {
             var self = this;
 
             routeForward(self);
         },
-
-        // destroy current page
+        /**
+         * destroy current page
+         * @private
+         */
         __orchids__destroy: function() {
             var self = this;
 
             destroy(self);
         },
-
-        // hide current page
+        /**
+         * hide current page
+         * @param isSingleton
+         * @private
+         */
         __orchids__hide: function(isSingleton) {
             var self = this;
 
             hide(self, isSingleton);
         },
-
-        // show current page
+        /**
+         * show current page
+         * @param isSingleton
+         * @param forResult
+         * @param prepareResultData
+         * @private
+         */
         __orchids__show: function(isSingleton, forResult, prepareResultData) {
             var self = this;
 
             show(self, isSingleton, forResult, prepareResultData);
         },
-
         /**
          * render a page after a page is initialized
          * @param data
          */
         onCreate: function(data) {},
-
         /**
          * pre handle before destroy a page
          */
         onDestroy: function() {},
-
         /**
-         * called when back page from other page
+         * called when back page from other page or dialog
          */
         onShow: function () {},
         /**
-         * called when start another page
+         * called when start another page or dialog
          */
         onHide: function () {},
         /**

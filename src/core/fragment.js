@@ -34,12 +34,19 @@ var newFragment = () => {
 
     Fragment.prototype = {
         constructor: Fragment,
+        /**
+         * init fragment
+         * @private
+         */
         __orchids__init: function() {
             var self = this;
 
             init(self);
         },
-        // render sub fragments
+        /**
+         * render sub fragments
+         * @private
+         */
         __orchids__renderSubFragments: function () {
             var self = this;
 
@@ -54,17 +61,23 @@ var newFragment = () => {
 
             showSubFragment(self, id);
         },
-        // called when current page is destroy
+        /**
+         * called when current page is destroy
+         * @private
+         */
         __orchids__destroy: function () {
             var self = this;
 
             // call all sub fragments's __orchids__destroy
-            Object.keys(self.__orchids__subFragmentsInstances).map(function (id) {
+            Object.keys(self.__orchids__subFragmentsInstances).forEach((id) => {
                 self.__orchids__subFragmentsInstances[id].__orchids__destroy();
             });
             self.onDestroy();
         },
-        // hide current fragment
+        /**
+         * hide current fragment
+         * @private
+         */
         __orchids__hide: function () {
             var self = this;
             // call active sub fragment's __orchids__hide
@@ -75,8 +88,10 @@ var newFragment = () => {
 
             self.onHide();
         },
-
-        // show current sub fragment
+        /**
+         * show current sub fragment
+         * @private
+         */
         __orchids__show: function () {
             var self = this;
 
@@ -94,11 +109,8 @@ var newFragment = () => {
         getSubFragment: function (id) {
             var self = this;
             id = id || 1;
-            try {
-                return self.__orchids__subFragmentsInstances[id];
-            } catch (e) {
-                return null;
-            }
+
+            return self.__orchids__subFragmentsInstances[id] || null;
         },
         /**
          * render a fragment after a fragment is initialized
@@ -108,7 +120,6 @@ var newFragment = () => {
          * pre handle before destroy a fragment
          */
         onDestroy: function() {},
-
         /**
          * called when showed, not include first show while created
          */

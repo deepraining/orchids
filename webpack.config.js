@@ -1,6 +1,10 @@
 
 'use strict';
 
+var webpack = require('webpack');
+var moment = require('moment');
+var packageJson = require('./package.json');
+
 module.exports = {
   entry:{
     orchids:'./src/index.js'
@@ -25,5 +29,16 @@ module.exports = {
         loader:  'style-loader!css-loader'
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.BannerPlugin(`
+    orchids v${packageJson.version}
+
+    https://github.com/senntyou/orchids
+
+    @senntyou <jiangjinbelief@163.com>
+
+    ${moment().format('YYYY-MM-DD HH:mm:ss')}
+    `)
+  ]
 };
