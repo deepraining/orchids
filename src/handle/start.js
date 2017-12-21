@@ -16,19 +16,19 @@ var startPage = require('./start_page');
  */
 module.exports = (pageName, data) => {
 
+    // this must do in the first
+    var existedPagesCount = util.getPagesCount();
+
     // if user call back page by phone button, keep it
     // here we do not consider other action, like forward, refresh, for this is main for mobile using
     window.onpopstate = onPopState;
 
     util.resetPagesCount(); // every time start application, will change reset pages count
 
-    var orchidsPage;
-    var orchidsData;
-    var existedPagesCount = util.getPagesCount();
-
     // tell the first page and option by the parameter
     if (urlParams.orchidsPage && !existedPagesCount) {
-        orchidsPage = decodeURIComponent(urlParams.orchidsPage);
+        var orchidsPage = decodeURIComponent(urlParams.orchidsPage);
+        var orchidsData;
         try {
             orchidsData = JSON.parse(decodeURIComponent(urlParams.orchidsData));
         } catch (e) {
@@ -43,5 +43,5 @@ module.exports = (pageName, data) => {
     }
 
     // first page initialize complete
-    !!app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
+    app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
 };
