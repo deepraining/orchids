@@ -71,7 +71,7 @@ module.exports = (name, data, forResult, prepareResultData) => {
     pageOption.route = app.option.route;
 
     // initialize page
-    var instance = new pageDefinition.page(pageOption, data || {});
+    var instance = new pageDefinition.page(pageOption, data);
 
 
     forResult && instance.prepareForResult(prepareResultData);

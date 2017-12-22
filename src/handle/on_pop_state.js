@@ -26,7 +26,7 @@ module.exports = (e) => {
             if (i <= 0) {
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
                 if (dialogModel.forResult && currentPageModel && currentPageModel.page.onPageResult) {
-                    currentPageModel.page.onPageResult(dialogModel.dialog.__orchids__result || {});
+                    currentPageModel.page.onPageResult(dialogModel.dialog.__orchids__result || null);
                 }
             }
             else {
@@ -34,7 +34,7 @@ module.exports = (e) => {
                 prevDialogModel = container.dialogModels[dialogModelsKeys[i - 1]];
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
                 if (dialogModel.forResult && prevDialogModel.dialog.onDialogResult) {
-                    prevDialogModel.dialog.onDialogResult(dialogModel.dialog.__orchids__result || {});
+                    prevDialogModel.dialog.onDialogResult(dialogModel.dialog.__orchids__result || null);
                 }
             }
             // destroy

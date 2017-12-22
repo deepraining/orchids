@@ -10,10 +10,8 @@ module.exports = (self, isSingleton, forResult, prepareResultData) => {
 
     self.onShow();
     // call active fragment's __orchids__show
-    try {
-        self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__show();
-    }
-    catch (e) {}
+    self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId] &&
+    self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId].__orchids__show();
 
     forResult && self.prepareForResult(prepareResultData);
 };

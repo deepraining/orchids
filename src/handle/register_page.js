@@ -45,10 +45,11 @@ module.exports = (name, attributes, option, parentName) => {
 
     if (container.pageAttributes[name]) {
         logger.throwError('page "' + name + '" has been registered.');
+        return;
     }
 
     if (arguments.length == 1) {
-        logger.error('Register page "' + name + '" with no extend attributes.');
+        logger.error('Register page "' + name + '" without extend attributes.');
         return;
     }
     // (name, attr)

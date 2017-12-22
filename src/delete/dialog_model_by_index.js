@@ -14,5 +14,7 @@ module.exports = (index) => {
     var keys = Object.keys(container.dialogModels);
     var keysLength = keys.length;
 
-    delete container.dialogModels[keys[(keysLength + index) % keysLength]];
+    index < 0 && (index += keysLength);
+
+    delete container.dialogModels[keys[index]];
 };

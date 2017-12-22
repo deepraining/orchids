@@ -16,11 +16,6 @@ module.exports = (id) => {
         return container.pageModels[keys[keys.length - 1]];
     }
     else {
-        try {
-            return container.pageModels[vars.idPrefix + id];
-        } catch (e) {
-            return null;
-        }
-
+        return container.pageModels[vars.idPrefix + id] || null;
     }
 };

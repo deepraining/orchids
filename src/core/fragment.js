@@ -81,10 +81,8 @@ var newFragment = () => {
         __orchids__hide: function () {
             var self = this;
             // call active sub fragment's __orchids__hide
-            try {
-                self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__hide();
-            }
-            catch (e) {}
+            self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId] &&
+            self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__hide();
 
             self.onHide();
         },
@@ -97,10 +95,8 @@ var newFragment = () => {
 
             self.onShow();
             // call active sub fragment's __orchids__show
-            try {
-                self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__show();
-            }
-            catch (e) {}
+            self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId] &&
+            self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId].__orchids__show();
         },
         /**
          * get sub fragment specified by id, default return the first fragment

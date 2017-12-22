@@ -31,6 +31,19 @@ module.exports = {
      */
     animateDirection: 'r2l',
     /**
+     * fragments in page
+     *
+     * note that, current page element should have a child node
+     * which has 'data-orchids-fragments' attribute,
+     * and it must has position-relative or position-absolute width specified width and height
+     * or fragments will not be rendered correctly
+     * fragments: [
+     *     'name1',
+     *     'name2'
+     * ]
+     */
+    fragments: void 0,
+    /**
      * whether to use animation when switch between fragments
      * default: true
      */

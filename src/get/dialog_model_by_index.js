@@ -15,7 +15,9 @@ module.exports = (index) => {
     var keys = Object.keys(container.dialogModels);
     var keysLength = keys.length;
 
-    if (keysLength + index < 0 || index > keysLength - 1) return null;
+    index < 0 && (index += keysLength);
 
-    return container.dialogModels[keys[(keysLength + index) % keysLength]];
+    if (index < 0 || index > keysLength - 1) return null;
+
+    return container.dialogModels[keys[index]];
 };

@@ -16,11 +16,6 @@ module.exports = (id) => {
         return container.dialogModels[keys[keys.length - 1]];
     }
     else {
-        try {
-            return container.dialogModels[vars.idPrefix + id];
-        } catch (e) {
-            return null;
-        }
-
+        return container.dialogModels[vars.idPrefix + id] || null;
     }
 };

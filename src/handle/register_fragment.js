@@ -44,10 +44,11 @@ module.exports = (name, attributes, option, parentName) => {
 
     if (container.fragmentAttributes[name]) {
         logger.throwError('fragment "' + name + '" has been registered.');
+        return;
     }
 
     if (arguments.length == 1) {
-        logger.error('Register fragment "' + name + '" with no extend attributes.');
+        logger.error('Register fragment "' + name + '" without extend attributes.');
         return;
     }
     // (name, attr)

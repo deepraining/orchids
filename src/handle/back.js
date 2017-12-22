@@ -16,6 +16,6 @@ module.exports = () => {
         return;
     }
 
-    if (app.option.route) Object.keys(container.pageModels).length >= 2 && history.back();
+    if (app.option.route) Object.keys(container.pageModels).length > 1 && history.back();
     else pageBack();
 };

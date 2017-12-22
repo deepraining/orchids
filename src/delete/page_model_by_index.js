@@ -14,5 +14,7 @@ module.exports = (index) => {
     var keys = Object.keys(container.pageModels);
     var keysLength = keys.length;
 
-    delete container.pageModels[keys[(keysLength + index) % keysLength]];
+    index < 0 && (index += keysLength);
+
+    delete container.pageModels[keys[index]];
 };

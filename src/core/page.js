@@ -21,7 +21,7 @@ module.exports = () => {
     function Page(option, data) {
         var self = this;
         self.option = extend(true, {}, option);
-        self.__orchids__data = data || {};
+        self.__orchids__data = data || null;
         /**
          * current fragment instances
          * @type {{}}

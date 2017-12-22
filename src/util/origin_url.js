@@ -12,9 +12,9 @@ var exclude = {
 };
 
 paramsKeys.forEach((key) => {
-    !exclude[key] && (query += (key + '=' + params[key]));
+    !exclude[key] && (query += ('&' + key + '=' + params[key]));
 });
 
-var originUrl = location.origin + location.pathname + (query ? '?' + query : '');
+var originUrl = location.origin + location.pathname + (query ? '?' + query.slice(1) : '');
 
 module.exports = originUrl;

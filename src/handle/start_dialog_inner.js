@@ -37,9 +37,9 @@ module.exports = (name, data, forResult, prepareResultData) => {
     // current page model
     var currentPageModel = getCurrentPageModel();
 
-    // call current dialog's __orchids__hide method
+    // call current dialog's onHide method
     if (currentDialogModel) currentDialogModel.dialog.onHide();
-    // call current page's __orchids__hide method
+    // call current page's onHide method
     else if (currentPageModel) currentPageModel.page.onHide();
 
     // singleton
@@ -63,7 +63,7 @@ module.exports = (name, data, forResult, prepareResultData) => {
     dialogOption.dialogId = ++vars.dialogCount;
 
     // initialize dialog
-    var instance = new dialog.dialog(dialogOption, data || {});
+    var instance = new dialog.dialog(dialogOption, data);
 
 
     forResult && instance.prepareForResult(prepareResultData);

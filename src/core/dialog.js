@@ -20,7 +20,7 @@ var newDialog = () => {
     function Dialog(option, data) {
         var self = this;
         self.option = extend(true, {}, option);
-        self.__orchids__data = data || {};
+        self.__orchids__data = data || null;
         self.__orchids__init();
     }
 

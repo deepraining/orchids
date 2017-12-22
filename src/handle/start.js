@@ -28,12 +28,10 @@ module.exports = (pageName, data) => {
     // tell the first page and option by the parameter
     if (urlParams.orchidsPage && !existedPagesCount) {
         var orchidsPage = decodeURIComponent(urlParams.orchidsPage);
-        var orchidsData;
+        var orchidsData = decodeURIComponent(urlParams.orchidsData);
         try {
-            orchidsData = JSON.parse(decodeURIComponent(urlParams.orchidsData));
-        } catch (e) {
-            orchidsData = {};
-        }
+            orchidsData = JSON.parse(orchidsData);
+        } catch (e) {}
 
         startPage(orchidsPage, orchidsData);
     }

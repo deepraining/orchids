@@ -45,10 +45,11 @@ module.exports = (name, attributes, option, parentName) => {
 
     if (container.dialogAttributes[name]) {
         logger.throwError('dialog "' + name + '" has been registered.');
+        return;
     }
 
     if (arguments.length == 1) {
-        logger.error('Register dialog "' + name + '" with no extend attributes.');
+        logger.error('Register dialog "' + name + '" without extend attributes.');
         return;
     }
     // (name, attr)
@@ -86,6 +87,5 @@ module.exports = (name, attributes, option, parentName) => {
     extend(!0, dialogOption, option);
 
     dialogOption.name = name;
-    dialogOption.route = app.option.route;
     container.dialogDefinitions[name] = makeDialogDefinition(dialogOption, newDialog, parentName, dialogOption.singleton);
 };
