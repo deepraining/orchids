@@ -20,6 +20,11 @@ var getCurrentPageModel = require('../get/current_page_model');
  */
 module.exports = (name, data, forResult, prepareResultData) => {
 
+    if (!vars.appInitialized) {
+        logger.error('Application is not initialized yet, please call "orchids.start" to init application before do this.');
+        return;
+    }
+
     // has dialog active
     if (Object.keys(container.dialogModels).length) {
         logger.error('Currently has dialog in present, can not start a page.');

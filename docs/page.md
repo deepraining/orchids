@@ -1,4 +1,4 @@
-# doc for Page object
+# Page
 
 ## option for init
 

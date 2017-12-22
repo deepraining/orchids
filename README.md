@@ -8,6 +8,8 @@
 
 ![](./qrcode.png)
 
+## [demo codes](./demo/)
+
 ## documents
 
 * [orchids](./docs/orchids.md)

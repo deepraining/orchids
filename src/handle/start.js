@@ -3,6 +3,7 @@
 
 var util = require('../util');
 var app = require('../app');
+var vars = require('../data/vars');
 var urlParams = require('../util/url_params');
 var onPopState = require('./on_pop_state');
 var startPage = require('./start_page');
@@ -15,6 +16,9 @@ var startPage = require('./start_page');
  * @param data Data to initialize a Page, and will be use by onCreate method
  */
 module.exports = (pageName, data) => {
+
+    // make appInitialized mark is true
+    vars.appInitialized = !0;
 
     // this must do in the first
     var existedPagesCount = util.getPagesCount();

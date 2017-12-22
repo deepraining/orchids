@@ -1,4 +1,4 @@
-# doc for Dialog object
+# Dialog
 
 ## option for init
 

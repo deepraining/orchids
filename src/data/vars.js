@@ -7,5 +7,7 @@ module.exports = {
     // pages count
     pageCount: 0,
     // dialogs count
-    dialogCount: 0
+    dialogCount: 0,
+    // whether current application is initialized
+    appInitialized: !1
 };
