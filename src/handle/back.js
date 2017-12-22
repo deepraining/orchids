@@ -3,8 +3,8 @@
 
 var container = require('../data/container');
 var app = require('../app');
-var pageBack = require('./page_back');
-var dialogBack = require('./dialog_back');
+var backPage = require('./back_page');
+var backDialog = require('./back_dialog');
 
 /**
  * back to prev page or prev dialog
@@ -12,10 +12,10 @@ var dialogBack = require('./dialog_back');
 module.exports = () => {
     // has dialog active
     if (Object.keys(container.dialogModels).length >= 1) {
-        dialogBack();
+        backDialog();
         return;
     }
 
     if (app.option.route) Object.keys(container.pageModels).length > 1 && history.back();
-    else pageBack();
+    else backPage();
 };

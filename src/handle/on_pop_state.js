@@ -2,7 +2,7 @@
 'use strict';
 
 var container = require('../data/container');
-var pageBack = require('./page_back');
+var backPage = require('./back_page');
 var getCurrentPageModel = require('../get/current_page_model');
 var deleteCurrentDialogModel = require('../delete/current_dialog_model');
 
@@ -13,7 +13,7 @@ var deleteCurrentDialogModel = require('../delete/current_dialog_model');
  */
 module.exports = (e) => {
 
-    // if user page back by press back button of phone, close all dialogs first
+    // if user back page by press back button of phone, close all dialogs first
     var dialogModelsKeys = Object.keys(container.dialogModels);
 
     if (dialogModelsKeys.length) {
@@ -44,5 +44,5 @@ module.exports = (e) => {
     }
 
 
-    pageBack();
+    backPage();
 };

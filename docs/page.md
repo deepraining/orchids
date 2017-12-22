@@ -13,7 +13,7 @@
 * `onDestroy`: pre handle before destroy a page
 * `onShow`: called when back page from other page or dialog
 * `onHide`: called when start another page or dialog
-* `onPageResult`: called when the child page destroyed
+* `onPageResult`: called when the next page destroyed
     - `@param data`: returned the value by next page's `setResult` method.
 * `prepareForResult`: receive data from the previous page
     - `@param data`: from `orchids.startPageForResult` third parameter
