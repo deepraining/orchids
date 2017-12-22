@@ -1,151 +1,59 @@
 # Page
 
-## option for init
+## base attributes
 
-* backgroundColor
+* `id`: page id
+* `el`: page root element
+* `option`: page option
 
-```
-backgroundColor: '#ffffff'
-```
+## methods to override
 
-* style
+* `onCreate`: render a page after a page is initialized
+    - `@param data`: from `orchids.startPage` second parameter
+* `onDestroy`: pre handle before destroy a page
+* `onShow`: called when back page from other page or dialog
+* `onHide`: called when start another page or dialog
+* `onPageResult`: called when the child page destroyed
+    - `@param data`: returned the value by next page's `setResult` method.
+* `prepareForResult`: receive data from the previous page
+    - `@param data`: from `orchids.startPageForResult` third parameter
+    
+## methods to call
 
-```
-style: void 0 // {key: value}
-```
+* `setResult`: set the result if this page is called by `startPageForResult` method, and the returned value will be used as the param of the `onPageResult` method of prev page
+    - `@param data`: return the value to prev page's `onPageResult` method.
+* `showFragment`: show fragment specified by id
+    - `@param id`: fragment id
+* `getFragment`: get fragment specified by id, default return the first fragment
+    - `@param id`: fragment id
 
-key: origin dom css key, like marginLeft
-value: origin dom css value, like 1px
+## option to init
 
-* animate
-
-```
-animate: !0
-```
-
-* animateDirection
-
-```
-animateDirection: 'r2l'
-```
-
-* fadeInOut
-
-```
-fadeInOut: !1
-```
-
-* fragments
-
-```
-// sub fragments
-// note that, current page element should have a child node
-// which has 'data-orchids-fragments' attribute,
-// and it must has position-relative or position-absolute width specified width and height
-// or fragments will not be rendered correctly
-fragments: [
-    'name1',
-    'name2'
-]
-```
-
-* fragmentAnimate
-
-```
-fragmentAnimate: !0
-```
-
-* fragmentAnimateDirection
-
-```
-fragmentAnimateDirection: 'horizontal'
-```
-
-* singleton
-
-```
-singleton: !1 // whether current page is singleton or not, if true,
-              //it will be only created once, and will not be destroyed
-```
-
-* rootContainer
-
-```
-rootContainer: void 0 // id selector / dom: custom root container for current page
-```
-
-## attributes
-
-* id: current page id
-* el: current page root element
-* option: current page option
-
-## methods
-
-### methods to override
-
-* onCreate
-
-```
-// render a page after a page is initialized
-onCreate: function(){}
-```
-
-* onDestroy
-
-```
-// pre handle before destroy a page
-onDestroy: function() {}
-```
-
-* onShow
-
-```
-// called when back page from other page
-onShow: function () {}
-```
-
-* onHide
-
-```
-// called when start another page
-onHide: function () {}
-```
-
-* onPageResult
-
-```
-// called when the child page destroyed and return the value by setResult method.
-onPageResult: function(data) {}
-```
-
-* prepareForResult
-
-```
-// receive data from the previous page, startPageForResult method's second parameter
-prepareForResult: function(data) {}
-```
-
-### methods to call
-
-* setResult
-
-```
-// set the result if this page is called by startPageForResult method,
-// and the returned value will be used as the param of the onPageResult method of last page
-setResult: function(data) {}
-```
-
-* showFragment
-
-```
-// show fragment specified by id
-showFragment: function(id) {}
-```
-
-* getFragment
-
-```
-// get fragment specified by id, default return the first fragment
-getFragment: function(id) {}
-```
+* `backgroundColor`: background color
+    - `default`: `#ffffff`
+* `style`: css style to render root element
+    - `type`: `{*}`
+    - `key`: origin dom css key, like `marginLeft`
+    - `value`: origin dom css value, like `1px`
+* `animate`: whether to use animation when switch between pages
+    - `default`: `true`
+    - `type`: `true/false`
+* `fadeInOut`: whether to fade page when switch between pages
+    - `default`: `false`
+    - `type`: `true/false`
+* `animateDirection`: animation direction of switching page
+    - `detail`: `l2r/r2l/t2b/b2t(left-right, top-bottom)`
+    - `default`: `r2l`
+* `fragments`: fragments in page
+    - `type`: `Array`
+    - `example`: `['name1', 'name2']`
+    - `note`: current page element should have a child node which has `data-orchids-fragments` attribute, and it must has `position: relative` or `position: absolute` width specified width and height, or fragments will not be rendered correctly
+* `fragmentAnimate`: whether to use animation when switch between fragments
+    - `default`: `true`
+    - `type`: `true/false`
+* `fragmentAnimateDirection`: animation direction of switching fragment
+    - `detail`: `horizontal/vertical`
+    - `default`: `horizontal`
+* `singleton`: whether current page is singleton or not, if true, it will be only created once, and will not be destroyed
+    - `default`: `false`
+    - `type`: `true/false`
