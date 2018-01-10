@@ -14,9 +14,9 @@ var app = require('../app');
  */
 module.exports = (option) => {
 
-    if (option && option.rootContainer) {
+    if (option && option.container) {
 
-        var domContainer = getRootContainer(option.rootContainer);
+        var domContainer = getRootContainer(option.container);
 
         if (domContainer) {
             container.rootContainer = domContainer;

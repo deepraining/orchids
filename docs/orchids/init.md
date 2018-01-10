@@ -8,7 +8,7 @@ orchids.init({
     route: !1,
     onFirstPageInitialized: void 0,
     onRouteChange: void 0,
-    rootContainer: void 0
+    container: void 0
 });
 ```
 
@@ -28,7 +28,7 @@ orchids.init({
 * `desc`: called when route changed
 * `type`: `function`
 
-### rootContainer
+### container
 
 * `desc`: custom root container for pages and dialogs
 * `type`: `id selector / dom`

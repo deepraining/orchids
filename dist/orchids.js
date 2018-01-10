@@ -1,12 +1,12 @@
 /*!
  * 
- *     orchids v0.1.1
+ *     orchids v0.1.2
  * 
  *     https://github.com/senntyou/orchids
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2017-12-22 15:57:59
+ *     2018-01-10 18:27:37
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1546,9 +1546,9 @@ var app = __webpack_require__(3);
  */
 module.exports = function (option) {
 
-    if (option && option.rootContainer) {
+    if (option && option.container) {
 
-        var domContainer = getRootContainer(option.rootContainer);
+        var domContainer = getRootContainer(option.container);
 
         if (domContainer) {
             container.rootContainer = domContainer;

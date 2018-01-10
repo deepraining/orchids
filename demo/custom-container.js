@@ -7,5 +7,5 @@ orchids.init({
     onRouteChange: function () {
         console.log('route change');
     },
-    rootContainer: 'container'
+    container: 'container'
 });
