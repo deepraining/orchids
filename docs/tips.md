@@ -2,7 +2,17 @@
 
 ## callback
 
+* `beforeCreate`: 
+    - called before the `page/dialog/fragment` is created
+    - thus the `el` attribute is not defined
+    - singleton will only be called once.
+
 * `onCreate`: called when the `page/dialog/fragment` is created, and singleton will only be called once.
+
+* `afterCreate`: 
+    - called after the `page/dialog/fragment` is created
+    - also called after animation is finished, and you can get current `page/dialog` through `getCurrentPage/getCurrentDialog`
+    - singleton will only be called once.
 
 * `onDestroy`: called when the `page/dialog/fragment` back to prev, but singleton will never be called.
 
