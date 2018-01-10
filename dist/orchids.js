@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-10 20:18:08
+ *     2018-01-10 20:42:03
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -2358,7 +2358,7 @@ module.exports = function (self) {
     container.rootContainer.appendChild(self.el);
 
     // user custom initialization
-    self.onCreate && self.onCreate(self.__orchids__data);
+    self.onCreate(self.__orchids__data);
 
     // route, if it is the first page, no route change
     self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();
@@ -2467,17 +2467,17 @@ module.exports = function (self, id) {
 
     // create fragment if not created, or call onShow method
     if (!instance.__orchids__initialized) {
-        instance.onCreate && instance.onCreate();
+        instance.onCreate();
         // create sub fragments
         instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
         instance.__orchids__initialized = !0;
     } else {
-        instance.onShow && instance.onShow();
+        instance.onShow();
     }
 
     // call previous fragment onHide method
     var previousInstance = self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId];
-    previousInstance.onHide && previousInstance.onHide();
+    previousInstance.onHide();
 
     // update current active fragment id
     self.__orchids__currentFragmentId = id;
@@ -2965,7 +2965,7 @@ module.exports = function (self) {
     container.rootContainer.appendChild(self.el);
 
     // user custom initialization
-    self.onCreate && self.onCreate(self.__orchids__data);
+    self.onCreate(self.__orchids__data);
 };
 
 /***/ }),
@@ -3317,7 +3317,7 @@ module.exports = function (self) {
     // user custom initialization
     if (self.__orchids__isFirstFragment) {
         self.__orchids__initialized = !0;
-        self.onCreate && self.onCreate();
+        self.onCreate();
         // render fragments
         self.option.subFragments && self.option.subFragments.length && self.__orchids__renderSubFragments();
     }
@@ -3413,15 +3413,15 @@ module.exports = function (self, id) {
 
     // create fragment if not created, or call onShow method
     if (!instance.__orchids__initialized) {
-        instance.onCreate && instance.onCreate();
+        instance.onCreate();
         // create sub fragments if not created
         instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
         instance.__orchids__initialized = !0;
-    } else instance.onShow && instance.onShow();
+    } else instance.onShow();
 
     // call previous fragment onHide method
     var previousInstance = self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId];
-    previousInstance.onHide && previousInstance.onHide();
+    previousInstance.onHide();
     // update current active fragment id
     self.__orchids__currentSubFragmentId = id;
 

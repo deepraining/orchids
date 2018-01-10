@@ -48,5 +48,5 @@ module.exports = (self) => {
     container.rootContainer.appendChild(self.el);
 
     // user custom initialization
-    self.onCreate && self.onCreate(self.__orchids__data);
+    self.onCreate(self.__orchids__data);
 };

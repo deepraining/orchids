@@ -50,7 +50,7 @@ module.exports = (self) => {
     container.rootContainer.appendChild(self.el);
 
     // user custom initialization
-    self.onCreate && self.onCreate(self.__orchids__data);
+    self.onCreate(self.__orchids__data);
 
     // route, if it is the first page, no route change
     self.option.route && !self.__orchids__isFirstPage && self.__orchids__routeForward();

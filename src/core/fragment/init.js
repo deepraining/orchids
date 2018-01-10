@@ -41,7 +41,7 @@ module.exports = (self) => {
     // user custom initialization
     if (self.__orchids__isFirstFragment) {
         self.__orchids__initialized = !0;
-        self.onCreate && self.onCreate();
+        self.onCreate();
             // render fragments
         self.option.subFragments && self.option.subFragments.length && self.__orchids__renderSubFragments();
     }
