@@ -7,6 +7,7 @@
 * `el`: dialog root element
 
 * `option`: dialog option
+    - `option.name`: current dialog name
 
 ## methods to override
 

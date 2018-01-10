@@ -7,6 +7,7 @@
 * `el`: fragment root element
 
 * `option`: fragment option
+    - `option.name`: current fragment name
 
 ## methods to override
 

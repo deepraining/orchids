@@ -7,6 +7,7 @@
 * `el`: page root element
 
 * `option`: page option
+    - `option.name`: current page name
 
 ## methods to override
 
