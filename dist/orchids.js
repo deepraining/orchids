@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-10 20:42:03
+ *     2018-01-10 21:20:04
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -482,6 +482,7 @@ module.exports = params;
 
 
 var container = __webpack_require__(0);
+var vars = __webpack_require__(3);
 var app = __webpack_require__(4);
 var util = __webpack_require__(6);
 var getCurrentPageModel = __webpack_require__(5);
@@ -512,6 +513,22 @@ module.exports = function () {
     app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
     util.decreasePagesCount();
+
+    // page.afterDestroy
+    if (!currentModel.singleton) {
+        currentModel.page.el.classList.remove('orchids-active');
+        if (currentModel.page.option.animate) {
+            // has animation
+            setTimeout(function () {
+                currentModel.page.el.remove();
+                currentModel.page.afterDestroy();
+            }, vars.animateTime);
+        } else {
+            // no animation
+            currentModel.page.el.remove();
+            currentModel.page.afterDestroy();
+        }
+    }
 };
 
 /***/ }),
@@ -2270,6 +2287,10 @@ module.exports = function () {
      */
     onDestroy: function onDestroy() {},
     /**
+     * after destroy a page
+     */
+    afterDestroy: function afterDestroy() {},
+    /**
      * called when back page from other page or dialog
      */
     onShow: function onShow() {},
@@ -2524,16 +2545,6 @@ module.exports = function (self) {
         self.__orchids__fragmentsInstances[id].__orchids__destroy();
     });
     self.onDestroy();
-
-    self.el.classList.remove('orchids-active');
-    if (self.option.animate) {
-        // has animation
-        setTimeout(function () {
-            self.el.remove();
-        }, vars.animateTime);
-    } else
-        // no animation
-        self.el.remove();
 };
 
 /***/ }),

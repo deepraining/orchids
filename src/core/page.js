@@ -134,6 +134,10 @@ module.exports = () => {
          */
         onDestroy: function() {},
         /**
+         * after destroy a page
+         */
+        afterDestroy: function() {},
+        /**
          * called when back page from other page or dialog
          */
         onShow: function () {},

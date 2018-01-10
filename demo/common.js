@@ -262,6 +262,14 @@ orchids.registerPage('c', {
         console.log('c: onCreate');
         document.title = 'q';
         $(this.el).html('<div style="position: absolute; left: 0; top: 0; width: 100%; height: 80%;" data-orchids-fragments="1"></div>')
+    },
+    onDestroy: function () {
+        console.log('c: onDestroy');
+        console.log(orchids.getCurrentPage().option.name);
+    },
+    afterDestroy: function () {
+        console.log('c: afterDestroy');
+        console.log(orchids.getCurrentPage().option.name);
     }
 }, {
     backgroundColor: '#000000',

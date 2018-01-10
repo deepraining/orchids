@@ -5,6 +5,7 @@
 - make `container` instead of `rootContainer` of `orchids.init`
 - make `onResult` instead of `onPageResult, onDialogResult`
 - add `beforeCreate, afterCreate` to `page, dialog`
+- add `afterDestroy` to `page`
 
 ## 0.1.1
 

@@ -20,6 +20,8 @@
     
 * `onDestroy`: pre handle before destroy a page
 
+* `afterDestroy`: after destroy a page
+
 * `onShow`: called when back page from other page or dialog
 
 * `onHide`: called when start another page or dialog

@@ -2,6 +2,7 @@
 'use strict';
 
 var container = require('../data/container');
+var vars = require('../data/vars');
 var app = require('../app');
 var util = require('../util');
 var getCurrentPageModel = require('../get/current_page_model');
@@ -32,4 +33,21 @@ module.exports = () => {
     app.option.route && typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
     util.decreasePagesCount();
+
+    // page.afterDestroy
+    if (!currentModel.singleton) {
+        currentModel.page.el.classList.remove('orchids-active');
+        if (currentModel.page.option.animate) {
+            // has animation
+            setTimeout(() => {
+                currentModel.page.el.remove();
+                currentModel.page.afterDestroy();
+            }, vars.animateTime)
+        }
+        else {
+            // no animation
+            currentModel.page.el.remove();
+            currentModel.page.afterDestroy();
+        }
+    }
 };

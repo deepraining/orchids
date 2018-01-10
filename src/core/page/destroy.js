@@ -9,15 +9,4 @@ module.exports = (self) => {
         self.__orchids__fragmentsInstances[id].__orchids__destroy();
     });
     self.onDestroy();
-
-    self.el.classList.remove('orchids-active');
-    if (self.option.animate) {
-        // has animation
-        setTimeout(() => {
-            self.el.remove()
-        }, vars.animateTime)
-    }
-    else
-    // no animation
-        self.el.remove();
 };
