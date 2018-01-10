@@ -73,4 +73,17 @@ module.exports = (name, data, forResult, prepareResultData) => {
 
 
     container.dialogModels[vars.idPrefix + dialogOption.dialogId] = makeDialogModel(name, forResult, instance, dialogOption.singleton);
+
+    // call dialog's afterCreate
+    if (!instance.option.animate) instance.afterCreate();
+    else {
+        // show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+        setTimeout(() => {
+            instance.el.classList.add('orchids-active');
+
+            setTimeout(() => {
+                instance.afterCreate();
+            }, vars.animateTime);
+        }, vars.animateDelayTime);
+    }
 };

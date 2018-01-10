@@ -11,8 +11,12 @@
 
 ## methods to override
 
+* `beforeCreate`: before a dialog is initialized
+
 * `onCreate`: render a dialog after a dialog is initialized
     - `@param data`: from `orchids.startDialog` second parameter
+
+* `afterCreate`: after a dialog is initialized
 
 * `onDestroy`: pre handle before destroy a dialog
 

@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-10 19:19:42
+ *     2018-01-10 20:18:08
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -381,14 +381,23 @@ module.exports = {
 
 
 
-/**
- * app singleton instance
- * @type {{}}
- */
-
-var app = {};
-
-module.exports = app;
+module.exports = {
+    // id prefix for page and dialog
+    idPrefix: 'id-',
+    // pages count
+    pageCount: 0,
+    // dialogs count
+    dialogCount: 0,
+    // whether current application is initialized
+    appInitialized: !1,
+    // animate time (millisecond)
+    animateTime: 500,
+    /**
+     * animate delay time (millisecond)
+     * to guarantee the animation  is ok
+     */
+    animateDelayTime: 100
+};
 
 /***/ }),
 /* 4 */
@@ -398,16 +407,14 @@ module.exports = app;
 
 
 
-module.exports = {
-    // id prefix for page and dialog
-    idPrefix: 'id-',
-    // pages count
-    pageCount: 0,
-    // dialogs count
-    dialogCount: 0,
-    // whether current application is initialized
-    appInitialized: !1
-};
+/**
+ * app singleton instance
+ * @type {{}}
+ */
+
+var app = {};
+
+module.exports = app;
 
 /***/ }),
 /* 5 */
@@ -475,7 +482,7 @@ module.exports = params;
 
 
 var container = __webpack_require__(0);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 var util = __webpack_require__(6);
 var getCurrentPageModel = __webpack_require__(5);
 var getPrevPageModel = __webpack_require__(33);
@@ -516,7 +523,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 
 /**
  * get page model
@@ -542,7 +549,7 @@ module.exports = function (id) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 
 /**
  * get page model
@@ -607,13 +614,13 @@ module.exports = function (name, data) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 var logger = __webpack_require__(2);
 var extend = __webpack_require__(1);
 var makePageModel = __webpack_require__(37);
 var makeSingletonPageModel = __webpack_require__(38);
 var util = __webpack_require__(6);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 var getCurrentPageModel = __webpack_require__(5);
 
 /**
@@ -692,6 +699,18 @@ module.exports = function (name, data, forResult, prepareResultData) {
     typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
     util.increasePagesCount();
+
+    // call page's afterCreate
+    if (instance.__orchids__isFirstPage || !instance.option.animate) instance.afterCreate();else {
+        // show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+        setTimeout(function () {
+            instance.el.classList.add('orchids-active');
+
+            setTimeout(function () {
+                instance.afterCreate();
+            }, vars.animateTime);
+        }, vars.animateDelayTime);
+    }
 };
 
 /***/ }),
@@ -717,7 +736,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 
 /**
  * get dialog model
@@ -743,7 +762,7 @@ module.exports = function (id) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 
 /**
  * get dialog model
@@ -787,7 +806,7 @@ module.exports = {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(4);
+var vars = __webpack_require__(3);
 var logger = __webpack_require__(2);
 var extend = __webpack_require__(1);
 var makeDialogModel = __webpack_require__(67);
@@ -855,6 +874,18 @@ module.exports = function (name, data, forResult, prepareResultData) {
     if (dialog.option.singleton) container.singletonDialogModels[name] = makeSingletonDialogModel(dialogOption.dialogId, instance);
 
     container.dialogModels[vars.idPrefix + dialogOption.dialogId] = makeDialogModel(name, forResult, instance, dialogOption.singleton);
+
+    // call dialog's afterCreate
+    if (!instance.option.animate) instance.afterCreate();else {
+        // show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+        setTimeout(function () {
+            instance.el.classList.add('orchids-active');
+
+            setTimeout(function () {
+                instance.afterCreate();
+            }, vars.animateTime);
+        }, vars.animateDelayTime);
+    }
 };
 
 /***/ }),
@@ -1537,7 +1568,7 @@ var defaultAppOption = __webpack_require__(28);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 var getRootContainer = __webpack_require__(29);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 
 /**
  * initialize app
@@ -1628,8 +1659,8 @@ module.exports = function (container) {
 
 
 var util = __webpack_require__(6);
-var app = __webpack_require__(3);
-var vars = __webpack_require__(4);
+var app = __webpack_require__(4);
+var vars = __webpack_require__(3);
 var urlParams = __webpack_require__(7);
 var onPopState = __webpack_require__(32);
 var startPage = __webpack_require__(12);
@@ -1895,7 +1926,7 @@ module.exports = function (id, pageInstance) {
 
 
 var container = __webpack_require__(0);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 var backPage = __webpack_require__(8);
 var backDialog = __webpack_require__(40);
 
@@ -1986,7 +2017,7 @@ var extend = __webpack_require__(1);
 var makePageDefinition = __webpack_require__(43);
 var makeNewPage = __webpack_require__(44);
 var defaultPageOption = __webpack_require__(52);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 
 /**
  * register a Page Object
@@ -2222,10 +2253,18 @@ module.exports = function () {
       show(self, isSingleton, forResult, prepareResultData);
     },
     /**
+     * before a page is initialized
+     */
+    beforeCreate: function beforeCreate() {},
+    /**
      * render a page after a page is initialized
      * @param data
      */
     onCreate: function onCreate(data) {},
+    /**
+     * after a page is initialized
+     */
+    afterCreate: function afterCreate() {},
     /**
      * pre handle before destroy a page
      */
@@ -2282,6 +2321,10 @@ var directionClasses = __webpack_require__(17);
 module.exports = function (self) {
     // make id
     self.id = self.option.pageId;
+
+    // before element is created
+    self.beforeCreate && self.beforeCreate();
+
     // whether current page is the first page to render or not, for confirming to start current page with or without animation.
     self.__orchids__isFirstPage = self.id === 1;
     // make root el
@@ -2299,7 +2342,7 @@ module.exports = function (self) {
     // singleton
     self.option.singleton && self.el.classList.add('orchids-page-singleton');
     // active
-    self.__orchids__isFirstPage && self.el.classList.add('orchids-active');
+    (self.__orchids__isFirstPage || !self.option.animate) && self.el.classList.add('orchids-active');
     // background color
     self.option.backgroundColor && (self.el.style.backgroundColor = self.option.backgroundColor);
 
@@ -2322,13 +2365,6 @@ module.exports = function (self) {
 
     // render fragments
     self.option.fragments && self.option.fragments.length && self.__orchids__renderFragments();
-
-    /**
-     * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
-     */
-    !self.__orchids__isFirstPage && setTimeout(function () {
-        self.el.classList.add('orchids-active');
-    }, 100);
 };
 
 /***/ }),
@@ -2480,6 +2516,8 @@ module.exports = function (self) {
 
 
 
+var vars = __webpack_require__(3);
+
 module.exports = function (self) {
     // call all fragments's __orchids__destroy
     Object.keys(self.__orchids__fragmentsInstances).forEach(function (id) {
@@ -2492,7 +2530,7 @@ module.exports = function (self) {
         // has animation
         setTimeout(function () {
             self.el.remove();
-        }, 500);
+        }, vars.animateTime);
     } else
         // no animation
         self.el.remove();
@@ -2619,7 +2657,7 @@ var extend = __webpack_require__(1);
 var makeDialogDefinition = __webpack_require__(54);
 var makeNewDialog = __webpack_require__(55);
 var defaultDialogOption = __webpack_require__(57);
-var app = __webpack_require__(3);
+var app = __webpack_require__(4);
 
 /**
  * register a Dialog Object
@@ -2743,7 +2781,7 @@ module.exports = function (option, dialogObj, parent, singleton) {
 
 
 var extend = __webpack_require__(1);
-var container = __webpack_require__(0);
+var vars = __webpack_require__(3);
 
 var init = __webpack_require__(56);
 
@@ -2786,7 +2824,7 @@ var newDialog = function newDialog() {
         // has animation
         setTimeout(function () {
           self.el.remove();
-        }, 500);else
+        }, vars.animateTime);else
         // no animation
         self.el.remove();
     },
@@ -2822,10 +2860,18 @@ var newDialog = function newDialog() {
       self.el.classList.remove('orchids-active');
     },
     /**
+     * before a dialog is initialized
+     */
+    beforeCreate: function beforeCreate() {},
+    /**
      * render a dialog after a dialog is initialized
      * @param data
      */
     onCreate: function onCreate(data) {},
+    /**
+     * after a dialog is initialized
+     */
+    afterCreate: function afterCreate() {},
     /**
      * pre handle before destroy a dialog
      */
@@ -2884,6 +2930,10 @@ var directionClasses = __webpack_require__(17);
 module.exports = function (self) {
     // make id
     self.id = self.option.dialogId;
+
+    // before element is created
+    self.beforeCreate && self.beforeCreate();
+
     // make root el
     self.el = document.createElement('div');
     // data-orchids-dialog-id
@@ -2898,6 +2948,8 @@ module.exports = function (self) {
     self.option.fadeInOut && self.el.classList.add('orchids-with-fade');
     // singleton
     self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
+    // active
+    !self.option.animate && self.el.classList.add('orchids-active');
     // background color
     self.option.backgroundColor && (self.el.style.backgroundColor = self.option.backgroundColor);
 
@@ -2914,13 +2966,6 @@ module.exports = function (self) {
 
     // user custom initialization
     self.onCreate && self.onCreate(self.__orchids__data);
-
-    /**
-     * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
-     */
-    setTimeout(function () {
-        self.el.classList.add('orchids-active');
-    }, 100);
 };
 
 /***/ }),

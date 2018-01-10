@@ -117,10 +117,18 @@ module.exports = () => {
             show(self, isSingleton, forResult, prepareResultData);
         },
         /**
+         * before a page is initialized
+         */
+        beforeCreate: function () {},
+        /**
          * render a page after a page is initialized
          * @param data
          */
         onCreate: function(data) {},
+        /**
+         * after a page is initialized
+         */
+        afterCreate: function () {},
         /**
          * pre handle before destroy a page
          */

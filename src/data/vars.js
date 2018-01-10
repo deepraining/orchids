@@ -9,5 +9,12 @@ module.exports = {
     // dialogs count
     dialogCount: 0,
     // whether current application is initialized
-    appInitialized: !1
+    appInitialized: !1,
+    // animate time (millisecond)
+    animateTime: 500,
+    /**
+     * animate delay time (millisecond)
+     * to guarantee the animation  is ok
+     */
+    animateDelayTime: 100
 };

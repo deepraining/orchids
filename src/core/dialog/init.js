@@ -12,6 +12,10 @@ var directionClasses = require('../../data/direction_classes');
 module.exports = (self) => {
     // make id
     self.id = self.option.dialogId;
+
+    // before element is created
+    self.beforeCreate && self.beforeCreate();
+
     // make root el
     self.el = document.createElement('div');
     // data-orchids-dialog-id
@@ -26,6 +30,8 @@ module.exports = (self) => {
     self.option.fadeInOut && self.el.classList.add('orchids-with-fade');
     // singleton
     self.option.singleton && self.el.classList.add('orchids-dialog-singleton');
+    // active
+    !self.option.animate && self.el.classList.add('orchids-active');
     // background color
     self.option.backgroundColor && (self.el.style.backgroundColor = self.option.backgroundColor);
 
@@ -43,11 +49,4 @@ module.exports = (self) => {
 
     // user custom initialization
     self.onCreate && self.onCreate(self.__orchids__data);
-
-    /**
-     * show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
-     */
-    setTimeout(() => {
-        self.el.classList.add('orchids-active')
-    }, 100);
 };

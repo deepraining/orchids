@@ -11,8 +11,12 @@
 
 ## methods to override
 
+* `beforeCreate`: before a page is initialized
+
 * `onCreate`: render a page after a page is initialized
     - `@param data`: from `orchids.startPage` second parameter
+    
+* `afterCreate`: after a page is initialized
     
 * `onDestroy`: pre handle before destroy a page
 

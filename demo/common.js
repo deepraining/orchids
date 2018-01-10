@@ -13,10 +13,19 @@ orchids.registerPage('aa', {
 });
 
 orchids.registerPage('a', {
+    beforeCreate: function () {
+        console.log('a: beforeCreate');
+        //console.log(orchids.getCurrentPage());
+    },
     onCreate2: function(data) {
         console.log('a: onCreate2');
         $(this.el).html(data.text);
         document.title = 'a';
+        //console.log(orchids.getCurrentPage());
+    },
+    afterCreate: function () {
+        console.log('a: afterCreate');
+        //console.log(orchids.getCurrentPage());
     },
     onResult: function(data) {
         console.log('a: onResult success.');
@@ -41,11 +50,20 @@ orchids.registerPage('a', {
     }
 }, 'aa');
 orchids.registerPage('b', {
+    beforeCreate: function () {
+        console.log('b: beforeCreate');
+        //console.log(orchids.getCurrentPage().option.name);
+    },
     onCreate: function(data) {
         $(this.el).html(data.text);
         console.log('b: onCreate');
         this.setResult({text: 'I\'m come from b.'});
         document.title = 'b';
+        //console.log(orchids.getCurrentPage().option.name);
+    },
+    afterCreate: function () {
+        console.log('b: afterCreate');
+        //console.log(orchids.getCurrentPage().option.name);
     },
     prepareForResult: function (data) {
         console.log('b: prepareForResult success');
@@ -85,10 +103,19 @@ orchids.registerDialog('hh', {
 });
 
 orchids.registerDialog('h', {
+    beforeCreate: function () {
+        console.log('h: beforeCreate');
+        //console.log(orchids.getCurrentDialog());
+    },
     onCreate2: function(data) {
         console.log('h: onCreate2');
         $(this.el).html(data.text);
         this.setResult({text: 'I\'m come from h.'});
+        //console.log(orchids.getCurrentDialog());
+    },
+    afterCreate: function () {
+        console.log('h: afterCreate');
+        //console.log(orchids.getCurrentDialog());
     },
     onShow: function () {
         console.log('h: onShow');
@@ -113,10 +140,19 @@ orchids.registerDialog('h', {
     }
 }, 'hh');
 orchids.registerDialog('i', {
+    beforeCreate: function () {
+        console.log('i: beforeCreate');
+        //console.log(orchids.getCurrentDialog().option.name);
+    },
     onCreate: function(data) {
         console.log('i: onCreate');
         $(this.el).html(data.text);
         this.setResult({text: 'I\'m come from i.'});
+        //console.log(orchids.getCurrentDialog().option.name);
+    },
+    afterCreate: function () {
+        console.log('i: afterCreate');
+        //console.log(orchids.getCurrentDialog().option.name);
     },
     onShow: function () {
         console.log('i: onShow');

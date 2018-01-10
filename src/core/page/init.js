@@ -12,6 +12,10 @@ var directionClasses = require('../../data/direction_classes');
 module.exports = (self) => {
     // make id
     self.id = self.option.pageId;
+
+    // before element is created
+    self.beforeCreate && self.beforeCreate();
+
     // whether current page is the first page to render or not, for confirming to start current page with or without animation.
     self.__orchids__isFirstPage = self.id === 1;
     // make root el
@@ -29,7 +33,7 @@ module.exports = (self) => {
     // singleton
     self.option.singleton && self.el.classList.add('orchids-page-singleton');
     // active
-    self.__orchids__isFirstPage && self.el.classList.add('orchids-active');
+    (self.__orchids__isFirstPage || !self.option.animate) && self.el.classList.add('orchids-active');
     // background color
     self.option.backgroundColor && (self.el.style.backgroundColor = self.option.backgroundColor);
 
@@ -53,11 +57,4 @@ module.exports = (self) => {
 
     // render fragments
     self.option.fragments && self.option.fragments.length && self.__orchids__renderFragments();
-
-    /**
-     * show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
-     */
-    !self.__orchids__isFirstPage && setTimeout(() => {
-        self.el.classList.add('orchids-active')
-    }, 100);
 };

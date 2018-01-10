@@ -6,7 +6,7 @@
 "use strict";
 
 var extend = require('../util/extend');
-var container = require('../data/container');
+var vars = require('../data/vars');
 
 var init = require('./dialog/init');
 
@@ -49,7 +49,7 @@ var newDialog = () => {
                 // has animation
                 setTimeout(() => {
                     self.el.remove()
-                }, 500);
+                }, vars.animateTime);
             else
                 // no animation
                 self.el.remove();
@@ -86,10 +86,18 @@ var newDialog = () => {
             self.el.classList.remove('orchids-active');
         },
         /**
+         * before a dialog is initialized
+         */
+        beforeCreate: function () {},
+        /**
          * render a dialog after a dialog is initialized
          * @param data
          */
         onCreate: function(data) {},
+        /**
+         * after a dialog is initialized
+         */
+        afterCreate: function () {},
         /**
          * pre handle before destroy a dialog
          */

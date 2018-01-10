@@ -78,7 +78,6 @@ module.exports = (name, data, forResult, prepareResultData) => {
     // initialize page
     var instance = new pageDefinition.page(pageOption, data);
 
-
     forResult && instance.prepareForResult(prepareResultData);
 
     if (pageDefinition.option.singleton)
@@ -90,4 +89,17 @@ module.exports = (name, data, forResult, prepareResultData) => {
     typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
 
     util.increasePagesCount();
+
+    // call page's afterCreate
+    if (instance.__orchids__isFirstPage || !instance.option.animate) instance.afterCreate();
+    else {
+        // show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
+        setTimeout(() => {
+            instance.el.classList.add('orchids-active');
+
+            setTimeout(() => {
+                instance.afterCreate();
+            }, vars.animateTime);
+        }, vars.animateDelayTime);
+    }
 };
