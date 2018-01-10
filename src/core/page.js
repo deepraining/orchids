@@ -135,7 +135,7 @@ module.exports = () => {
         onHide: function () {},
         /**
          * set the result if this page is called by startPageForResult method,
-         * and the returned value will be used as the param of the onPageResult method of last page
+         * and the returned value will be used as the param of the onResult method of last page
          *
          * @param {*} data
          */
@@ -147,7 +147,7 @@ module.exports = () => {
          * called when the child page destroyed and return the value by setResult method.
          * @param {*} data
          */
-        onPageResult: function(data) {},
+        onResult: function(data) {},
         /**
          * receive data from the previous page, startPageForResult method's second parameter
          * @param data

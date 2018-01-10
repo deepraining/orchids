@@ -18,8 +18,8 @@ orchids.registerPage('a', {
         $(this.el).html(data.text);
         document.title = 'a';
     },
-    onPageResult: function(data) {
-        console.log('a: onPageResult success.');
+    onResult: function(data) {
+        console.log('a: onResult success.');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
     },
     onShow: function () {
@@ -96,8 +96,8 @@ orchids.registerDialog('h', {
     onHide: function () {
         console.log('h: onHide');
     },
-    onDialogResult: function(data) {
-        console.log('h: onDialogResult success.');
+    onResult: function(data) {
+        console.log('h: onResult success.');
         console.log('data is: ' + (typeof data != 'object' ? data : JSON.stringify(data)));
     },
     prepareForResult: function (data) {

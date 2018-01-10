@@ -14,7 +14,7 @@
     - `normal`: called when start another
     - `singleton`: called when back to prev
 
-* `onPageResult`: called when back from forward page
+* `onResult`: called when back from forward page
 
 * `prepareForResult`: called when created or show again by prev `page/dialog` call `startPageForResult/startDialogForResult` method`.
 

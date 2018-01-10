@@ -25,16 +25,16 @@ module.exports = (e) => {
             // first dialog
             if (i <= 0) {
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onPageResult) {
-                    currentPageModel.page.onPageResult(dialogModel.dialog.__orchids__result || null);
+                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onResult) {
+                    currentPageModel.page.onResult(dialogModel.dialog.__orchids__result || null);
                 }
             }
             else {
                 // at least two dialogs
                 prevDialogModel = container.dialogModels[dialogModelsKeys[i - 1]];
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && prevDialogModel.dialog.onDialogResult) {
-                    prevDialogModel.dialog.onDialogResult(dialogModel.dialog.__orchids__result || null);
+                if (dialogModel.forResult && prevDialogModel.dialog.onResult) {
+                    prevDialogModel.dialog.onResult(dialogModel.dialog.__orchids__result || null);
                 }
             }
             // destroy

@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-10 18:27:37
+ *     2018-01-10 19:19:42
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -493,7 +493,7 @@ module.exports = function () {
     var prevModel = getPrevPageModel();
     // for result
     if (currentModel.forResult) {
-        prevModel.page.onPageResult && prevModel.page.onPageResult(currentModel.page.__orchids__result || null);
+        prevModel.page.onResult && prevModel.page.onResult(currentModel.page.__orchids__result || null);
     }
     // destroy or hide
     currentModel.singleton ? currentModel.page.__orchids__hide(!0) : currentModel.page.__orchids__destroy();
@@ -1731,15 +1731,15 @@ module.exports = function (e) {
             // first dialog
             if (i <= 0) {
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onPageResult) {
-                    currentPageModel.page.onPageResult(dialogModel.dialog.__orchids__result || null);
+                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onResult) {
+                    currentPageModel.page.onResult(dialogModel.dialog.__orchids__result || null);
                 }
             } else {
                 // at least two dialogs
                 prevDialogModel = container.dialogModels[dialogModelsKeys[i - 1]];
                 dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && prevDialogModel.dialog.onDialogResult) {
-                    prevDialogModel.dialog.onDialogResult(dialogModel.dialog.__orchids__result || null);
+                if (dialogModel.forResult && prevDialogModel.dialog.onResult) {
+                    prevDialogModel.dialog.onResult(dialogModel.dialog.__orchids__result || null);
                 }
             }
             // destroy
@@ -1943,10 +1943,10 @@ module.exports = function () {
     if (currentModel.forResult) {
         // has prev dialog model
         if (prevModel) {
-            prevModel.dialog.onDialogResult && prevModel.dialog.onDialogResult(currentModel.dialog.__orchids__result || {});
+            prevModel.dialog.onResult && prevModel.dialog.onResult(currentModel.dialog.__orchids__result || {});
             hasPrevDialog = !0;
         } else if (currentPageModel) {
-            currentPageModel.page.onPageResult && currentPageModel.page.onPageResult(currentModel.dialog.__orchids__result || {});
+            currentPageModel.page.onResult && currentPageModel.page.onResult(currentModel.dialog.__orchids__result || {});
         }
     }
 
@@ -2240,7 +2240,7 @@ module.exports = function () {
     onHide: function onHide() {},
     /**
      * set the result if this page is called by startPageForResult method,
-     * and the returned value will be used as the param of the onPageResult method of last page
+     * and the returned value will be used as the param of the onResult method of last page
      *
      * @param {*} data
      */
@@ -2252,7 +2252,7 @@ module.exports = function () {
      * called when the child page destroyed and return the value by setResult method.
      * @param {*} data
      */
-    onPageResult: function onPageResult(data) {},
+    onResult: function onResult(data) {},
     /**
      * receive data from the previous page, startPageForResult method's second parameter
      * @param data
@@ -2840,7 +2840,7 @@ var newDialog = function newDialog() {
     onHide: function onHide() {},
     /**
      * set the result if this dialog is called by startDialogForResult method,
-     * and the returned value will be used as the param of the onDialogResult method of last dialog or page
+     * and the returned value will be used as the param of the onResult method of last dialog or page
      *
      * @param {*} data
      */
@@ -2852,7 +2852,7 @@ var newDialog = function newDialog() {
      * called when the child dialog destroyed and return the value by setResult method.
      * @param {*} data
      */
-    onDialogResult: function onDialogResult(data) {},
+    onResult: function onResult(data) {},
     /**
      * receive data from the previous dialog, startDialogForResult method's second parameter
      * @param data

@@ -20,7 +20,7 @@
 
 * `onHide`: called when start another dialog
 
-* `onDialogResult`: called when the next dialog destroyed
+* `onResult`: called when the next dialog destroyed
     - `@param data`: returned the value by next dialog's `setResult` method.
 
 * `prepareForResult`: receive data from the previous dialog
@@ -28,8 +28,8 @@
     
 ## methods to call
 
-* `setResult`: set the result if this dialog is called by `startDialogForResult` method, and the returned value will be used as the param of the `onDialogResult` method of prev dialog or the `onPageResult` method of prev page
-    - `@param data`: return the value to prev dialog's `onDialogResult` method or prev page's `onPageResult` method.
+* `setResult`: set the result if this dialog is called by `startDialogForResult` method, and the returned value will be used as the param of the `onResult` method of prev dialog or the `onResult` method of prev page
+    - `@param data`: return the value to prev dialog's `onResult` method or prev page's `onResult` method.
     
 ## option to init
 

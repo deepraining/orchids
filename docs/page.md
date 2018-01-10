@@ -20,7 +20,7 @@
 
 * `onHide`: called when start another page or dialog
 
-* `onPageResult`: called when the next page destroyed
+* `onResult`: called when the next page destroyed
     - `@param data`: returned the value by next page's `setResult` method.
     
 * `prepareForResult`: receive data from the previous page
@@ -28,8 +28,8 @@
     
 ## methods to call
 
-* `setResult`: set the result if this page is called by `startPageForResult` method, and the returned value will be used as the param of the `onPageResult` method of prev page
-    - `@param data`: return the value to prev page's `onPageResult` method.
+* `setResult`: set the result if this page is called by `startPageForResult` method, and the returned value will be used as the param of the `onResult` method of prev page
+    - `@param data`: return the value to prev page's `onResult` method.
     
 * `showFragment`: show fragment specified by id
     - `@param id`: fragment id

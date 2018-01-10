@@ -24,11 +24,11 @@ module.exports = () => {
     if (currentModel.forResult) {
         // has prev dialog model
         if (prevModel) {
-            prevModel.dialog.onDialogResult && prevModel.dialog.onDialogResult(currentModel.dialog.__orchids__result || {});
+            prevModel.dialog.onResult && prevModel.dialog.onResult(currentModel.dialog.__orchids__result || {});
             hasPrevDialog = !0;
         }
         else if (currentPageModel) {
-            currentPageModel.page.onPageResult && currentPageModel.page.onPageResult(currentModel.dialog.__orchids__result || {});
+            currentPageModel.page.onResult && currentPageModel.page.onResult(currentModel.dialog.__orchids__result || {});
         }
     }
 

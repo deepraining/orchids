@@ -104,7 +104,7 @@ var newDialog = () => {
         onHide: function () {},
         /**
          * set the result if this dialog is called by startDialogForResult method,
-         * and the returned value will be used as the param of the onDialogResult method of last dialog or page
+         * and the returned value will be used as the param of the onResult method of last dialog or page
          *
          * @param {*} data
          */
@@ -116,7 +116,7 @@ var newDialog = () => {
          * called when the child dialog destroyed and return the value by setResult method.
          * @param {*} data
          */
-        onDialogResult: function(data) {},
+        onResult: function(data) {},
         /**
          * receive data from the previous dialog, startDialogForResult method's second parameter
          * @param data

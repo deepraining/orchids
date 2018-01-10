@@ -20,7 +20,7 @@ module.exports = () => {
     var prevModel = getPrevPageModel();
     // for result
     if (currentModel.forResult) {
-        prevModel.page.onPageResult && prevModel.page.onPageResult(currentModel.page.__orchids__result || null);
+        prevModel.page.onResult && prevModel.page.onResult(currentModel.page.__orchids__result || null);
     }
     // destroy or hide
     currentModel.singleton ? currentModel.page.__orchids__hide(!0) : currentModel.page.__orchids__destroy();

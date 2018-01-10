@@ -3,6 +3,7 @@
 ## 0.1.2
 
 - make `container` instead of `rootContainer` of `orchids.init`
+- make `onResult` instead of `onPageResult, onDialogResult`
 
 ## 0.1.1
 
