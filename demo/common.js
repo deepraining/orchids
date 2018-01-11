@@ -117,6 +117,14 @@ orchids.registerDialog('h', {
         console.log('h: afterCreate');
         //console.log(orchids.getCurrentDialog());
     },
+    onDestroy: function () {
+        console.log('h: onDestroy');
+        //console.log(orchids.getCurrentDialog());
+    },
+    afterDestroy: function () {
+        console.log('h: afterDestroy');
+        //console.log(orchids.getCurrentDialog());
+    },
     onShow: function () {
         console.log('h: onShow');
     },
@@ -265,11 +273,11 @@ orchids.registerPage('c', {
     },
     onDestroy: function () {
         console.log('c: onDestroy');
-        console.log(orchids.getCurrentPage().option.name);
+        //console.log(orchids.getCurrentPage().option.name);
     },
     afterDestroy: function () {
         console.log('c: afterDestroy');
-        console.log(orchids.getCurrentPage().option.name);
+        //console.log(orchids.getCurrentPage().option.name);
     }
 }, {
     backgroundColor: '#000000',

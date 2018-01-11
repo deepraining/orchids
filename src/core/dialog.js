@@ -42,17 +42,6 @@ var newDialog = () => {
         __orchids__destroy: function () {
             var self = this;
             self.onDestroy();
-
-            self.el.classList.remove('orchids-active');
-
-            if (self.option.animate)
-                // has animation
-                setTimeout(() => {
-                    self.el.remove()
-                }, vars.animateTime);
-            else
-                // no animation
-                self.el.remove();
         },
         /**
          * show current dialog

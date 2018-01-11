@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-10 21:20:04
+ *     2018-01-11 08:09:10
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -353,6 +353,32 @@ module.exports = extend;
 
 
 
+module.exports = {
+    // id prefix for page and dialog
+    idPrefix: 'id-',
+    // pages count
+    pageCount: 0,
+    // dialogs count
+    dialogCount: 0,
+    // whether current application is initialized
+    appInitialized: !1,
+    // animate time (millisecond)
+    animateTime: 500,
+    /**
+     * animate delay time (millisecond)
+     * to guarantee the animation  is ok
+     */
+    animateDelayTime: 100
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
 var prefix = 'orchids: ';
 
 module.exports = {
@@ -371,32 +397,6 @@ module.exports = {
     throwError: function throwError(str) {
         throw new Error(prefix + str);
     }
-};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-
-module.exports = {
-    // id prefix for page and dialog
-    idPrefix: 'id-',
-    // pages count
-    pageCount: 0,
-    // dialogs count
-    dialogCount: 0,
-    // whether current application is initialized
-    appInitialized: !1,
-    // animate time (millisecond)
-    animateTime: 500,
-    /**
-     * animate delay time (millisecond)
-     * to guarantee the animation  is ok
-     */
-    animateDelayTime: 100
 };
 
 /***/ }),
@@ -482,7 +482,7 @@ module.exports = params;
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 var app = __webpack_require__(4);
 var util = __webpack_require__(6);
 var getCurrentPageModel = __webpack_require__(5);
@@ -540,7 +540,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 /**
  * get page model
@@ -566,7 +566,7 @@ module.exports = function (id) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 /**
  * get page model
@@ -631,8 +631,8 @@ module.exports = function (name, data) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
-var logger = __webpack_require__(2);
+var vars = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var makePageModel = __webpack_require__(37);
 var makeSingletonPageModel = __webpack_require__(38);
@@ -753,7 +753,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 /**
  * get dialog model
@@ -779,7 +779,7 @@ module.exports = function (id) {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 /**
  * get dialog model
@@ -823,8 +823,8 @@ module.exports = {
 
 
 var container = __webpack_require__(0);
-var vars = __webpack_require__(3);
-var logger = __webpack_require__(2);
+var vars = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var makeDialogModel = __webpack_require__(67);
 var makeSingletonDialogModel = __webpack_require__(68);
@@ -1648,7 +1648,7 @@ module.exports = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 
 module.exports = function (container) {
 
@@ -1677,7 +1677,7 @@ module.exports = function (container) {
 
 var util = __webpack_require__(6);
 var app = __webpack_require__(4);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 var urlParams = __webpack_require__(7);
 var onPopState = __webpack_require__(32);
 var startPage = __webpack_require__(12);
@@ -1969,6 +1969,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
+var vars = __webpack_require__(2);
 var getCurrentPageModel = __webpack_require__(5);
 var getCurrentDialogModel = __webpack_require__(14);
 var getPrevDialogModel = __webpack_require__(41);
@@ -2003,6 +2004,22 @@ module.exports = function () {
     hasPrevDialog ? prevModel.dialog.onShow() : currentPageModel && currentPageModel.page.onShow();
 
     deleteCurrentDialogModel();
+
+    // dialog.afterDestroy
+    if (!currentModel.singleton) {
+        currentModel.dialog.el.classList.remove('orchids-active');
+
+        if (currentModel.dialog.option.animate)
+            // has animation
+            setTimeout(function () {
+                currentModel.dialog.el.remove();
+                currentModel.dialog.afterDestroy();
+            }, vars.animateTime);else {
+            // no animation
+            currentModel.dialog.el.remove();
+            currentModel.dialog.afterDestroy();
+        }
+    }
 };
 
 /***/ }),
@@ -2029,7 +2046,7 @@ module.exports = function () {
 
 var _arguments = arguments;
 var container = __webpack_require__(0);
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var makePageDefinition = __webpack_require__(43);
 var makeNewPage = __webpack_require__(44);
@@ -2396,7 +2413,7 @@ module.exports = function (self) {
 
 
 
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 
@@ -2463,7 +2480,7 @@ module.exports = function (self) {
 
 
 
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 
@@ -2537,7 +2554,7 @@ module.exports = function (self) {
 
 
 
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 module.exports = function (self) {
     // call all fragments's __orchids__destroy
@@ -2663,7 +2680,7 @@ module.exports = {
 
 var _arguments = arguments;
 var container = __webpack_require__(0);
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var makeDialogDefinition = __webpack_require__(54);
 var makeNewDialog = __webpack_require__(55);
@@ -2792,7 +2809,7 @@ module.exports = function (option, dialogObj, parent, singleton) {
 
 
 var extend = __webpack_require__(1);
-var vars = __webpack_require__(3);
+var vars = __webpack_require__(2);
 
 var init = __webpack_require__(56);
 
@@ -2828,16 +2845,6 @@ var newDialog = function newDialog() {
     __orchids__destroy: function __orchids__destroy() {
       var self = this;
       self.onDestroy();
-
-      self.el.classList.remove('orchids-active');
-
-      if (self.option.animate)
-        // has animation
-        setTimeout(function () {
-          self.el.remove();
-        }, vars.animateTime);else
-        // no animation
-        self.el.remove();
     },
     /**
      * show current dialog
@@ -3033,7 +3040,7 @@ module.exports = {
 
 var _arguments = arguments;
 var container = __webpack_require__(0);
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var makeFragmentDefinition = __webpack_require__(59);
 var makeNewFragment = __webpack_require__(60);
@@ -3342,7 +3349,7 @@ module.exports = function (self) {
 
 
 
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 
@@ -3404,7 +3411,7 @@ module.exports = function (self) {
 
 
 
-var logger = __webpack_require__(2);
+var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 

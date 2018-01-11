@@ -6,6 +6,7 @@
 - make `onResult` instead of `onPageResult, onDialogResult`
 - add `beforeCreate, afterCreate` to `page, dialog`
 - add `afterDestroy` to `page`
+- add `afterDestroy` to `dialog`
 
 ## 0.1.1
 

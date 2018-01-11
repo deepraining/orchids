@@ -20,6 +20,8 @@
 
 * `onDestroy`: pre handle before destroy a dialog
 
+* `afterDestroy`: after destroy a dialog
+
 * `onShow`: called when back dialog from other dialog
 
 * `onHide`: called when start another dialog

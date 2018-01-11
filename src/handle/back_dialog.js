@@ -2,6 +2,7 @@
 'use strict';
 
 var container = require('../data/container');
+var vars = require('../data/vars');
 var getCurrentPageModel = require('../get/current_page_model');
 var getCurrentDialogModel = require('../get/current_dialog_model');
 var getPrevDialogModel = require('../get/prev_dialog_model');
@@ -37,4 +38,22 @@ module.exports = () => {
     hasPrevDialog ? prevModel.dialog.onShow() : currentPageModel && currentPageModel.page.onShow();
 
     deleteCurrentDialogModel();
+
+
+    // dialog.afterDestroy
+    if (!currentModel.singleton) {
+        currentModel.dialog.el.classList.remove('orchids-active');
+
+        if (currentModel.dialog.option.animate)
+            // has animation
+            setTimeout(() => {
+                currentModel.dialog.el.remove();
+                currentModel.dialog.afterDestroy();
+            }, vars.animateTime);
+        else {
+            // no animation
+            currentModel.dialog.el.remove();
+            currentModel.dialog.afterDestroy();
+        }
+    }
 };
