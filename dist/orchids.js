@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 09:43:28
+ *     2018-01-11 09:56:59
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -899,10 +899,22 @@ module.exports = function (name, data, forResult, prepareResultData) {
 
         // has initialized before
         if (singletonModel) {
-            container.dialogModels[vars.idPrefix + singletonModel.id] = makeDialogModel(name, forResult, singletonModel.dialog, !0);
-
             forResult ? singletonModel.dialog.__orchids__show(!0, !0, prepareResultData) : singletonModel.dialog.__orchids__show(!0);
 
+            container.dialogModels[vars.idPrefix + singletonModel.id] = makeDialogModel(name, forResult, singletonModel.dialog, !0);
+
+            // call dialog's afterShow
+            if (!singletonModel.dialog.option.animate) {
+                if (currentDialogModel) currentDialogModel.dialog.afterHide();else if (currentPageModel) currentPageModel.page.afterHide();
+
+                singletonModel.dialog.afterShow();
+            } else {
+                setTimeout(function () {
+                    if (currentDialogModel) currentDialogModel.dialog.afterHide();else if (currentPageModel) currentPageModel.page.afterHide();
+
+                    singletonModel.dialog.afterShow();
+                }, vars.animateTime);
+            }
             return;
         }
     }
@@ -922,12 +934,18 @@ module.exports = function (name, data, forResult, prepareResultData) {
     container.dialogModels[vars.idPrefix + dialogOption.dialogId] = makeDialogModel(name, forResult, instance, dialogOption.singleton);
 
     // call dialog's afterCreate
-    if (!instance.option.animate) instance.afterCreate();else {
+    if (!instance.option.animate) {
+        if (currentDialogModel) currentDialogModel.dialog.afterHide();else if (currentPageModel) currentPageModel.page.afterHide();
+
+        instance.afterCreate();
+    } else {
         // show dialog, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
         setTimeout(function () {
             instance.el.classList.add('orchids-active');
 
             setTimeout(function () {
+                if (currentDialogModel) currentDialogModel.dialog.afterHide();else if (currentPageModel) currentPageModel.page.afterHide();
+
                 instance.afterCreate();
             }, vars.animateTime);
         }, vars.animateDelayTime);
@@ -1821,6 +1839,16 @@ module.exports = function (e) {
                 dialogModel.dialog.el.remove();
                 dialogModel.dialog.afterDestroy();
             }
+        } else {
+            if (dialogModel.dialog.option.animate) {
+                // has animation
+                setTimeout(function () {
+                    dialogModel.dialog.afterHide();
+                }, vars.animateTime);
+            } else {
+                // no animation
+                dialogModel.dialog.afterHide();
+            }
         }
     });
 
@@ -2041,14 +2069,12 @@ module.exports = function () {
     var currentModel = getCurrentDialogModel();
     var prevModel = getPrevDialogModel();
     var currentPageModel = getCurrentPageModel();
-    var hasPrevDialog = !1;
 
     // for result
     if (currentModel.forResult) {
         // has prev dialog model
         if (prevModel) {
             prevModel.dialog.onResult && prevModel.dialog.onResult(currentModel.dialog.__orchids__result || {});
-            hasPrevDialog = !0;
         } else if (currentPageModel) {
             currentPageModel.page.onResult && currentPageModel.page.onResult(currentModel.dialog.__orchids__result || {});
         }
@@ -2056,7 +2082,7 @@ module.exports = function () {
 
     // destroy or hide
     currentModel.singleton ? currentModel.dialog.__orchids__hide(!0) : currentModel.dialog.__orchids__destroy();
-    hasPrevDialog ? prevModel.dialog.__orchids__show() : currentPageModel && currentPageModel.page.__orchids__show();
+    prevModel ? prevModel.dialog.__orchids__show() : currentPageModel && currentPageModel.page.__orchids__show();
 
     deleteCurrentDialogModel();
 
@@ -2069,10 +2095,24 @@ module.exports = function () {
             setTimeout(function () {
                 currentModel.dialog.el.remove();
                 currentModel.dialog.afterDestroy();
+                prevModel ? prevModel.dialog.afterShow() : currentPageModel && currentPageModel.page.afterShow();
             }, vars.animateTime);else {
             // no animation
             currentModel.dialog.el.remove();
             currentModel.dialog.afterDestroy();
+            prevModel ? prevModel.dialog.afterShow() : currentPageModel && currentPageModel.page.afterShow();
+        }
+    } else {
+        if (currentModel.dialog.option.animate) {
+            // has animation
+            setTimeout(function () {
+                currentModel.dialog.afterHide();
+                prevModel ? prevModel.dialog.afterShow() : currentPageModel && currentPageModel.page.afterShow();
+            }, vars.animateTime);
+        } else {
+            // no animation
+            currentModel.dialog.afterHide();
+            prevModel ? prevModel.dialog.afterShow() : currentPageModel && currentPageModel.page.afterShow();
         }
     }
 };
@@ -2964,9 +3004,17 @@ var newDialog = function newDialog() {
      */
     onShow: function onShow() {},
     /**
+     * called when dialog is completely shown
+     */
+    afterShow: function afterShow() {},
+    /**
      * called when start another dialog
      */
     onHide: function onHide() {},
+    /**
+     * called when dialog is completely hidden
+     */
+    afterHide: function afterHide() {},
     /**
      * set the result if this dialog is called by startDialogForResult method,
      * and the returned value will be used as the param of the onResult method of last dialog or page

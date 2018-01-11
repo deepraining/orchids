@@ -8,6 +8,7 @@
 - add `afterDestroy` to `page`
 - add `afterDestroy` to `dialog`
 - add `afterShow, afterHide` to `page`
+- add `afterShow, afterHide` to `dialog`
 
 ## 0.1.1
 

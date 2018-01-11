@@ -98,9 +98,17 @@ var newDialog = () => {
          */
         onShow: function () {},
         /**
+         * called when dialog is completely shown
+         */
+        afterShow: function () {},
+        /**
          * called when start another dialog
          */
         onHide: function () {},
+        /**
+         * called when dialog is completely hidden
+         */
+        afterHide: function () {},
         /**
          * set the result if this dialog is called by startDialogForResult method,
          * and the returned value will be used as the param of the onResult method of last dialog or page

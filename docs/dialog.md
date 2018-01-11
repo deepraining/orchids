@@ -24,7 +24,11 @@
 
 * `onShow`: called when back dialog from other dialog
 
+* `afterShow`: called when dialog is completely shown
+
 * `onHide`: called when start another dialog
+
+* `afterHide`: called when dialog is completely hidden
 
 * `onResult`: called when the next dialog destroyed
     - `@param data`: returned the value by next dialog's `setResult` method.

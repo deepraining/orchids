@@ -40,6 +40,18 @@ module.exports = (e) => {
                 dialogModel.dialog.afterDestroy();
             }
         }
+        else {
+            if (dialogModel.dialog.option.animate) {
+                // has animation
+                setTimeout(() => {
+                    dialogModel.dialog.afterHide();
+                }, vars.animateTime)
+            }
+            else {
+                // no animation
+                dialogModel.dialog.afterHide();
+            }
+        }
     });
 
     backPage();

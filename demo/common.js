@@ -140,8 +140,14 @@ orchids.registerDialog('h', {
     onShow: function () {
         console.log('h: onShow');
     },
+    afterShow: function () {
+        console.log('h: afterShow');
+    },
     onHide: function () {
         console.log('h: onHide');
+    },
+    afterHide: function () {
+        console.log('h: afterHide');
     },
     onResult: function(data) {
         console.log('h: onResult success.');
@@ -185,8 +191,14 @@ orchids.registerDialog('i', {
     onShow: function () {
         console.log('i: onShow');
     },
+    afterShow: function () {
+        console.log('i: afterShow');
+    },
     onHide: function () {
         console.log('i: onHide');
+    },
+    afterHide: function () {
+        console.log('i: afterHide');
     },
     prepareForResult: function (data) {
         console.log('i: prepareForResult success');

@@ -24,10 +24,14 @@
 * `onShow`:
     - `normal`: called while showing `page/dialog/fragment` again by called orchids.back(), or touch back button of a phone, and in the same time, another will be destroyed
     - `singleton`: called when current `page/dialog` started for another time.
+    
+* `afterShow`: called when `page/dialog` is completely shown
 
 * `onHide`:
     - `normal`: called when start another
     - `singleton`: called when back to prev
+
+* `afterHide`: called when `page/dialog` is completely hidden
 
 * `onResult`: called when back from forward page
 
