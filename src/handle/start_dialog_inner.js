@@ -37,10 +37,10 @@ module.exports = (name, data, forResult, prepareResultData) => {
     // current page model
     var currentPageModel = getCurrentPageModel();
 
-    // call current dialog's onHide method
-    if (currentDialogModel) currentDialogModel.dialog.onHide();
-    // call current page's onHide method
-    else if (currentPageModel) currentPageModel.page.onHide();
+    // call current dialog's __orchids__hide method
+    if (currentDialogModel) currentDialogModel.dialog.__orchids__hide();
+    // call current page's __orchids__hide method
+    else if (currentPageModel) currentPageModel.page.__orchids__hide();
 
     // singleton
     if (dialog.option.singleton) {

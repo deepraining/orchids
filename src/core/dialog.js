@@ -45,17 +45,18 @@ var newDialog = () => {
         },
         /**
          * show current dialog
+         * @param isSingleton
          * @param forResult
          * @param prepareResultData
          * @private
          */
-        __orchids__show: function (forResult, prepareResultData) {
+        __orchids__show: function (isSingleton, forResult, prepareResultData) {
             var self = this;
 
             /**
              * show dialog
              */
-            self.el.classList.add('orchids-active');
+            isSingleton && self.el.classList.add('orchids-active');
 
             self.onShow();
 
@@ -63,16 +64,17 @@ var newDialog = () => {
         },
         /**
          * hide current dialog
+         * @param isSingleton
          * @private
          */
-        __orchids__hide: function () {
+        __orchids__hide: function (isSingleton) {
             var self = this;
 
             self.onHide();
             /**
              * hide dialog
              */
-            self.el.classList.remove('orchids-active');
+            isSingleton && self.el.classList.remove('orchids-active');
         },
         /**
          * before a dialog is initialized

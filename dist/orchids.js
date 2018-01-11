@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 08:48:38
+ *     2018-01-11 09:17:04
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -858,10 +858,10 @@ module.exports = function (name, data, forResult, prepareResultData) {
     // current page model
     var currentPageModel = getCurrentPageModel();
 
-    // call current dialog's onHide method
-    if (currentDialogModel) currentDialogModel.dialog.onHide();
-    // call current page's onHide method
-    else if (currentPageModel) currentPageModel.page.onHide();
+    // call current dialog's __orchids__hide method
+    if (currentDialogModel) currentDialogModel.dialog.__orchids__hide();
+    // call current page's __orchids__hide method
+    else if (currentPageModel) currentPageModel.page.__orchids__hide();
 
     // singleton
     if (dialog.option.singleton) {
@@ -2026,8 +2026,8 @@ module.exports = function () {
     }
 
     // destroy or hide
-    currentModel.singleton ? currentModel.dialog.__orchids__hide() : currentModel.dialog.__orchids__destroy();
-    hasPrevDialog ? prevModel.dialog.onShow() : currentPageModel && currentPageModel.page.onShow();
+    currentModel.singleton ? currentModel.dialog.__orchids__hide(!0) : currentModel.dialog.__orchids__destroy();
+    hasPrevDialog ? prevModel.dialog.__orchids__show() : currentPageModel && currentPageModel.page.__orchids__show();
 
     deleteCurrentDialogModel();
 
@@ -2529,19 +2529,19 @@ module.exports = function (self, id) {
         return;
     }
 
-    // create fragment if not created, or call onShow method
+    // create fragment if not created, or call __orchids__show method
     if (!instance.__orchids__initialized) {
         instance.onCreate();
         // create sub fragments
         instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
         instance.__orchids__initialized = !0;
     } else {
-        instance.onShow();
+        instance.__orchids__show();
     }
 
-    // call previous fragment onHide method
+    // call previous fragment __orchids__hide method
     var previousInstance = self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId];
-    previousInstance.onHide();
+    previousInstance.__orchids__hide();
 
     // update current active fragment id
     self.__orchids__currentFragmentId = id;
@@ -2874,17 +2874,18 @@ var newDialog = function newDialog() {
     },
     /**
      * show current dialog
+     * @param isSingleton
      * @param forResult
      * @param prepareResultData
      * @private
      */
-    __orchids__show: function __orchids__show(forResult, prepareResultData) {
+    __orchids__show: function __orchids__show(isSingleton, forResult, prepareResultData) {
       var self = this;
 
       /**
        * show dialog
        */
-      self.el.classList.add('orchids-active');
+      isSingleton && self.el.classList.add('orchids-active');
 
       self.onShow();
 
@@ -2892,16 +2893,17 @@ var newDialog = function newDialog() {
     },
     /**
      * hide current dialog
+     * @param isSingleton
      * @private
      */
-    __orchids__hide: function __orchids__hide() {
+    __orchids__hide: function __orchids__hide(isSingleton) {
       var self = this;
 
       self.onHide();
       /**
        * hide dialog
        */
-      self.el.classList.remove('orchids-active');
+      isSingleton && self.el.classList.remove('orchids-active');
     },
     /**
      * before a dialog is initialized
@@ -3455,17 +3457,17 @@ module.exports = function (self, id) {
         return;
     }
 
-    // create fragment if not created, or call onShow method
+    // create fragment if not created, or call __orchids__show method
     if (!instance.__orchids__initialized) {
         instance.onCreate();
         // create sub fragments if not created
         instance.option.subFragments && instance.option.subFragments.length && instance.__orchids__renderSubFragments();
         instance.__orchids__initialized = !0;
-    } else instance.onShow();
+    } else instance.__orchids__show();
 
-    // call previous fragment onHide method
+    // call previous fragment __orchids__hide method
     var previousInstance = self.__orchids__subFragmentsInstances[self.__orchids__currentSubFragmentId];
-    previousInstance.onHide();
+    previousInstance.__orchids__hide();
     // update current active fragment id
     self.__orchids__currentSubFragmentId = id;
 

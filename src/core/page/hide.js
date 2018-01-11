@@ -8,5 +8,5 @@ module.exports = (self, isSingleton) => {
 
     self.onHide();
 
-    isSingleton && (self.el.classList.remove('orchids-active'));
+    isSingleton && self.el.classList.remove('orchids-active');
 };

@@ -24,7 +24,7 @@ module.exports = (self, id) => {
         return;
     }
 
-    // create fragment if not created, or call onShow method
+    // create fragment if not created, or call __orchids__show method
     if (!instance.__orchids__initialized) {
         instance.onCreate();
         // create sub fragments
@@ -32,12 +32,12 @@ module.exports = (self, id) => {
         instance.__orchids__initialized = !0;
     }
     else {
-        instance.onShow();
+        instance.__orchids__show();
     }
 
-    // call previous fragment onHide method
+    // call previous fragment __orchids__hide method
     var previousInstance = self.__orchids__fragmentsInstances[self.__orchids__currentFragmentId];
-    previousInstance.onHide();
+    previousInstance.__orchids__hide();
 
     // update current active fragment id
     self.__orchids__currentFragmentId = id;

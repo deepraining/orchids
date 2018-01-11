@@ -34,8 +34,8 @@ module.exports = () => {
     }
 
     // destroy or hide
-    currentModel.singleton ? currentModel.dialog.__orchids__hide() : currentModel.dialog.__orchids__destroy();
-    hasPrevDialog ? prevModel.dialog.onShow() : currentPageModel && currentPageModel.page.onShow();
+    currentModel.singleton ? currentModel.dialog.__orchids__hide(!0) : currentModel.dialog.__orchids__destroy();
+    hasPrevDialog ? prevModel.dialog.__orchids__show() : currentPageModel && currentPageModel.page.__orchids__show();
 
     deleteCurrentDialogModel();
 
