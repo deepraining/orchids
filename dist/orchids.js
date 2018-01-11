@@ -1,12 +1,12 @@
 /*!
  * 
- *     orchids v0.1.2
+ *     orchids v0.1.3
  * 
  *     https://github.com/senntyou/orchids
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 09:56:59
+ *     2018-01-11 10:23:20
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -81,7 +81,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -407,12 +407,15 @@ module.exports = {
 
 
 
+var defaultAppOption = __webpack_require__(8);
+
 /**
  * app singleton instance
  * @type {{}}
  */
-
-var app = {};
+var app = {
+  option: defaultAppOption
+};
 
 module.exports = app;
 
@@ -424,7 +427,7 @@ module.exports = app;
 
 
 
-var getPageModelById = __webpack_require__(9);
+var getPageModelById = __webpack_require__(10);
 
 module.exports = function () {
     return getPageModelById();
@@ -475,6 +478,37 @@ module.exports = params;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
+/**
+ * default app option
+ *
+ * @type {{}}
+ */
+
+module.exports = {
+  /**
+   * whether start page with route or not
+   * if set to true, the url will be changed when a page is started
+   * like: url?orchidsPage=pageName&orchidsData=serializedData
+   */
+  route: !1,
+  /**
+   * function: called when first page is initialized
+   */
+  onFirstPageInitialized: void 0,
+  /**
+   * function: called when route changed
+   */
+  onRouteChange: void 0
+};
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -546,7 +580,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -572,7 +606,7 @@ module.exports = function (id) {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -601,7 +635,7 @@ module.exports = function (index) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -618,14 +652,14 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var startPageInner = __webpack_require__(13);
+var startPageInner = __webpack_require__(14);
 
 /**
  * start a page
@@ -637,7 +671,7 @@ module.exports = function (name, data) {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -760,21 +794,21 @@ module.exports = function (name, data, forResult, prepareResultData) {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var getDialogModelById = __webpack_require__(15);
+var getDialogModelById = __webpack_require__(16);
 
 module.exports = function () {
     return getDialogModelById();
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -800,7 +834,7 @@ module.exports = function (id) {
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -829,7 +863,7 @@ module.exports = function (index) {
 };
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -844,7 +878,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -858,7 +892,7 @@ var extend = __webpack_require__(1);
 var makeDialogModel = __webpack_require__(68);
 var makeSingletonDialogModel = __webpack_require__(69);
 var getCurrentPageModel = __webpack_require__(5);
-var getCurrentDialogModel = __webpack_require__(14);
+var getCurrentDialogModel = __webpack_require__(15);
 
 /**
  * initialize a Dialog and show it
@@ -953,14 +987,14 @@ module.exports = function (name, data, forResult, prepareResultData) {
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var getPageModelById = __webpack_require__(9);
+var getPageModelById = __webpack_require__(10);
 
 /**
  * get page object
@@ -974,14 +1008,14 @@ module.exports = function (id) {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var getDialogModelById = __webpack_require__(15);
+var getDialogModelById = __webpack_require__(16);
 
 /**
  * get dialog object
@@ -995,45 +1029,45 @@ module.exports = function (id) {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(22);
+__webpack_require__(23);
 
 var orchids = {};
 
-orchids.init = __webpack_require__(27);
+orchids.init = __webpack_require__(28);
 orchids.start = __webpack_require__(30);
 orchids.back = __webpack_require__(40);
 
 orchids.registerPage = __webpack_require__(43);
 orchids.registerDialog = __webpack_require__(54);
 orchids.registerFragment = __webpack_require__(59);
-orchids.startPage = __webpack_require__(12);
+orchids.startPage = __webpack_require__(13);
 orchids.startPageForResult = __webpack_require__(66);
 orchids.startDialog = __webpack_require__(67);
 orchids.startDialogForResult = __webpack_require__(70);
 
-orchids.getPage = __webpack_require__(19);
+orchids.getPage = __webpack_require__(20);
 orchids.getPageByIndex = __webpack_require__(71);
 orchids.getCurrentPage = __webpack_require__(72);
-orchids.getDialog = __webpack_require__(20);
+orchids.getDialog = __webpack_require__(21);
 orchids.getDialogByIndex = __webpack_require__(73);
 orchids.getCurrentDialog = __webpack_require__(74);
 
 module.exports = orchids;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(23);
+var content = __webpack_require__(24);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1041,7 +1075,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(26)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1058,10 +1092,10 @@ if(false) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(24)(undefined);
+exports = module.exports = __webpack_require__(25)(undefined);
 // imports
 
 
@@ -1072,7 +1106,7 @@ exports.push([module.i, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1154,7 +1188,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1210,7 +1244,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(26);
+var	fixUrls = __webpack_require__(27);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1526,7 +1560,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1621,14 +1655,14 @@ module.exports = function (css) {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 
-var defaultAppOption = __webpack_require__(28);
+var defaultAppOption = __webpack_require__(8);
 var extend = __webpack_require__(1);
 var container = __webpack_require__(0);
 var getRootContainer = __webpack_require__(29);
@@ -1652,37 +1686,6 @@ module.exports = function (option) {
     }
 
     app.option = extend(true, {}, defaultAppOption, option || {});
-};
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-
-/**
- * default app option
- *
- * @type {{}}
- */
-
-module.exports = {
-  /**
-   * whether start page with route or not
-   * if set to true, the url will be changed when a page is started
-   * like: url?orchidsPage=pageName&orchidsData=serializedData
-   */
-  route: !1,
-  /**
-   * function: called when first page is initialized
-   */
-  onFirstPageInitialized: void 0,
-  /**
-   * function: called when route changed
-   */
-  onRouteChange: void 0
 };
 
 /***/ }),
@@ -1727,7 +1730,7 @@ var app = __webpack_require__(4);
 var vars = __webpack_require__(2);
 var urlParams = __webpack_require__(7);
 var onPopState = __webpack_require__(32);
-var startPage = __webpack_require__(12);
+var startPage = __webpack_require__(13);
 
 /**
  * start current application
@@ -1804,9 +1807,9 @@ module.exports = originUrl;
 
 var container = __webpack_require__(0);
 var vars = __webpack_require__(2);
-var backPage = __webpack_require__(8);
+var backPage = __webpack_require__(9);
 var getReverseKeys = __webpack_require__(36);
-var deleteCurrentDialogModel = __webpack_require__(11);
+var deleteCurrentDialogModel = __webpack_require__(12);
 
 /**
  * window.onpopstate
@@ -1863,7 +1866,7 @@ module.exports = function (e) {
 
 
 
-var getPageModelByIndex = __webpack_require__(10);
+var getPageModelByIndex = __webpack_require__(11);
 
 module.exports = function () {
     return getPageModelByIndex(-2);
@@ -2027,7 +2030,7 @@ module.exports = function (id, pageInstance) {
 
 var container = __webpack_require__(0);
 var app = __webpack_require__(4);
-var backPage = __webpack_require__(8);
+var backPage = __webpack_require__(9);
 var backDialog = __webpack_require__(41);
 
 /**
@@ -2054,9 +2057,9 @@ module.exports = function () {
 var container = __webpack_require__(0);
 var vars = __webpack_require__(2);
 var getCurrentPageModel = __webpack_require__(5);
-var getCurrentDialogModel = __webpack_require__(14);
+var getCurrentDialogModel = __webpack_require__(15);
 var getPrevDialogModel = __webpack_require__(42);
-var deleteCurrentDialogModel = __webpack_require__(11);
+var deleteCurrentDialogModel = __webpack_require__(12);
 
 /**
  * back to prev dialog
@@ -2125,7 +2128,7 @@ module.exports = function () {
 
 
 
-var getDialogModelByIndex = __webpack_require__(16);
+var getDialogModelByIndex = __webpack_require__(17);
 
 module.exports = function () {
     return getDialogModelByIndex(-2);
@@ -2452,7 +2455,7 @@ module.exports = function () {
 
 
 var container = __webpack_require__(0);
-var directionClasses = __webpack_require__(17);
+var directionClasses = __webpack_require__(18);
 
 /**
  * page's init action
@@ -3051,7 +3054,7 @@ module.exports = newDialog;
 
 
 var container = __webpack_require__(0);
-var directionClasses = __webpack_require__(17);
+var directionClasses = __webpack_require__(18);
 
 /**
  * dialog's init action
@@ -3615,7 +3618,7 @@ module.exports = {
 
 
 
-var startPageInner = __webpack_require__(13);
+var startPageInner = __webpack_require__(14);
 
 /**
  * start a page for a result
@@ -3635,7 +3638,7 @@ module.exports = function (name, data, prepareResultData) {
 
 
 
-var startDialogInner = __webpack_require__(18);
+var startDialogInner = __webpack_require__(19);
 
 /**
  * start a dialog
@@ -3706,7 +3709,7 @@ module.exports = function (id, dialogInstance) {
 
 
 
-var startDialogInner = __webpack_require__(18);
+var startDialogInner = __webpack_require__(19);
 
 /**
  * start a dialog for a result
@@ -3726,7 +3729,7 @@ module.exports = function (name, data, prepareResultData) {
 
 
 
-var getPageModelByIndex = __webpack_require__(10);
+var getPageModelByIndex = __webpack_require__(11);
 
 /**
  * get page object
@@ -3747,7 +3750,7 @@ module.exports = function (index) {
 
 
 
-var getPageById = __webpack_require__(19);
+var getPageById = __webpack_require__(20);
 
 module.exports = function () {
     return getPageById();
@@ -3761,7 +3764,7 @@ module.exports = function () {
 
 
 
-var getDialogModelByIndex = __webpack_require__(16);
+var getDialogModelByIndex = __webpack_require__(17);
 
 /**
  * get dialog object
@@ -3782,7 +3785,7 @@ module.exports = function (index) {
 
 
 
-var getDialogById = __webpack_require__(20);
+var getDialogById = __webpack_require__(21);
 
 module.exports = function () {
     return getDialogById();

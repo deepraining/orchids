@@ -1,5 +1,9 @@
 # orchids changelog
 
+## 0.1.3
+
+- fix `must call orchids.init` bug
+
 ## 0.1.2
 
 - make `container` instead of `rootContainer` of `orchids.init`

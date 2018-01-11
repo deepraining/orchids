@@ -1,10 +1,14 @@
 
 "use strict";
 
+var defaultAppOption = require('./option/app');
+
 /**
  * app singleton instance
  * @type {{}}
  */
-var app = {};
+var app = {
+    option: defaultAppOption
+};
 
 module.exports = app;
