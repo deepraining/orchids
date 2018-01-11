@@ -162,6 +162,14 @@ orchids.registerDialog('i', {
         console.log('i: afterCreate');
         //console.log(orchids.getCurrentDialog().option.name);
     },
+    onDestroy: function () {
+        console.log('i: onDestroy');
+        //console.log(orchids.getCurrentDialog());
+    },
+    afterDestroy: function () {
+        console.log('i: afterDestroy');
+        //console.log(orchids.getCurrentDialog());
+    },
     onShow: function () {
         console.log('i: onShow');
     },

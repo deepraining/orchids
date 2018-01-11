@@ -2,8 +2,9 @@
 'use strict';
 
 var container = require('../data/container');
+var vars = require('../data/vars');
 var backPage = require('./back_page');
-var getCurrentPageModel = require('../get/current_page_model');
+var getReverseKeys = require('../util/get_reverse_keys');
 var deleteCurrentDialogModel = require('../delete/current_dialog_model');
 
 /**
@@ -14,35 +15,32 @@ var deleteCurrentDialogModel = require('../delete/current_dialog_model');
 module.exports = (e) => {
 
     // if user back page by press back button of phone, close all dialogs first
-    var dialogModelsKeys = Object.keys(container.dialogModels);
+    var dialogModelsKeys = getReverseKeys(container.dialogModels);
 
-    if (dialogModelsKeys.length) {
-        var dialogModel;
-        var prevDialogModel;
-        var currentPageModel = getCurrentPageModel();
+    dialogModelsKeys.length && dialogModelsKeys.forEach((key) => {
+        var dialogModel = container.dialogModels[key];
 
-        for (var il = dialogModelsKeys.length, i = il - 1; i >= 0; i--) {
-            // first dialog
-            if (i <= 0) {
-                dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onResult) {
-                    currentPageModel.page.onResult(dialogModel.dialog.__orchids__result || null);
-                }
-            }
+        // destroy or hide
+        dialogModel.singleton ? dialogModel.dialog.__orchids__hide() : dialogModel.dialog.__orchids__destroy();
+        deleteCurrentDialogModel();
+
+        // dialog.afterDestroy
+        if (!dialogModel.singleton) {
+            dialogModel.dialog.el.classList.remove('orchids-active');
+
+            if (dialogModel.dialog.option.animate)
+                // has animation
+                setTimeout(() => {
+                    dialogModel.dialog.el.remove();
+                    dialogModel.dialog.afterDestroy();
+                }, vars.animateTime);
             else {
-                // at least two dialogs
-                prevDialogModel = container.dialogModels[dialogModelsKeys[i - 1]];
-                dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && prevDialogModel.dialog.onResult) {
-                    prevDialogModel.dialog.onResult(dialogModel.dialog.__orchids__result || null);
-                }
+                // no animation
+                dialogModel.dialog.el.remove();
+                dialogModel.dialog.afterDestroy();
             }
-            // destroy
-            dialogModel.dialog.__orchids__destroy();
-            deleteCurrentDialogModel();
         }
-    }
-
+    });
 
     backPage();
 };

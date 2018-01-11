@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 08:09:10
+ *     2018-01-11 08:48:38
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -594,7 +594,7 @@ module.exports = function (index) {
 
 
 
-var deleteDialogModelByIndex = __webpack_require__(36);
+var deleteDialogModelByIndex = __webpack_require__(37);
 
 /**
  * delete current dialog model
@@ -634,8 +634,8 @@ var container = __webpack_require__(0);
 var vars = __webpack_require__(2);
 var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
-var makePageModel = __webpack_require__(37);
-var makeSingletonPageModel = __webpack_require__(38);
+var makePageModel = __webpack_require__(38);
+var makeSingletonPageModel = __webpack_require__(39);
 var util = __webpack_require__(6);
 var app = __webpack_require__(4);
 var getCurrentPageModel = __webpack_require__(5);
@@ -826,8 +826,8 @@ var container = __webpack_require__(0);
 var vars = __webpack_require__(2);
 var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
-var makeDialogModel = __webpack_require__(67);
-var makeSingletonDialogModel = __webpack_require__(68);
+var makeDialogModel = __webpack_require__(68);
+var makeSingletonDialogModel = __webpack_require__(69);
 var getCurrentPageModel = __webpack_require__(5);
 var getCurrentDialogModel = __webpack_require__(14);
 
@@ -960,22 +960,22 @@ var orchids = {};
 
 orchids.init = __webpack_require__(27);
 orchids.start = __webpack_require__(30);
-orchids.back = __webpack_require__(39);
+orchids.back = __webpack_require__(40);
 
-orchids.registerPage = __webpack_require__(42);
-orchids.registerDialog = __webpack_require__(53);
-orchids.registerFragment = __webpack_require__(58);
+orchids.registerPage = __webpack_require__(43);
+orchids.registerDialog = __webpack_require__(54);
+orchids.registerFragment = __webpack_require__(59);
 orchids.startPage = __webpack_require__(12);
-orchids.startPageForResult = __webpack_require__(65);
-orchids.startDialog = __webpack_require__(66);
-orchids.startDialogForResult = __webpack_require__(69);
+orchids.startPageForResult = __webpack_require__(66);
+orchids.startDialog = __webpack_require__(67);
+orchids.startDialogForResult = __webpack_require__(70);
 
 orchids.getPage = __webpack_require__(19);
-orchids.getPageByIndex = __webpack_require__(70);
-orchids.getCurrentPage = __webpack_require__(71);
+orchids.getPageByIndex = __webpack_require__(71);
+orchids.getCurrentPage = __webpack_require__(72);
 orchids.getDialog = __webpack_require__(20);
-orchids.getDialogByIndex = __webpack_require__(72);
-orchids.getCurrentDialog = __webpack_require__(73);
+orchids.getDialogByIndex = __webpack_require__(73);
+orchids.getCurrentDialog = __webpack_require__(74);
 
 module.exports = orchids;
 
@@ -1756,8 +1756,9 @@ module.exports = originUrl;
 
 
 var container = __webpack_require__(0);
+var vars = __webpack_require__(2);
 var backPage = __webpack_require__(8);
-var getCurrentPageModel = __webpack_require__(5);
+var getReverseKeys = __webpack_require__(36);
 var deleteCurrentDialogModel = __webpack_require__(11);
 
 /**
@@ -1768,33 +1769,31 @@ var deleteCurrentDialogModel = __webpack_require__(11);
 module.exports = function (e) {
 
     // if user back page by press back button of phone, close all dialogs first
-    var dialogModelsKeys = Object.keys(container.dialogModels);
+    var dialogModelsKeys = getReverseKeys(container.dialogModels);
 
-    if (dialogModelsKeys.length) {
-        var dialogModel;
-        var prevDialogModel;
-        var currentPageModel = getCurrentPageModel();
+    dialogModelsKeys.length && dialogModelsKeys.forEach(function (key) {
+        var dialogModel = container.dialogModels[key];
 
-        for (var il = dialogModelsKeys.length, i = il - 1; i >= 0; i--) {
-            // first dialog
-            if (i <= 0) {
-                dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && currentPageModel && currentPageModel.page.onResult) {
-                    currentPageModel.page.onResult(dialogModel.dialog.__orchids__result || null);
-                }
-            } else {
-                // at least two dialogs
-                prevDialogModel = container.dialogModels[dialogModelsKeys[i - 1]];
-                dialogModel = container.dialogModels[dialogModelsKeys[i]];
-                if (dialogModel.forResult && prevDialogModel.dialog.onResult) {
-                    prevDialogModel.dialog.onResult(dialogModel.dialog.__orchids__result || null);
-                }
+        // destroy or hide
+        dialogModel.singleton ? dialogModel.dialog.__orchids__hide() : dialogModel.dialog.__orchids__destroy();
+        deleteCurrentDialogModel();
+
+        // dialog.afterDestroy
+        if (!dialogModel.singleton) {
+            dialogModel.dialog.el.classList.remove('orchids-active');
+
+            if (dialogModel.dialog.option.animate)
+                // has animation
+                setTimeout(function () {
+                    dialogModel.dialog.el.remove();
+                    dialogModel.dialog.afterDestroy();
+                }, vars.animateTime);else {
+                // no animation
+                dialogModel.dialog.el.remove();
+                dialogModel.dialog.afterDestroy();
             }
-            // destroy
-            dialogModel.dialog.__orchids__destroy();
-            deleteCurrentDialogModel();
         }
-    }
+    });
 
     backPage();
 };
@@ -1864,6 +1863,33 @@ module.exports = function (index) {
 
 
 
+/**
+ * get reverse object keys
+ *
+ * example: {a: 1, b: 2, c: 3} => ['c', 'b', 'a']
+ *
+ * @param obj
+ * @returns {Array}
+ */
+
+module.exports = function (obj) {
+    var result = [];
+
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) result.unshift(attr);
+    }
+
+    return result;
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+
 var container = __webpack_require__(0);
 
 /**
@@ -1883,7 +1909,7 @@ module.exports = function (index) {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1911,7 +1937,7 @@ module.exports = function (name, forResult, pageInstance, singleton) {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1935,7 +1961,7 @@ module.exports = function (id, pageInstance) {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1945,7 +1971,7 @@ module.exports = function (id, pageInstance) {
 var container = __webpack_require__(0);
 var app = __webpack_require__(4);
 var backPage = __webpack_require__(8);
-var backDialog = __webpack_require__(40);
+var backDialog = __webpack_require__(41);
 
 /**
  * back to prev page or prev dialog
@@ -1961,7 +1987,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1972,7 +1998,7 @@ var container = __webpack_require__(0);
 var vars = __webpack_require__(2);
 var getCurrentPageModel = __webpack_require__(5);
 var getCurrentDialogModel = __webpack_require__(14);
-var getPrevDialogModel = __webpack_require__(41);
+var getPrevDialogModel = __webpack_require__(42);
 var deleteCurrentDialogModel = __webpack_require__(11);
 
 /**
@@ -2023,7 +2049,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2037,7 +2063,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2048,9 +2074,9 @@ var _arguments = arguments;
 var container = __webpack_require__(0);
 var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
-var makePageDefinition = __webpack_require__(43);
-var makeNewPage = __webpack_require__(44);
-var defaultPageOption = __webpack_require__(52);
+var makePageDefinition = __webpack_require__(44);
+var makeNewPage = __webpack_require__(45);
+var defaultPageOption = __webpack_require__(53);
 var app = __webpack_require__(4);
 
 /**
@@ -2136,7 +2162,7 @@ module.exports = function (name, attributes, option, parentName) {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2164,7 +2190,7 @@ module.exports = function (option, pageObj, parent, singleton) {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2172,13 +2198,13 @@ module.exports = function (option, pageObj, parent, singleton) {
 
 var extend = __webpack_require__(1);
 
-var init = __webpack_require__(45);
-var renderFragments = __webpack_require__(46);
-var _showFragment = __webpack_require__(47);
-var routeForward = __webpack_require__(48);
-var destroy = __webpack_require__(49);
-var hide = __webpack_require__(50);
-var show = __webpack_require__(51);
+var init = __webpack_require__(46);
+var renderFragments = __webpack_require__(47);
+var _showFragment = __webpack_require__(48);
+var routeForward = __webpack_require__(49);
+var destroy = __webpack_require__(50);
+var hide = __webpack_require__(51);
+var show = __webpack_require__(52);
 
 module.exports = function () {
   /**
@@ -2341,7 +2367,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2406,7 +2432,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2473,7 +2499,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2524,7 +2550,7 @@ module.exports = function (self, id) {
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2547,7 +2573,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2565,7 +2591,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2582,7 +2608,7 @@ module.exports = function (self, isSingleton) {
 };
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2604,7 +2630,7 @@ module.exports = function (self, isSingleton, forResult, prepareResultData) {
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2671,7 +2697,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2682,9 +2708,9 @@ var _arguments = arguments;
 var container = __webpack_require__(0);
 var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
-var makeDialogDefinition = __webpack_require__(54);
-var makeNewDialog = __webpack_require__(55);
-var defaultDialogOption = __webpack_require__(57);
+var makeDialogDefinition = __webpack_require__(55);
+var makeNewDialog = __webpack_require__(56);
+var defaultDialogOption = __webpack_require__(58);
 var app = __webpack_require__(4);
 
 /**
@@ -2769,7 +2795,7 @@ module.exports = function (name, attributes, option, parentName) {
 };
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2797,7 +2823,7 @@ module.exports = function (option, dialogObj, parent, singleton) {
 };
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2811,7 +2837,7 @@ module.exports = function (option, dialogObj, parent, singleton) {
 var extend = __webpack_require__(1);
 var vars = __webpack_require__(2);
 
-var init = __webpack_require__(56);
+var init = __webpack_require__(57);
 
 var newDialog = function newDialog() {
   /**
@@ -2930,7 +2956,7 @@ var newDialog = function newDialog() {
 module.exports = newDialog;
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2987,7 +3013,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3031,7 +3057,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3042,9 +3068,9 @@ var _arguments = arguments;
 var container = __webpack_require__(0);
 var logger = __webpack_require__(3);
 var extend = __webpack_require__(1);
-var makeFragmentDefinition = __webpack_require__(59);
-var makeNewFragment = __webpack_require__(60);
-var defaultFragmentOption = __webpack_require__(64);
+var makeFragmentDefinition = __webpack_require__(60);
+var makeNewFragment = __webpack_require__(61);
+var defaultFragmentOption = __webpack_require__(65);
 
 /**
  * register a Fragment Object
@@ -3128,7 +3154,7 @@ module.exports = function (name, attributes, option, parentName) {
 };
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3154,7 +3180,7 @@ module.exports = function (option, fragmentObj, parent) {
 };
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3162,9 +3188,9 @@ module.exports = function (option, fragmentObj, parent) {
 
 var extend = __webpack_require__(1);
 
-var init = __webpack_require__(61);
-var renderSubFragments = __webpack_require__(62);
-var _showSubFragment = __webpack_require__(63);
+var init = __webpack_require__(62);
+var renderSubFragments = __webpack_require__(63);
+var _showSubFragment = __webpack_require__(64);
 
 var newFragment = function newFragment() {
   /**
@@ -3290,7 +3316,7 @@ var newFragment = function newFragment() {
 module.exports = newFragment;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3342,7 +3368,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3404,7 +3430,7 @@ module.exports = function (self) {
 };
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3447,7 +3473,7 @@ module.exports = function (self, id) {
 };
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3495,7 +3521,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3515,7 +3541,7 @@ module.exports = function (name, data, prepareResultData) {
 };
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3534,7 +3560,7 @@ module.exports = function (name, data) {
 };
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3562,7 +3588,7 @@ module.exports = function (name, forResult, dialogInstance, singleton) {
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3586,7 +3612,7 @@ module.exports = function (id, dialogInstance) {
 };
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3606,7 +3632,7 @@ module.exports = function (name, data, prepareResultData) {
 };
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3627,7 +3653,7 @@ module.exports = function (index) {
 };
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3641,7 +3667,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3662,7 +3688,7 @@ module.exports = function (index) {
 };
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
