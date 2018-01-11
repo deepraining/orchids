@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 10:23:20
+ *     2018-01-11 11:27:38
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -3002,6 +3002,10 @@ var newDialog = function newDialog() {
      * pre handle before destroy a dialog
      */
     onDestroy: function onDestroy() {},
+    /**
+     * after destroy a dialog
+     */
+    afterDestroy: function afterDestroy() {},
     /**
      * called when back dialog from other dialog
      */

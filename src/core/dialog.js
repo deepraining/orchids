@@ -94,6 +94,10 @@ var newDialog = () => {
          */
         onDestroy: function() {},
         /**
+         * after destroy a dialog
+         */
+        afterDestroy: function() {},
+        /**
          * called when back dialog from other dialog
          */
         onShow: function () {},
