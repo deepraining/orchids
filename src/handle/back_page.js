@@ -42,12 +42,28 @@ module.exports = () => {
             setTimeout(() => {
                 currentModel.page.el.remove();
                 currentModel.page.afterDestroy();
+                prevModel.page.afterShow();
             }, vars.animateTime)
         }
         else {
             // no animation
             currentModel.page.el.remove();
             currentModel.page.afterDestroy();
+            prevModel.page.afterShow();
+        }
+    }
+    else {
+        if (currentModel.page.option.animate) {
+            // has animation
+            setTimeout(() => {
+                currentModel.page.afterHide();
+                prevModel.page.afterShow();
+            }, vars.animateTime)
+        }
+        else {
+            // no animation
+            currentModel.page.afterHide();
+            prevModel.page.afterShow();
         }
     }
 };

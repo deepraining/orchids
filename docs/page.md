@@ -24,7 +24,11 @@
 
 * `onShow`: called when back page from other page or dialog
 
+* `afterShow`: called when page is completely shown
+
 * `onHide`: called when start another page or dialog
+
+* `afterHide`: called when page is completely hidden
 
 * `onResult`: called when the next page destroyed
     - `@param data`: returned the value by next page's `setResult` method.

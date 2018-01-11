@@ -35,8 +35,14 @@ orchids.registerPage('a', {
         console.log('a: onShow');
         document.title = 'a';
     },
+    afterShow: function () {
+        console.log('a: afterShow');
+    },
     onHide: function () {
         console.log('a: onHide');
+    },
+    afterHide: function () {
+        console.log('a: afterHide');
     },
     onDestroy: function() {
         console.log('a: onDestroy')
@@ -73,8 +79,14 @@ orchids.registerPage('b', {
         console.log('b: onShow');
         document.title = 'b';
     },
+    afterShow: function () {
+        console.log('b: afterShow');
+    },
     onHide: function () {
         console.log('b: onHide');
+    },
+    afterHide: function () {
+        console.log('b: afterHide');
     },
     onDestroy: function() {
         console.log('b: onDestroy')

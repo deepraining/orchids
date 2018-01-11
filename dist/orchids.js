@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 09:17:04
+ *     2018-01-11 09:43:28
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -522,11 +522,25 @@ module.exports = function () {
             setTimeout(function () {
                 currentModel.page.el.remove();
                 currentModel.page.afterDestroy();
+                prevModel.page.afterShow();
             }, vars.animateTime);
         } else {
             // no animation
             currentModel.page.el.remove();
             currentModel.page.afterDestroy();
+            prevModel.page.afterShow();
+        }
+    } else {
+        if (currentModel.page.option.animate) {
+            // has animation
+            setTimeout(function () {
+                currentModel.page.afterHide();
+                prevModel.page.afterShow();
+            }, vars.animateTime);
+        } else {
+            // no animation
+            currentModel.page.afterHide();
+            prevModel.page.afterShow();
         }
     }
 };
@@ -685,14 +699,25 @@ module.exports = function (name, data, forResult, prepareResultData) {
 
         // has initialized before
         if (singletonModel) {
-            container.pageModels[vars.idPrefix + singletonModel.id] = makePageModel(name, forResult, singletonModel.page, !0);
 
             forResult ? singletonModel.page.__orchids__show(!0, !0, prepareResultData) : singletonModel.page.__orchids__show(!0);
 
-            typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+            container.pageModels[vars.idPrefix + singletonModel.id] = makePageModel(name, forResult, singletonModel.page, !0);
 
             util.increasePagesCount();
 
+            typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+            // call page's afterShow
+            if (!singletonModel.page.option.animate) {
+                currentPageModel && currentPageModel.page.afterHide();
+                singletonModel.page.afterShow();
+            } else {
+                setTimeout(function () {
+                    currentPageModel && currentPageModel.page.afterHide();
+                    singletonModel.page.afterShow();
+                }, vars.animateTime);
+            }
             return;
         }
     }
@@ -718,12 +743,16 @@ module.exports = function (name, data, forResult, prepareResultData) {
     util.increasePagesCount();
 
     // call page's afterCreate
-    if (instance.__orchids__isFirstPage || !instance.option.animate) instance.afterCreate();else {
+    if (instance.__orchids__isFirstPage || !instance.option.animate) {
+        currentPageModel && currentPageModel.page.afterHide();
+        instance.afterCreate();
+    } else {
         // show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
         setTimeout(function () {
             instance.el.classList.add('orchids-active');
 
             setTimeout(function () {
+                currentPageModel && currentPageModel.page.afterHide();
                 instance.afterCreate();
             }, vars.animateTime);
         }, vars.animateDelayTime);
@@ -2338,9 +2367,17 @@ module.exports = function () {
      */
     onShow: function onShow() {},
     /**
+     * called when page is completely shown
+     */
+    afterShow: function afterShow() {},
+    /**
      * called when start another page or dialog
      */
     onHide: function onHide() {},
+    /**
+     * called when page is completely hidden
+     */
+    afterHide: function afterHide() {},
     /**
      * set the result if this page is called by startPageForResult method,
      * and the returned value will be used as the param of the onResult method of last page

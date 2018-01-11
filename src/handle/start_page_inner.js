@@ -56,14 +56,26 @@ module.exports = (name, data, forResult, prepareResultData) => {
 
         // has initialized before
         if (singletonModel) {
-            container.pageModels[vars.idPrefix + singletonModel.id] = makePageModel(name, forResult, singletonModel.page, !0);
 
             forResult ? singletonModel.page.__orchids__show(!0, !0, prepareResultData) : singletonModel.page.__orchids__show(!0);
 
-            typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+            container.pageModels[vars.idPrefix + singletonModel.id] = makePageModel(name, forResult, singletonModel.page, !0);
 
             util.increasePagesCount();
 
+            typeof app.option.onRouteChange == 'function' && app.option.onRouteChange();
+
+            // call page's afterShow
+            if (!singletonModel.page.option.animate) {
+                currentPageModel && currentPageModel.page.afterHide();
+                singletonModel.page.afterShow();
+            }
+            else {
+                setTimeout(() => {
+                    currentPageModel && currentPageModel.page.afterHide();
+                    singletonModel.page.afterShow();
+                }, vars.animateTime);
+            }
             return;
         }
     }
@@ -91,13 +103,17 @@ module.exports = (name, data, forResult, prepareResultData) => {
     util.increasePagesCount();
 
     // call page's afterCreate
-    if (instance.__orchids__isFirstPage || !instance.option.animate) instance.afterCreate();
+    if (instance.__orchids__isFirstPage || !instance.option.animate) {
+        currentPageModel && currentPageModel.page.afterHide();
+        instance.afterCreate();
+    }
     else {
         // show page, delay 100 ms to guarantee the animation  is ok, and 0 is not ok
         setTimeout(() => {
             instance.el.classList.add('orchids-active');
 
             setTimeout(() => {
+                currentPageModel && currentPageModel.page.afterHide();
                 instance.afterCreate();
             }, vars.animateTime);
         }, vars.animateDelayTime);

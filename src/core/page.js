@@ -142,9 +142,17 @@ module.exports = () => {
          */
         onShow: function () {},
         /**
+         * called when page is completely shown
+         */
+        afterShow: function () {},
+        /**
          * called when start another page or dialog
          */
         onHide: function () {},
+        /**
+         * called when page is completely hidden
+         */
+        afterHide: function () {},
         /**
          * set the result if this page is called by startPageForResult method,
          * and the returned value will be used as the param of the onResult method of last page

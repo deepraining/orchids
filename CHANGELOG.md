@@ -7,6 +7,7 @@
 - add `beforeCreate, afterCreate` to `page, dialog`
 - add `afterDestroy` to `page`
 - add `afterDestroy` to `dialog`
+- add `afterShow, afterHide` to `page`
 
 ## 0.1.1
 
