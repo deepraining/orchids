@@ -29,20 +29,9 @@ module.exports = (pageName, data) => {
 
     util.resetPagesCount(); // every time start application, will change reset pages count
 
-    // tell the first page and option by the parameter
-    if (urlParams.orchidsPage && !existedPagesCount) {
-        var orchidsPage = decodeURIComponent(urlParams.orchidsPage);
-        var orchidsData = decodeURIComponent(urlParams.orchidsData);
-        try {
-            orchidsData = JSON.parse(orchidsData);
-        } catch (e) {}
 
-        startPage(orchidsPage, orchidsData);
-    }
-    else {
-        app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
-        startPage(pageName, data);
-    }
+    app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
+    startPage(pageName, data);
 
     // first page initialize complete
     app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();

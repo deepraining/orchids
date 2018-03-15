@@ -14,7 +14,7 @@ orchids.init({
 
 ### route
 
-* `desc`: whether start a page with route or not. if set to true, the url will be changed when a page is started, like: url?orchidsPage=pageName&orchidsData=serializedData
+* `desc`: whether start a page with route or not. if set to true, the url will be changed when a page is started, like: url?orchidsPage=pageName&orchidsId=pageId
 * `type`: `true/false`
 * `default`: `false`
 

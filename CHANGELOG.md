@@ -1,5 +1,9 @@
 # orchids changelog
 
+## 0.1.4
+
+- remove `orchidsData` in `url`
+
 ## 0.1.3
 
 - fix `must call orchids.init` bug

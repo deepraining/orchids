@@ -10,7 +10,7 @@ module.exports = {
     /**
      * whether start page with route or not
      * if set to true, the url will be changed when a page is started
-     * like: url?orchidsPage=pageName&orchidsData=serializedData
+     * like: url?orchidsPage=pageName&orchidsId=pageId
      */
     route: !1,
     /**

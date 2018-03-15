@@ -5,8 +5,8 @@ var urlParams = require('../../util/url_params');
 
 module.exports = (self) => {
 
-    urlParams.orchidsPage = encodeURIComponent(self.option.name);
-    urlParams.orchidsData = encodeURIComponent(JSON.stringify(self.__orchids__data));
+    urlParams.orchidsPage = self.option.name;
+    urlParams.orchidsId = self.id;
 
     var searchString = '';
     Object.keys(urlParams).forEach((key) => {

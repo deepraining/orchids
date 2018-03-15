@@ -1,12 +1,12 @@
 /*!
  * 
- *     orchids v0.1.3
+ *     orchids v0.1.4
  * 
  *     https://github.com/senntyou/orchids
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-01-11 11:27:38
+ *     2018-03-15 20:31:33
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -494,7 +494,7 @@ module.exports = {
   /**
    * whether start page with route or not
    * if set to true, the url will be changed when a page is started
-   * like: url?orchidsPage=pageName&orchidsData=serializedData
+   * like: url?orchidsPage=pageName&orchidsId=pageId
    */
   route: !1,
   /**
@@ -1002,9 +1002,9 @@ var getPageModelById = __webpack_require__(10);
  * @returns {*}
  */
 module.exports = function (id) {
-    var model = getPageModelById(id);
+  var model = getPageModelById(id);
 
-    return model ? model.page : null;
+  return model ? model.page : null;
 };
 
 /***/ }),
@@ -1023,9 +1023,9 @@ var getDialogModelById = __webpack_require__(16);
  * @returns {*}
  */
 module.exports = function (id) {
-    var model = getDialogModelById(id);
+  var model = getDialogModelById(id);
 
-    return model ? model.dialog : null;
+  return model ? model.dialog : null;
 };
 
 /***/ }),
@@ -1081,8 +1081,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/.0.28.7@css-loader/index.js!./index.css", function() {
-			var newContent = require("!!../../node_modules/.0.28.7@css-loader/index.js!./index.css");
+		module.hot.accept("!!../../node_modules/_css-loader@0.28.10@css-loader/index.js!./index.css", function() {
+			var newContent = require("!!../../node_modules/_css-loader@0.28.10@css-loader/index.js!./index.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1095,12 +1095,12 @@ if(false) {
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(25)(undefined);
+exports = module.exports = __webpack_require__(25)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".orchids {\r\n    display: block;\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n.orchids:before,\r\n.orchids:after {\r\n    box-sizing: border-box;\r\n}\r\n.orchids-page,\r\n.orchids-dialog {\r\n    position: fixed;\r\n    left: 0;\r\n    top: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-page-singleton {\r\n    z-index: 2;\r\n}\r\n.orchids-dialog {\r\n    z-index: 3;\r\n}\r\n.orchids-dialog-singleton {\r\n    z-index: 4;\r\n}\r\n/* animation */\r\n.orchids-page.orchids-with-animation,\r\n.orchids-dialog.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade {\r\n    opacity: 0;\r\n}\r\n.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,\r\n.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {\r\n    opacity: 1;\r\n}\r\n.orchids-page.orchids-right-to-left,\r\n.orchids-dialog.orchids-right-to-left {\r\n    transform: translateX(100%);\r\n}\r\n.orchids-page.orchids-left-to-right,\r\n.orchids-dialog.orchids-left-to-right {\r\n    transform: translateX(-100%);\r\n}\r\n.orchids-page.orchids-right-to-left.orchids-active,\r\n.orchids-dialog.orchids-right-to-left.orchids-active,\r\n.orchids-page.orchids-left-to-right.orchids-active,\r\n.orchids-dialog.orchids-left-to-right.orchids-active {\r\n    transform: translateX(0);\r\n}\r\n.orchids-page.orchids-bottom-to-top,\r\n.orchids-dialog.orchids-bottom-to-top {\r\n    transform: translateY(100%);\r\n}\r\n.orchids-page.orchids-top-to-bottom,\r\n.orchids-dialog.orchids-top-to-bottom {\r\n    transform: translateY(-100%);\r\n}\r\n.orchids-page.orchids-bottom-to-top.orchids-active,\r\n.orchids-dialog.orchids-bottom-to-top.orchids-active,\r\n.orchids-page.orchids-top-to-bottom.orchids-active,\r\n.orchids-dialog.orchids-top-to-bottom.orchids-active {\r\n    transform: translateY(0);\r\n}\r\n\r\n/* fragment */\r\n.orchids-fragment {\r\n    position: absolute;\r\n    background-color: #ffffff;\r\n    overflow: auto;\r\n    z-index: 1;\r\n}\r\n.orchids-fragment.orchids-horizontal {\r\n    top: 0;\r\n    height: 100%;\r\n}\r\n.orchids-fragment.orchids-vertical {\r\n    left: 0;\r\n    width: 100%;\r\n}\r\n.orchids-fragments-container,\r\n.orchids-sub-fragments-container{\r\n    position: absolute;\r\n    overflow: hidden;\r\n    left: 0;\r\n    top: 0;\r\n}\r\n.orchids-fragments-container.orchids-with-animation,\r\n.orchids-sub-fragments-container.orchids-with-animation {\r\n    transition: all .5s;\r\n}\r\n.orchids-fragments-container.orchids-horizontal,\r\n.orchids-sub-fragments-container.orchids-horizontal {\r\n    height: 100%;\r\n    transform: translateX(0);\r\n}\r\n.orchids-fragments-container.orchids-vertical,\r\n.orchids-sub-fragments-container.orchids-vertical {\r\n    width: 100%;\r\n    transform: translateY(0);\r\n}\r\n\r\n/* has custom root container */\r\n.orchids-custom-container .orchids-page,\r\n.orchids-custom-container .orchids-dialog {\r\n    position: absolute;\r\n}", ""]);
+exports.push([module.i, ".orchids {\n    display: block;\n    margin: 0;\n    padding: 0;\n    box-sizing: border-box;\n}\n.orchids:before,\n.orchids:after {\n    box-sizing: border-box;\n}\n.orchids-page,\n.orchids-dialog {\n    position: fixed;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    background-color: #ffffff;\n    overflow: auto;\n    z-index: 1;\n}\n.orchids-page-singleton {\n    z-index: 2;\n}\n.orchids-dialog {\n    z-index: 3;\n}\n.orchids-dialog-singleton {\n    z-index: 4;\n}\n/* animation */\n.orchids-page.orchids-with-animation,\n.orchids-dialog.orchids-with-animation {\n    transition: all .5s;\n}\n.orchids-page.orchids-with-animation.orchids-with-fade,\n.orchids-dialog.orchids-with-animation.orchids-with-fade {\n    opacity: 0;\n}\n.orchids-page.orchids-with-animation.orchids-with-fade.orchids-active,\n.orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {\n    opacity: 1;\n}\n.orchids-page.orchids-right-to-left,\n.orchids-dialog.orchids-right-to-left {\n    transform: translateX(100%);\n}\n.orchids-page.orchids-left-to-right,\n.orchids-dialog.orchids-left-to-right {\n    transform: translateX(-100%);\n}\n.orchids-page.orchids-right-to-left.orchids-active,\n.orchids-dialog.orchids-right-to-left.orchids-active,\n.orchids-page.orchids-left-to-right.orchids-active,\n.orchids-dialog.orchids-left-to-right.orchids-active {\n    transform: translateX(0);\n}\n.orchids-page.orchids-bottom-to-top,\n.orchids-dialog.orchids-bottom-to-top {\n    transform: translateY(100%);\n}\n.orchids-page.orchids-top-to-bottom,\n.orchids-dialog.orchids-top-to-bottom {\n    transform: translateY(-100%);\n}\n.orchids-page.orchids-bottom-to-top.orchids-active,\n.orchids-dialog.orchids-bottom-to-top.orchids-active,\n.orchids-page.orchids-top-to-bottom.orchids-active,\n.orchids-dialog.orchids-top-to-bottom.orchids-active {\n    transform: translateY(0);\n}\n\n/* fragment */\n.orchids-fragment {\n    position: absolute;\n    background-color: #ffffff;\n    overflow: auto;\n    z-index: 1;\n}\n.orchids-fragment.orchids-horizontal {\n    top: 0;\n    height: 100%;\n}\n.orchids-fragment.orchids-vertical {\n    left: 0;\n    width: 100%;\n}\n.orchids-fragments-container,\n.orchids-sub-fragments-container{\n    position: absolute;\n    overflow: hidden;\n    left: 0;\n    top: 0;\n}\n.orchids-fragments-container.orchids-with-animation,\n.orchids-sub-fragments-container.orchids-with-animation {\n    transition: all .5s;\n}\n.orchids-fragments-container.orchids-horizontal,\n.orchids-sub-fragments-container.orchids-horizontal {\n    height: 100%;\n    transform: translateX(0);\n}\n.orchids-fragments-container.orchids-vertical,\n.orchids-sub-fragments-container.orchids-vertical {\n    width: 100%;\n    transform: translateY(0);\n}\n\n/* has custom root container */\n.orchids-custom-container .orchids-page,\n.orchids-custom-container .orchids-dialog {\n    position: absolute;\n}", ""]);
 
 // exports
 
@@ -1753,19 +1753,9 @@ module.exports = function (pageName, data) {
 
     util.resetPagesCount(); // every time start application, will change reset pages count
 
-    // tell the first page and option by the parameter
-    if (urlParams.orchidsPage && !existedPagesCount) {
-        var orchidsPage = decodeURIComponent(urlParams.orchidsPage);
-        var orchidsData = decodeURIComponent(urlParams.orchidsData);
-        try {
-            orchidsData = JSON.parse(orchidsData);
-        } catch (e) {}
 
-        startPage(orchidsPage, orchidsData);
-    } else {
-        app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
-        startPage(pageName, data);
-    }
+    app.option.route && existedPagesCount > 1 && window.history.go(1 - existedPagesCount);
+    startPage(pageName, data);
 
     // first page initialize complete
     app.option.onFirstPageInitialized && app.option.onFirstPageInitialized();
@@ -1784,13 +1774,8 @@ var params = __webpack_require__(7);
 var paramsKeys = Object.keys(params);
 var query = '';
 
-var exclude = {
-    orchidsPage: !0,
-    orchidsData: !0
-};
-
 paramsKeys.forEach(function (key) {
-    !exclude[key] && (query += '&' + key + '=' + params[key]);
+    key.slice(0, 7) !== 'orchids' && (query += '&' + key + '=' + params[key]);
 });
 
 var originUrl = location.origin + location.pathname + (query ? '?' + query.slice(1) : '');
@@ -2641,8 +2626,8 @@ var urlParams = __webpack_require__(7);
 
 module.exports = function (self) {
 
-    urlParams.orchidsPage = encodeURIComponent(self.option.name);
-    urlParams.orchidsData = encodeURIComponent(JSON.stringify(self.__orchids__data));
+    urlParams.orchidsPage = self.option.name;
+    urlParams.orchidsId = self.id;
 
     var searchString = '';
     Object.keys(urlParams).forEach(function (key) {
@@ -3741,9 +3726,9 @@ var getPageModelByIndex = __webpack_require__(11);
  * @returns {*}
  */
 module.exports = function (index) {
-    var model = getPageModelByIndex(index);
+  var model = getPageModelByIndex(index);
 
-    return model ? model.page : null;
+  return model ? model.page : null;
 };
 
 /***/ }),
@@ -3776,9 +3761,9 @@ var getDialogModelByIndex = __webpack_require__(17);
  * @returns {*}
  */
 module.exports = function (index) {
-    var model = getDialogModelByIndex(index);
+  var model = getDialogModelByIndex(index);
 
-    return model ? model.dialog : null;
+  return model ? model.dialog : null;
 };
 
 /***/ }),
