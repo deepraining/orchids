@@ -1,6 +1,6 @@
 {
   "name": "orchids",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "make web app be felt as native app",
   "homepage": "https://github.com/senntyou/orchids",
   "author": "senntyou",
@@ -20,6 +20,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "bootstrap": "^3.3.7",
     "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
     "jquery": "^3.2.1",
     "moment": "^2.20.1",
     "style-loader": "^0.19.1",

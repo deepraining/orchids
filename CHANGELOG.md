@@ -1,5 +1,9 @@
 # orchids changelog
 
+## 0.2.0
+
+- pack `css` separately
+
 ## 0.1.4
 
 - remove `orchidsData` in `url`
