@@ -6,7 +6,7 @@
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-03-19 07:51:07
+ *     2018-03-21 08:57:26
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1474,9 +1474,9 @@ module.exports = function () {
     if (currentModel.forResult) {
         // has prev dialog model
         if (prevModel) {
-            prevModel.dialog.onResult && prevModel.dialog.onResult(currentModel.dialog.__orchids__result || {});
+            prevModel.dialog.onResult && prevModel.dialog.onResult(currentModel.dialog.__orchids__result || null);
         } else if (currentPageModel) {
-            currentPageModel.page.onResult && currentPageModel.page.onResult(currentModel.dialog.__orchids__result || {});
+            currentPageModel.page.onResult && currentPageModel.page.onResult(currentModel.dialog.__orchids__result || null);
         }
     }
 
