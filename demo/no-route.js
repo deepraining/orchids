@@ -1,5 +1,4 @@
 orchids.init({
-    animate: !0,
     onFirstPageInitialized: function() {
         console.log('first page initialized');
     },

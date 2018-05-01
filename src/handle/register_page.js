@@ -3,7 +3,7 @@
 
 var container = require('../data/container');
 var logger = require('../util/logger');
-var extend = require('../util/extend');
+var extend = require('extend');
 var makePageDefinition = require('../make/page_definition');
 var makeNewPage = require('../core/page');
 var defaultPageOption = require('../option/page');

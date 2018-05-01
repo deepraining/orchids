@@ -3,7 +3,7 @@
 
 var container = require('../data/container');
 var logger = require('../util/logger');
-var extend = require('../util/extend');
+var extend = require('extend');
 var makeFragmentDefinition = require('../make/fragment_definition');
 var makeNewFragment = require('../core/fragment');
 var defaultFragmentOption = require('../option/fragment');

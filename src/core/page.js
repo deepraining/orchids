@@ -1,6 +1,6 @@
 "use strict";
 
-var extend = require('../util/extend');
+var extend = require('extend');
 
 var init = require('./page/init');
 var renderFragments = require('./page/render_fragments');

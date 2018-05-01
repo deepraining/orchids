@@ -1,5 +1,9 @@
 # orchids changelog
 
+## 0.2.1
+
+- install `extend`
+
 ## 0.2.0
 
 - pack `css` separately
@@ -25,4 +29,4 @@
 ## 0.1.1
 
 - New version, with many updates.
-- Rewrite core scripts, rename some config options, and update docs. 
+- Rewrite core scripts, rename some config options, and update docs.

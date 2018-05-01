@@ -2,10 +2,13 @@
     display: block;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
+.orchids,
 .orchids:before,
-.orchids:after {
+.orchids:after,
+.orchids *,
+.orchids *:before,
+.orchids *:after {
     box-sizing: border-box;
 }
 .orchids-page,
@@ -41,32 +44,32 @@
 .orchids-dialog.orchids-with-animation.orchids-with-fade.orchids-active {
     opacity: 1;
 }
-.orchids-page.orchids-right-to-left,
-.orchids-dialog.orchids-right-to-left {
+.orchids-page.orchids-with-animation.orchids-right-to-left,
+.orchids-dialog.orchids-with-animation.orchids-right-to-left {
     transform: translateX(100%);
 }
-.orchids-page.orchids-left-to-right,
-.orchids-dialog.orchids-left-to-right {
+.orchids-page.orchids-with-animation.orchids-left-to-right,
+.orchids-dialog.orchids-with-animation.orchids-left-to-right {
     transform: translateX(-100%);
 }
-.orchids-page.orchids-right-to-left.orchids-active,
-.orchids-dialog.orchids-right-to-left.orchids-active,
-.orchids-page.orchids-left-to-right.orchids-active,
-.orchids-dialog.orchids-left-to-right.orchids-active {
+.orchids-page.orchids-with-animation.orchids-right-to-left.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-right-to-left.orchids-active,
+.orchids-page.orchids-with-animation.orchids-left-to-right.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-left-to-right.orchids-active {
     transform: translateX(0);
 }
-.orchids-page.orchids-bottom-to-top,
-.orchids-dialog.orchids-bottom-to-top {
+.orchids-page.orchids-with-animation.orchids-bottom-to-top,
+.orchids-dialog.orchids-with-animation.orchids-bottom-to-top {
     transform: translateY(100%);
 }
-.orchids-page.orchids-top-to-bottom,
-.orchids-dialog.orchids-top-to-bottom {
+.orchids-page.orchids-with-animation.orchids-top-to-bottom,
+.orchids-dialog.orchids-with-animation.orchids-top-to-bottom {
     transform: translateY(-100%);
 }
-.orchids-page.orchids-bottom-to-top.orchids-active,
-.orchids-dialog.orchids-bottom-to-top.orchids-active,
-.orchids-page.orchids-top-to-bottom.orchids-active,
-.orchids-dialog.orchids-top-to-bottom.orchids-active {
+.orchids-page.orchids-with-animation.orchids-bottom-to-top.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-bottom-to-top.orchids-active,
+.orchids-page.orchids-with-animation.orchids-top-to-bottom.orchids-active,
+.orchids-dialog.orchids-with-animation.orchids-top-to-bottom.orchids-active {
     transform: translateY(0);
 }
 

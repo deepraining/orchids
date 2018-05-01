@@ -1,4 +1,7 @@
 
+let animate = !0;
+
+
 orchids.registerPage('aa', {
     onCreate: function(data) {
         console.log('aa: onCreate');
@@ -6,10 +9,7 @@ orchids.registerPage('aa', {
     }
 }, {
     backgroundColor: '#000000',
-    animate: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 });
 
 orchids.registerPage('a', {
@@ -19,7 +19,10 @@ orchids.registerPage('a', {
     },
     onCreate2: function(data) {
         console.log('a: onCreate2');
-        $(this.el).html(data.text);
+
+        let html = '';
+        for (let i = 0; i < 50; i++) html += `${i}<br>`;
+        $(this.el).html(html + `<div class="fix">fix</div>`);
         document.title = 'a';
         //console.log(orchids.getCurrentPage());
     },
@@ -51,9 +54,7 @@ orchids.registerPage('a', {
     backgroundColor: '#ff0000',
     animateDirection: 'l2r',
     fadeInOut: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 }, 'aa');
 orchids.registerPage('b', {
     beforeCreate: function () {
@@ -96,9 +97,7 @@ orchids.registerPage('b', {
     animateDirection: 'l2r',
     fadeInOut: !0,
     singleton: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 });
 
 orchids.registerDialog('hh', {
@@ -108,10 +107,7 @@ orchids.registerDialog('hh', {
     }
 }, {
     backgroundColor: '#000000',
-    animate: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 });
 
 orchids.registerDialog('h', {
@@ -161,9 +157,7 @@ orchids.registerDialog('h', {
     backgroundColor: '#0000ff',
     animateDirection: 't2b',
     fadeInOut: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 }, 'hh');
 orchids.registerDialog('i', {
     beforeCreate: function () {
@@ -209,9 +203,7 @@ orchids.registerDialog('i', {
     singleton: !0,
     animateDirection: 't2b',
     fadeInOut: !0,
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate
 });
 
 orchids.registerFragment('oo', {
@@ -220,10 +212,7 @@ orchids.registerFragment('oo', {
         this.onCreate2();
     }
 }, {
-    backgroundColor: '#999999',
-    style: {
-        marginLeft: '1px'
-    }
+    backgroundColor: '#999999'
 });
 
 orchids.registerFragment('o', {
@@ -243,10 +232,7 @@ orchids.registerFragment('o', {
         console.log('o: onDestroy')
     }
 }, {
-    backgroundColor: '#ff0000',
-    style: {
-        marginLeft: '1px'
-    }
+    backgroundColor: '#ff0000'
 }, 'oo');
 orchids.registerFragment('p', {
     onCreate: function() {
@@ -265,10 +251,7 @@ orchids.registerFragment('p', {
         console.log('p: onDestroy')
     }
 }, {
-    backgroundColor: '#00ff00',
-    style: {
-        marginLeft: '1px'
-    }
+    backgroundColor: '#00ff00'
 });
 orchids.registerFragment('q', {
     onCreate: function() {
@@ -292,9 +275,7 @@ orchids.registerFragment('q', {
         'o', 'p', 'o', 'p'
     ],
     subFragmentAnimateDirection: 'vertical',
-    style: {
-        marginLeft: '1px'
-    }
+    subFragmentAnimate: animate
 });
 
 orchids.registerPage('c', {
@@ -316,9 +297,8 @@ orchids.registerPage('c', {
     fragments: [
         'o', 'p', 'q'
     ],
-    style: {
-        marginLeft: '1px'
-    }
+    animate: animate,
+    fragmentAnimate: animate
 });
 
 orchids.start('a', {text: 'a'});

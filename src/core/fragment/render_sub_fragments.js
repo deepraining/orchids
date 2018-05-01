@@ -2,7 +2,7 @@
 'use strict';
 
 var logger = require('../../util/logger');
-var extend = require('../../util/extend');
+var extend = require('extend');
 var container = require('../../data/container');
 
 module.exports = (self) => {

@@ -1,11 +1,11 @@
 /**
  * Similar to Page Object, but no route, always cover page(that is to say, if you want to go to another page,
- *     you need first to close current dialog, or you will not see the effect), 
+ *     you need first to close current dialog, or you will not see the effect),
  */
 
 "use strict";
 
-var extend = require('../util/extend');
+var extend = require('extend');
 var vars = require('../data/vars');
 
 var init = require('./dialog/init');

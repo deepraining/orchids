@@ -2,7 +2,7 @@
 'use strict';
 
 var defaultAppOption = require('../option/app');
-var extend = require('../util/extend');
+var extend = require('extend');
 var container = require('../data/container');
 var getRootContainer = require('../util/get_root_container');
 var app = require('../app');

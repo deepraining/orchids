@@ -3,7 +3,7 @@
 
 var container = require('../data/container');
 var logger = require('../util/logger');
-var extend = require('../util/extend');
+var extend = require('extend');
 var makeDialogDefinition = require('../make/dialog_definition');
 var makeNewDialog = require('../core/dialog');
 var defaultDialogOption = require('../option/dialog');
