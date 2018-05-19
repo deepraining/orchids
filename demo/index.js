@@ -5,6 +5,7 @@ require('bootstrap/dist/css/bootstrap.css');
 const orchids = require('../src');
 
 orchids.init({
+    route: !0,
     onFirstPageInitialized: function() {
         console.log('first page initialized');
     },

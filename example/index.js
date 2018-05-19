@@ -1,3 +1,9 @@
+
+
+require('bootstrap/dist/css/bootstrap.css');
+require('../dist/orchids.css');
+const orchids = require('../dist/orchids');
+
 orchids.init({
     route: !0,
     onFirstPageInitialized: function() {
@@ -7,3 +13,5 @@ orchids.init({
         console.log('route change');
     }
 });
+
+require('../exec/common')(orchids);

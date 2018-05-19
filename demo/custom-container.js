@@ -1,3 +1,9 @@
+
+
+require('bootstrap/dist/css/bootstrap.css');
+
+const orchids = require('../src');
+
 orchids.init({
     route: !0,
     onFirstPageInitialized: function() {
@@ -8,3 +14,5 @@ orchids.init({
     },
     container: 'container'
 });
+
+require('../exec/common')(orchids);

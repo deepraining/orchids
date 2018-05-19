@@ -1,8 +1,8 @@
 
 
 require('bootstrap/dist/css/bootstrap.css');
-
-const orchids = require('../src');
+require('../dist/orchids.css');
+const orchids = require('../dist/orchids');
 
 orchids.init({
     onFirstPageInitialized: function() {
