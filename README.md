@@ -1,4 +1,6 @@
-# orchids, make web app be felt as native app
+# orchids
+
+Make web app be felt as native app
 
 ## quick start
 
@@ -28,11 +30,7 @@ orchids.doSomething();
 
 ## demo
 
-* [orchids demo](http://senntyou.github.io/orchids/)
-
-* or scan below
-
-![](./qrcode.png)
+[orchids demo](http://senntyou.github.io/orchids/)
 
 ## [demo codes](./demo/)
 
