@@ -1,6 +1,6 @@
 # orchids
 
-Make web app be felt as native app
+Make web app be felt as native app.
 
 ## quick start
 
