@@ -1,7 +1,7 @@
 
 ## orchids.startDialog
 
-start a dialog
+Start a dialog.
 
 ```
 orchids.startDialog(dialogName, data)
@@ -9,9 +9,9 @@ orchids.startDialog(dialogName, data)
 
 ### dialogName
 
-* `desc`: The name defined before
+* `desc`: The dialog name defined before.
 * `type`: `string`
 
 ### data
 
-* `desc`: Parameter to be used by next Dialog's `onCreate` method
+* `desc`: Parameter to be used by next Dialog's `onCreate` method.

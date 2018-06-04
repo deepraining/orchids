@@ -1,7 +1,7 @@
 
 ## orchids.getDialog
 
-get dialog instance by id
+Get dialog instance by id.
 
 ```
 orchids.getDialog(id)

@@ -1,7 +1,7 @@
 
 ## orchids.getCurrentDialog
 
-get current dialog instance
+Get current dialog instance.
 
 ```
 orchids.getCurrentDialog()

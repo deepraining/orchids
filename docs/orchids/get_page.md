@@ -1,7 +1,7 @@
 
 ## orchids.getPage
 
-get page instance by id
+Get page instance by id.
 
 ```
 orchids.getPage(id)

@@ -1,51 +1,51 @@
 # Fragment
 
-## base attributes
+## Base attributes
 
-* `id`: fragment id
+* `id`: Fragment id
 
-* `el`: fragment root element
+* `el`: Fragment root element
 
-* `option`: fragment option
-    - `option.name`: current fragment name
+* `option`: Fragment option
+    - `option.name`: Fragment name
 
-## methods to override
+## Methods to override
 
-* `onCreate`: render a fragment after a fragment is initialized
+* `onCreate`: Render fragment after it being initialized.
 
-* `onDestroy`: pre handle before destroy a fragment
+* `onDestroy`: Called before destroying fragment.
 
-* `onShow`: called when back fragment from other fragment
+* `onShow`: Called when back fragment from another fragment.
 
-* `onHide`: called when start another fragment
+* `onHide`: Called when start another fragment.
 
-## methods to call
+## Methods to call
 
-* `showSubFragment`: show sub fragment specified by id
-    - `@param id`: fragment id
+* `showSubFragment`: Show a sub fragment specified by id.
+    - `@param id`: Fragment id
 
-* `getSubFragment`: get sub fragment specified by id, default return the first sub fragment
-    - `@param id`: fragment id
+* `getSubFragment`: Get a sub fragment specified by id, default return the first sub fragment.
+    - `@param id`: Fragment id
 
-## option to init
+## Options to init
 
-* `backgroundColor`: background color
+* `backgroundColor`: Background color
     - `default`: `#ffffff`
 
-* `style`: css style to render root element
+* `style`: Styles to render root element.
     - `type`: `{*}`
-    - `key`: origin dom css key, like `marginLeft`
-    - `value`: origin dom css value, like `1px`
+    - `key`: Style key, like `marginLeft`
+    - `value`: Style value, like `1px`
 
-* `subFragments`: sub fragments in current fragment
+* `subFragments`: Sub fragments of current fragment.
     - `type`: `Array`
     - `example`: `['name1', 'name2']`
-    - `note`: current fragment element should have a child node which has `data-orchids-sub-fragments` attribute, and it must has `position: relative` or `position: absolute` width specified width and height, or sub fragments will not be rendered correctly
+    - `note`: Current fragment element should have a child node which has `data-orchids-sub-fragments` attribute, and it must has `position: relative` or `position: absolute` with specified width and height, or sub fragments will not be rendered correctly.
 
-* `subFragmentAnimate`: whether to use animation when switch between sub fragments
+* `subFragmentAnimate`: Whether to use animation when switching between sub fragments.
     - `default`: `true`
     - `type`: `true/false`
 
-* `subFragmentAnimateDirection`: animation direction of switching sub fragment
+* `subFragmentAnimateDirection`: Animation direction when switching sub fragments.
     - `detail`: `horizontal/vertical`
     - `default`: `horizontal`

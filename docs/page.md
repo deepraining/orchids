@@ -1,87 +1,87 @@
 # Page
 
-## base attributes
+## Base attributes
 
-* `id`: page id
+* `id`: Page id
 
-* `el`: page root element
+* `el`: Page root element
 
-* `option`: page option
-    - `option.name`: current page name
+* `option`: Page option
+    - `option.name`: Page name
 
-## methods to override
+## Methods to override
 
-* `beforeCreate`: before a page is initialized
+* `beforeCreate`: Called before page being initialized.
 
-* `onCreate`: render a page after a page is initialized
-    - `@param data`: from `orchids.startPage` second parameter
+* `onCreate`: Render page after a page being initialized.
+    - `@param data`: From `orchids.startPage` second parameter.
+
+* `afterCreate`: Called after page being rendered.
+
+* `onDestroy`: Called before destroying page, for more pre handling.
+
+* `afterDestroy`: Called after page being destroyed.
+
+* `onShow`: Called when back page from another page.
+
+* `afterShow`: Called when page is completely shown.
+
+* `onHide`: Called when start another page.
+
+* `afterHide`: Called when page is completely hidden.
+
+* `onResult`: Called when the next page destroyed.
+    - `@param data`: Returned the value by next page's `setResult` method.
+
+* `prepareForResult`: Receive data from the previous page.
+    - `@param data`: From `orchids.startPageForResult` third parameter.
     
-* `afterCreate`: after a page is initialized
+## Methods to call
+
+* `setResult`: Set the result if page is called by `startPageForResult` method, and the returned value will be used as the param of the `onResult` method of prev page or the `onResult` method of prev page.
+    - `@param data`: Return the value to prev page's `onResult` method or prev page's `onResult` method.
     
-* `onDestroy`: pre handle before destroy a page
-
-* `afterDestroy`: after destroy a page
-
-* `onShow`: called when back page from other page or dialog
-
-* `afterShow`: called when page is completely shown
-
-* `onHide`: called when start another page or dialog
-
-* `afterHide`: called when page is completely hidden
-
-* `onResult`: called when the next page destroyed
-    - `@param data`: returned the value by next page's `setResult` method.
+* `showFragment`: Show a fragment specified by id.
+    - `@param id`: Fragment id
     
-* `prepareForResult`: receive data from the previous page
-    - `@param data`: from `orchids.startPageForResult` third parameter
-    
-## methods to call
+* `getFragment`: Get a fragment specified by id, default return the first fragment.
+    - `@param id`: Fragment id
 
-* `setResult`: set the result if this page is called by `startPageForResult` method, and the returned value will be used as the param of the `onResult` method of prev page
-    - `@param data`: return the value to prev page's `onResult` method.
-    
-* `showFragment`: show fragment specified by id
-    - `@param id`: fragment id
-    
-* `getFragment`: get fragment specified by id, default return the first fragment
-    - `@param id`: fragment id
+## Options to init
 
-## option to init
-
-* `backgroundColor`: background color
+* `backgroundColor`: Background color
     - `default`: `#ffffff`
-    
-* `style`: css style to render root element
+
+* `style`: Styles to render root element.
     - `type`: `{*}`
-    - `key`: origin dom css key, like `marginLeft`
-    - `value`: origin dom css value, like `1px`
-    
-* `animate`: whether to use animation when switch between pages
+    - `key`: Style key, like `marginLeft`
+    - `value`: Style value, like `1px`
+
+* `animate`: Whether to use animation when switching between pages.
     - `default`: `true`
     - `type`: `true/false`
-    
-* `fadeInOut`: whether to fade page when switch between pages
+
+* `fadeInOut`: Whether to fade page's opacity when switching between pages
     - `default`: `false`
     - `type`: `true/false`
     
-* `animateDirection`: animation direction of switching page
+* `animateDirection`: Animation direction when switching pages.
     - `detail`: `l2r/r2l/t2b/b2t(left-right, top-bottom)`
     - `default`: `r2l`
     
-* `fragments`: fragments in page
+* `fragments`: Fragments of page.
     - `type`: `Array`
     - `example`: `['name1', 'name2']`
-    - `note`: current page element should have a child node which has `data-orchids-fragments` attribute, and it must has `position: relative` or `position: absolute` width specified width and height, or fragments will not be rendered correctly
+    - `note`: Current page element should have a child node which has `data-orchids-fragments` attribute, and it must has `position: relative` or `position: absolute` with specified width and height, or fragments will not be rendered correctly.
 
-* `fragmentAnimate`: whether to use animation when switch between fragments
+* `fragmentAnimate`: Whether to use animation when switching between fragments.
     - `default`: `true`
     - `type`: `true/false`
     
-* `fragmentAnimateDirection`: animation direction of switching fragment
+* `fragmentAnimateDirection`: Animation direction when switching fragments.
     - `detail`: `horizontal/vertical`
     - `default`: `horizontal`
 
-* `singleton`: whether current page is singleton or not, if true, it will be only created once, and will not be destroyed
+* `singleton`: Whether page is singleton or not. If true, it will be only created once, and will not be destroyed forever.
     - `default`: `false`
     - `type`: `true/false`

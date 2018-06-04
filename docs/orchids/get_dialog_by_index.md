@@ -1,7 +1,7 @@
 
 ## orchids.getDialogByIndex
 
-get dialog instance by index
+Get dialog instance by index.
 
 ```
 orchids.getDialogByIndex(index)

@@ -1,7 +1,7 @@
 
 ## orchids.startPageForResult
 
-start a page, and expect a return from next page
+Start a page, and expect a return from next page.
 
 ```
 orchids.startPageForResult(pageName, data, prepareResultData)
@@ -9,13 +9,13 @@ orchids.startPageForResult(pageName, data, prepareResultData)
 
 ### pageName
 
-* `desc`: The name defined before
+* `desc`: The page name defined before.
 * `type`: `string`
 
 ### data
 
-* `desc`: Parameter to be used by next Page's `onCreate` method
+* `desc`: Parameter to be used by next Page's `onCreate` method.
 
 ### prepareResultData
 
-* `desc`: Parameter to be used by the next Page's prepareForResult method
+* `desc`: Parameter to be used by the next Page's prepareForResult method.

@@ -20,7 +20,7 @@ or load by `script` tag directly.
 <script src="path/to/orchids/dist/orchids.js"></script>
 ```
 
-### using
+### how to use
 
 ```
 let orchids = require('orchids');
@@ -32,8 +32,6 @@ orchids.doSomething();
 
 [orchids demo](http://senntyou.github.io/orchids/)
 
-## [demo codes](./demo/)
-
 ## documents
 
 * [orchids](./docs/orchids.md)
@@ -42,3 +40,4 @@ orchids.doSomething();
 * [Dialog](./docs/dialog.md)
 * [tips](./docs/tips.md)
 
+## [demo codes](./demo/)

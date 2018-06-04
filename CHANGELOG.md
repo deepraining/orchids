@@ -1,30 +1,30 @@
-# orchids changelog
+# Changelog
 
 ## 0.2.1
 
-- install `extend`
+- Install `extend`
 
 ## 0.2.0
 
-- pack `css` separately
+- Pack `css` separately
 
 ## 0.1.4
 
-- remove `orchidsData` in `url`
+- Remove `orchidsData` in `url`
 
 ## 0.1.3
 
-- fix `must call orchids.init` bug
+- Fix `must call orchids.init` bug
 
 ## 0.1.2
 
-- make `container` instead of `rootContainer` of `orchids.init`
-- make `onResult` instead of `onPageResult, onDialogResult`
-- add `beforeCreate, afterCreate` to `page, dialog`
-- add `afterDestroy` to `page`
-- add `afterDestroy` to `dialog`
-- add `afterShow, afterHide` to `page`
-- add `afterShow, afterHide` to `dialog`
+- Take `container` instead of `rootContainer` when using `orchids.init`
+- Take `onResult` instead of `onPageResult, onDialogResult`
+- Add `beforeCreate, afterCreate` to `page, dialog`
+- Add `afterDestroy` to `page`
+- Add `afterDestroy` to `dialog`
+- Add `afterShow, afterHide` to `page`
+- Add `afterShow, afterHide` to `dialog`
 
 ## 0.1.1
 

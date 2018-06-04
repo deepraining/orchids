@@ -1,7 +1,7 @@
 
 ## orchids.back
 
-back to prev page or prev dialog
+Back to prev page or prev dialog.
 
 ```
 orchids.back();

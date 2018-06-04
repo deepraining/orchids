@@ -1,7 +1,7 @@
 
 ## orchids.init
 
-register application option
+Register application option.
 
 ```
 orchids.init({
@@ -14,22 +14,22 @@ orchids.init({
 
 ### route
 
-* `desc`: whether start a page with route or not. if set to true, the url will be changed when a page is started, like: url?orchidsPage=pageName&orchidsId=pageId
+* `desc`: Whether start a page with route or not. If set to true, the url will be changed when a page is started, like: `url?orchidsPage=pageName&orchidsId=pageId`.
 * `type`: `true/false`
 * `default`: `false`
 
 ### onFirstPageInitialized
 
-* `desc`: called when first page is initialized
+* `desc`: Called when first page is initialized.
 * `type`: `function`
 
 ### onRouteChange
 
-* `desc`: called when route changed
+* `desc`: Called when route changed.
 * `type`: `function`
 
 ### container
 
-* `desc`: custom root container for pages and dialogs
+* `desc`: Custom root container for pages and dialogs.
 * `type`: `id selector / dom`
 * `default`: `document.body`

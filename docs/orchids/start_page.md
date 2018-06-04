@@ -1,7 +1,7 @@
 
 ## orchids.startPage
 
-start a page
+Start a page.
 
 ```
 orchids.startPage(pageName, data)
@@ -9,9 +9,9 @@ orchids.startPage(pageName, data)
 
 ### pageName
 
-* `desc`: The name defined before
+* `desc`: The page name defined before.
 * `type`: `string`
 
 ### data
 
-* `desc`: Parameter to be used by next Page's `onCreate` method
+* `desc`: Parameter to be used by next Page's `onCreate` method.

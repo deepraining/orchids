@@ -1,7 +1,7 @@
 
 ## orchids.getCurrentPage
 
-get current page instance
+Get current page instance.
 
 ```
 orchids.getCurrentPage()

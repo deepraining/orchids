@@ -1,7 +1,7 @@
 
 ## orchids.getPageByIndex
 
-get page instance by index
+Get page instance by index.
 
 ```
 orchids.getPageByIndex(index)
