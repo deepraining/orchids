@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Use `hash` to replace `history`.
+
 ## 0.2.1
 
 - Install `extend`

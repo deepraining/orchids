@@ -13,6 +13,11 @@ var deleteCurrentDialogModel = require('../delete/current_dialog_model');
  * @param e
  */
 module.exports = (e) => {
+    if (vars.pushHash) {
+        // reset
+        vars.pushHash = !1;
+        return;
+    }
 
     // if user back page by press back button of phone, close all dialogs first
     var dialogModelsKeys = getReverseKeys(container.dialogModels);
@@ -24,10 +29,10 @@ module.exports = (e) => {
         dialogModel.singleton ? dialogModel.dialog.__orchids__hide() : dialogModel.dialog.__orchids__destroy();
         deleteCurrentDialogModel();
 
+        dialogModel.dialog.el.classList.remove('orchids-active');
+
         // dialog.afterDestroy
         if (!dialogModel.singleton) {
-            dialogModel.dialog.el.classList.remove('orchids-active');
-
             if (dialogModel.dialog.option.animate)
                 // has animation
                 setTimeout(() => {

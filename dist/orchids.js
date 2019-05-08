@@ -1,12 +1,12 @@
 /*!
  * 
- *     orchids v0.2.1
+ *     orchids v0.2.2
  * 
  *     https://github.com/senntyou/orchids
  * 
  *     @senntyou <jiangjinbelief@163.com>
  * 
- *     2018-05-19 11:07:54
+ *     2019-05-08 12:20:35
  *     
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -353,7 +353,9 @@ module.exports = {
      * animate delay time (millisecond)
      * to guarantee the animation  is ok
      */
-    animateDelayTime: 100
+    animateDelayTime: 100,
+    // whether push hash or not
+    pushHash: !1
 };
 
 /***/ }),
@@ -1144,9 +1146,13 @@ module.exports = function (pageName, data) {
     // this must do in the first
     var existedPagesCount = util.getPagesCount();
 
+    // some browsers needed
+    window.location.hash = '/';
+
     // if user call back page by phone button, keep it
     // here we do not consider other action, like forward, refresh, for this is main for mobile using
-    window.onpopstate = onPopState;
+    // window.onpopstate = onPopState;
+    window.onhashchange = onPopState;
 
     util.resetPagesCount(); // every time start application, will change reset pages count
 
@@ -1175,7 +1181,8 @@ paramsKeys.forEach(function (key) {
     key.slice(0, 7) !== 'orchids' && (query += '&' + key + '=' + params[key]);
 });
 
-var originUrl = location.origin + location.pathname + (query ? '?' + query.slice(1) : '');
+// var originUrl = location.origin + location.pathname + (query ? '?' + query.slice(1) : '');
+var originUrl = location.origin + location.pathname + location.search;
 
 module.exports = originUrl;
 
@@ -1199,6 +1206,11 @@ var deleteCurrentDialogModel = __webpack_require__(12);
  * @param e
  */
 module.exports = function (e) {
+    if (vars.pushHash) {
+        // reset
+        vars.pushHash = !1;
+        return;
+    }
 
     // if user back page by press back button of phone, close all dialogs first
     var dialogModelsKeys = getReverseKeys(container.dialogModels);
@@ -1210,10 +1222,10 @@ module.exports = function (e) {
         dialogModel.singleton ? dialogModel.dialog.__orchids__hide() : dialogModel.dialog.__orchids__destroy();
         deleteCurrentDialogModel();
 
+        dialogModel.dialog.el.classList.remove('orchids-active');
+
         // dialog.afterDestroy
         if (!dialogModel.singleton) {
-            dialogModel.dialog.el.classList.remove('orchids-active');
-
             if (dialogModel.dialog.option.animate)
                 // has animation
                 setTimeout(function () {
@@ -2020,6 +2032,7 @@ module.exports = function (self, id) {
 
 
 var urlParams = __webpack_require__(7);
+var vars = __webpack_require__(2);
 
 module.exports = function (self) {
 
@@ -2031,7 +2044,9 @@ module.exports = function (self) {
         searchString += '&' + key + '=' + (urlParams[key] || '');
     });
 
-    history.pushState({ pageId: self.id }, null, '?' + searchString.slice(1));
+    vars.pushHash = !0;
+    // history.pushState({pageId: self.id}, null, '?' + searchString.slice(1));
+    window.location.hash = self.option.name + '/' + self.id;
 };
 
 /***/ }),

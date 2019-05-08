@@ -16,5 +16,7 @@ module.exports = {
      * animate delay time (millisecond)
      * to guarantee the animation  is ok
      */
-    animateDelayTime: 100
+    animateDelayTime: 100,
+    // whether push hash or not
+    pushHash: !1,
 };

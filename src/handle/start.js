@@ -23,9 +23,13 @@ module.exports = (pageName, data) => {
     // this must do in the first
     var existedPagesCount = util.getPagesCount();
 
+    // some browsers needed
+    window.location.hash = '/';
+
     // if user call back page by phone button, keep it
     // here we do not consider other action, like forward, refresh, for this is main for mobile using
-    window.onpopstate = onPopState;
+    // window.onpopstate = onPopState;
+    window.onhashchange = onPopState;
 
     util.resetPagesCount(); // every time start application, will change reset pages count
 

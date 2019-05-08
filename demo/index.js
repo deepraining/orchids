@@ -1,8 +1,11 @@
 
 
 require('bootstrap/dist/css/bootstrap.css');
+const VConsole = require('vconsole');
 
 const orchids = require('../src');
+
+new VConsole();
 
 orchids.init({
     route: !0,

@@ -2,6 +2,7 @@
 'use strict';
 
 var urlParams = require('../../util/url_params');
+var vars = require('../../data/vars');
 
 module.exports = (self) => {
 
@@ -13,5 +14,7 @@ module.exports = (self) => {
         searchString += '&' + key + '=' + (urlParams[key] || '');
     });
 
-    history.pushState({pageId: self.id}, null, '?' + searchString.slice(1));
+    vars.pushHash = !0;
+    // history.pushState({pageId: self.id}, null, '?' + searchString.slice(1));
+    window.location.hash = self.option.name + '/' + self.id;
 };
