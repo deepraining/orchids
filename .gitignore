@@ -1,9 +1,13 @@
-
-#
-# common ignores
-#
 .DS_Store
 node_modules
 bower_components
-npm-debug.log
+*.log
+.eslintcache
+package-lock.json
+
 .idea
+.vscode
+
+/lib
+/es
+/coverage

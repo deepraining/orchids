@@ -1,24 +1,81 @@
-require('./css/index.css');
+import share, { definitions, stacks } from './share';
+import { makePage, initApp, onHashChange } from './extra';
+import { decPagesCount, incPagesCount } from './count';
 
-var orchids = {};
+export const init = ({ root }) => {
+  if (share.initialized) throw new Error('Cant init after start a page.');
 
-orchids.init = require('./handle/init');
-orchids.start = require('./handle/start');
-orchids.back = require('./handle/back');
+  if (root) {
+    share.root = root;
+    document.body.classList.add('orchids-custom-container');
+  }
+};
 
-orchids.registerPage = require('./handle/register_page');
-orchids.registerDialog = require('./handle/register_dialog');
-orchids.registerFragment = require('./handle/register_fragment');
-orchids.startPage = require('./handle/start_page');
-orchids.startPageForResult = require('./handle/start_page_for_result');
-orchids.startDialog = require('./handle/start_dialog');
-orchids.startDialogForResult = require('./handle/start_dialog_for_result');
+export const registerPage = (name, attributes = {}, options = {}) => {
+  if (!name || typeof name !== 'string') {
+    throw new Error('Page name should be non empty string.');
+  }
 
-orchids.getPage = require('./get/page_by_id');
-orchids.getPageByIndex = require('./get/page_by_index');
-orchids.getCurrentPage = require('./get/current_page');
-orchids.getDialog = require('./get/dialog_by_id');
-orchids.getDialogByIndex = require('./get/dialog_by_index');
-orchids.getCurrentDialog = require('./get/current_dialog');
+  if (definitions[name]) {
+    throw new Error(`Page[${name}] has already been registered.`);
+  }
 
-module.exports = orchids;
+  definitions[name] = makePage(name, attributes, options);
+};
+
+export const startPage = (name, data) => {
+  if (!name || typeof name !== 'string') {
+    throw new Error('Page name should be non empty string.');
+  }
+
+  if (!share.initialized) {
+    initApp();
+    share.initialized = !0;
+  }
+
+  if (!definitions[name]) {
+    throw new Error(`Page[${name}] is not registered.`);
+  }
+
+  const instance = new definitions[name](
+    { id: share.id, parent: share.root },
+    data,
+  );
+  const { id } = share;
+
+  stacks.push({ id, name, instance });
+
+  if (instance.options.animate) incPagesCount();
+
+  if (!instance.orchidsIsFirstPage && instance.options.animate) {
+    // Show page, and delay 100 ms to guarantee that the animation is ok
+    setTimeout(() => {
+      instance.el.classList.add('orchids-active');
+    }, 100);
+  }
+
+  share.id += 1;
+};
+
+export const back = () => {
+  if (stacks.length < 2) return;
+
+  const lastItem = stacks[stacks.length - 1];
+  if (lastItem.instance.options.route) {
+    decPagesCount();
+    onHashChange();
+  } else {
+    const item = stacks.pop();
+    item.instance.beforeDestroy();
+    if (item.instance.animate) {
+      item.instance.el.classList.remove('orchids-active');
+      setTimeout(() => {
+        item.instance.el.remove();
+        item.instance.destroyed();
+      }, 500);
+    } else {
+      item.instance.el.remove();
+      item.instance.destroyed();
+    }
+  }
+};

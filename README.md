@@ -1,43 +1,41 @@
-# orchids
+# web-lib-starter
 
-Make web app be felt as native app.
+[English Documentation](./README.en.md)
 
-## quick start
+一个用于快速创建 Web 组件库的模板脚手架.
 
-### install
-
-```
-npm install orchids --save
-```
-
-or load by `script` tag directly.
+## 快速开始
 
 ```
-<!-- css -->
-<link rel="stylesheet" href="path/to/orchids/dist/orchids.css">
+git clone https://github.com/senntyou/web-lib-starter.git --depth=1
 
-<!-- js -->
-<script src="path/to/orchids/dist/orchids.js"></script>
+cd web-lib-starter
+
+npm install             # 安装依赖
+
+npm run build           # 构建发布文件
 ```
 
-### how to use
+## 特性
+
+- [less](http://lesscss.org/), [scss](https://sass-lang.com/) 样式语言支持.
+- [Flow](https://flow.org/) 语法, [jest](https://jestjs.io/en/) 测试支持.
+- 使用 [lila](https://github.com/senntyou/lila) 预览调试页面.
+
+## 项目
 
 ```
-let orchids = require('orchids');
-
-orchids.doSomething();
+- src
+  - index.js                 # js 入口文件
+  - styles
+    - index.{less,scss}      # 样式入口文件
 ```
 
-## demo
+样式默认使用 `less` 语言, 如果你想使用 `scss` 语言, 可以修改 `package.json`:
 
-[orchids demo](http://senntyou.github.io/orchids/)
-
-## documents
-
-* [orchids](./docs/orchids.md)
-* [Page](./docs/page.md)
-* [Fragment](./docs/fragment.md)
-* [Dialog](./docs/dialog.md)
-* [tips](./docs/tips.md)
-
-## [demo codes](./demo/)
+```
+"scripts": {
+  - "build:styles": "npm run build:less",
+  + "build:styles": "npm run build:scss",
+}
+```
