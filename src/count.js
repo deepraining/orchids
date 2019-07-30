@@ -1,5 +1,5 @@
 const url =
-  window.location.origin + window.location.path + window.location.search;
+  window.location.origin + window.location.pathname + window.location.search;
 const pagesCountCacheKey = `orchids-pages-count: ${url}`;
 
 export const incPagesCount = () => {

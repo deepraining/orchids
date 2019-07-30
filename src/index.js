@@ -1,16 +1,13 @@
 import share, { definitions, stacks } from './share';
-import { makePage, initApp, onHashChange } from './extra';
-import { decPagesCount, incPagesCount } from './count';
+import { makePage, initApp } from './extra';
+import { incPagesCount } from './count';
 
-export const init = ({ root }) => {
-  if (share.initialized) throw new Error('Cant init after start a page.');
-
-  if (root) {
-    share.root = root;
-    document.body.classList.add('orchids-custom-container');
-  }
-};
-
+/**
+ * Register a Page.
+ * @param name Page name.
+ * @param attributes Page attributes.
+ * @param options Page options.
+ */
 export const registerPage = (name, attributes = {}, options = {}) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Page name should be non empty string.');
@@ -23,6 +20,11 @@ export const registerPage = (name, attributes = {}, options = {}) => {
   definitions[name] = makePage(name, attributes, options);
 };
 
+/**
+ * Start a Page
+ * @param name Page name.
+ * @param data Page data pass to `created` hook.
+ */
 export const startPage = (name, data) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Page name should be non empty string.');
@@ -41,9 +43,8 @@ export const startPage = (name, data) => {
     { id: share.id, parent: share.root },
     data,
   );
-  const { id } = share;
 
-  stacks.push({ id, name, instance });
+  stacks.push(instance);
 
   if (instance.options.animate) incPagesCount();
 
@@ -57,25 +58,72 @@ export const startPage = (name, data) => {
   share.id += 1;
 };
 
+/**
+ * Back a Page.
+ */
 export const back = () => {
   if (stacks.length < 2) return;
 
-  const lastItem = stacks[stacks.length - 1];
-  if (lastItem.instance.options.route) {
-    decPagesCount();
-    onHashChange();
+  const lastInstance = stacks[stacks.length - 1];
+  if (lastInstance.options.route) {
+    window.history.back();
   } else {
-    const item = stacks.pop();
-    item.instance.beforeDestroy();
-    if (item.instance.animate) {
-      item.instance.el.classList.remove('orchids-active');
+    const instance = stacks.pop();
+    instance.beforeDestroy();
+    if (instance.options.animate) {
+      instance.el.classList.remove('orchids-active');
       setTimeout(() => {
-        item.instance.el.remove();
-        item.instance.destroyed();
+        instance.el.remove();
+        instance.destroyed();
       }, 500);
     } else {
-      item.instance.el.remove();
-      item.instance.destroyed();
+      instance.el.remove();
+      instance.destroyed();
     }
   }
+};
+
+/**
+ * Init application.
+ * @param root Root container.
+ */
+export const init = ({ root }) => {
+  if (share.initialized) throw new Error('Cant init after start a page.');
+
+  if (root) {
+    share.root = root;
+    document.body.classList.add('orchids-custom-container');
+  }
+};
+
+/**
+ * Get Page by index.
+ * @param index
+ * @returns {*}
+ */
+export const getPage = index => stacks[index || 0];
+
+/**
+ * Get pages' length.
+ * @returns {number}
+ */
+export const getPagesLength = () => stacks.length;
+
+/**
+ * Get current Page.
+ * @returns {*}
+ */
+export const getCurrentPage = () => stacks[stacks.length - 1];
+
+/**
+ * Get last Page which has route.
+ * @returns {*}
+ */
+export const getLastRoutePage = () => {
+  for (let len = stacks.length - 1; len > -1; len -= 1) {
+    const instance = stacks[len];
+    if (instance.options.route) return instance;
+  }
+
+  return undefined;
 };

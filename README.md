@@ -1,41 +1,143 @@
-# web-lib-starter
+# orchids
 
 [English Documentation](./README.en.md)
 
-一个用于快速创建 Web 组件库的模板脚手架.
+当前版本是 `1.x`, [v0.x 在这里](https://github.com/senntyou/orchids/tree/0.x).
+
+让 Web App 有像 Native App 一样的体验.
+
+[Demo](http://senntyou.github.io/orchids/).
+
+[Demo Code](./view/demo).
 
 ## 快速开始
 
 ```
-git clone https://github.com/senntyou/web-lib-starter.git --depth=1
+npm install orchids --save
 
-cd web-lib-starter
-
-npm install             # 安装依赖
-
-npm run build           # 构建发布文件
+import 'orchids/lib/styles.css';
+import { registerPage, startPage, ... } from 'orchids';
 ```
 
-## 特性
+## api
 
-- [less](http://lesscss.org/), [scss](https://sass-lang.com/) 样式语言支持.
-- [Flow](https://flow.org/) 语法, [jest](https://jestjs.io/en/) 测试支持.
-- 使用 [lila](https://github.com/senntyou/lila) 预览调试页面.
-
-## 项目
+### registerPage: 注册一个页面
 
 ```
-- src
-  - index.js                 # js 入口文件
-  - styles
-    - index.{less,scss}      # 样式入口文件
+registerPage(name, attributes, options);
 ```
 
-样式默认使用 `less` 语言, 如果你想使用 `scss` 语言, 可以修改 `package.json`:
+- `name`: `string` 页面名字.
+- `attributes`: `{}` 页面属性.
+  - `beforeCreate`: 页面根元素创建之前.
+  - `created`: 页面根元素创建之后.
+  - `beforeDestroy`: 页面根元素销毁之前.
+  - `destroyed`: 页面根元素销毁之后.
+- `options`: `{}` 页面配置.
+  - `options.route`: `bool` `默认: true` 是否向浏览器历史注入一个新的 hash.
+  - `options.animate`: `bool` `默认: true` 是否使用动画.
+  - `options.direction`: `string` `默认: r2l` 动画方向: r2l(右到左), l2r(左到右), b2t(底到顶), t2b(顶到底).
+  - `options.backgroundColor`: `string` `默认: #ffffff` 背景颜色.
+  - `options.style`: `{}` 额外的 Css 样式.
+
+### startPage: 开始一个页面
 
 ```
-"scripts": {
-  - "build:styles": "npm run build:less",
-  + "build:styles": "npm run build:scss",
-}
+startPage(name, data);
+```
+
+- `name`: `string` 页面名字.
+- `data`: `*` 传递给 `created` 钩子的页面数据.
+
+### back: 回退一个页面
+
+```
+back();
+```
+
+### init: 初始化应用
+
+```
+init({ root });
+```
+
+- `root`: `DOM` `默认: document.body` 根容器.
+
+### getPage: 通过索引获取页面实例
+
+```
+const page = getPage(index);
+```
+
+- `index`: `int` `默认: 0` Index.
+
+### getPagesLength: 获取页面个数
+
+```
+const length = getPagesLength();
+```
+
+### getCurrentPage: 获取当前页面
+
+```
+const page = getCurrentPage();
+```
+
+### getLastRoutePage: 获取最近有路由的页面
+
+```
+const page = getLastRoutePage();
+```
+
+## Page: 页面实例与钩子
+
+- `Page.id`: 页面 Id.
+- `Page.name`: 页面名字.
+- `Page.options`: 页面配置.
+- `Page.el`: 页面跟元素(`beforeCreate` 中不能访问).
+
+### beforeCreate: 页面根元素创建之前
+
+```
+registerPage('name', {
+  beforeCreate() {
+    this.id // ok
+    this.name // ok
+    this.options // ok
+    this.el // not ok
+  },
+});
+```
+
+### created: 页面根元素创建之后
+
+```
+registerPage('name', {
+  created() {
+    this.id // ok
+    this.name // ok
+    this.options // ok
+    this.el // ok
+  },
+});
+```
+
+### beforeDestroy: 页面根元素销毁之前
+
+```
+registerPage('name', {
+  beforeDestroy() {
+    this // ok
+  },
+});
+```
+
+### destroyed: 页面根元素销毁之后
+
+```
+registerPage('name', {
+  destroyed() {
+    this // ok
+  },
+});
 ```

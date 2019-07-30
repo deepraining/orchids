@@ -1,5 +1,5 @@
 import share, { stacks } from './share';
-import { getPagesCount, resetPagesCount } from './count';
+import { decPagesCount, getPagesCount, resetPagesCount } from './count';
 
 const directionToClass = {
   l2r: 'orchids-left-to-right',
@@ -77,7 +77,7 @@ export const makePage = (name, attributes, options) => {
   return Page;
 };
 
-export const onHashChange = () => {
+const onHashChange = () => {
   if (share.pushHash) {
     // reset
     share.pushHash = !1;
@@ -85,20 +85,23 @@ export const onHashChange = () => {
   }
 
   while (stacks.length > 1) {
-    const item = stacks.pop();
-    item.instance.beforeDestroy();
-    if (item.instance.animate) {
-      item.instance.el.classList.remove('orchids-active');
+    const instance = stacks.pop();
+    instance.beforeDestroy();
+    if (instance.options.animate) {
+      instance.el.classList.remove('orchids-active');
       setTimeout(() => {
-        item.instance.el.remove();
-        item.instance.destroyed();
+        instance.el.remove();
+        instance.destroyed();
       }, 500);
     } else {
-      item.instance.el.remove();
-      item.instance.destroyed();
+      instance.el.remove();
+      instance.destroyed();
     }
 
-    if (item.instance.options.route) break;
+    if (instance.options.route) {
+      decPagesCount();
+      break;
+    }
   }
 };
 

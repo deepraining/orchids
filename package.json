@@ -1,28 +1,25 @@
 {
-  "name": "web-lib-starter",
-  "version": "0.1.0",
-  "description": "Web Lib Starter - A boilerplate for creating a Web library.",
+  "name": "orchids",
+  "version": "1.0.0",
+  "description": "Make Web App be felt as Native App.",
   "main": "lib/index.js",
   "module": "es/index.js",
   "author": "senntyou <jiangjinbelief@163.com>",
-  "homepage": "https://github.com/senntyou/web-lib-starter",
+  "homepage": "https://github.com/senntyou/orchids",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/senntyou/web-lib-starter"
+    "url": "https://github.com/senntyou/orchids"
   },
   "keywords": [
     "web",
-    "lib",
-    "library",
-    "starter",
-    "boilerplate",
-    "webpack",
-    "gulp",
-    "jest"
+    "native",
+    "app",
+    "spa",
+    "page"
   ],
   "bugs": {
-    "url": "https://github.com/senntyou/web-lib-starter/issues"
+    "url": "https://github.com/senntyou/orchids/issues"
   },
   "readmeFilename": "README.md",
   "files": [
