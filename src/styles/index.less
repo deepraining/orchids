@@ -1,0 +1,54 @@
+.orchids {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+.orchids,
+.orchids::before,
+.orchids::after,
+.orchids *,
+.orchids *::before,
+.orchids *::after {
+  box-sizing: border-box;
+}
+.orchids-page {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+  z-index: 1;
+}
+
+/* animation */
+.orchids-page.orchids-with-animation,
+.orchids-dialog.orchids-with-animation {
+  transition: all 0.5s;
+}
+.orchids-page.orchids-with-animation.orchids-right-to-left {
+  transform: translateX(100%);
+}
+.orchids-page.orchids-with-animation.orchids-left-to-right {
+  transform: translateX(-100%);
+}
+.orchids-page.orchids-with-animation.orchids-right-to-left.orchids-active,
+.orchids-page.orchids-with-animation.orchids-left-to-right.orchids-active {
+  transform: translateX(0);
+}
+.orchids-page.orchids-with-animation.orchids-bottom-to-top {
+  transform: translateY(100%);
+}
+.orchids-page.orchids-with-animation.orchids-top-to-bottom {
+  transform: translateY(-100%);
+}
+.orchids-page.orchids-with-animation.orchids-bottom-to-top.orchids-active,
+.orchids-page.orchids-with-animation.orchids-top-to-bottom.orchids-active {
+  transform: translateY(0);
+}
+
+/* has custom root container */
+.orchids-custom-container .orchids-page {
+  position: absolute;
+}
