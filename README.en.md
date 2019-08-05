@@ -47,8 +47,6 @@ startPage(name, data, options);
 
 - `name`: `string` Page name.
 - `data`: `*` Page data pass to `created` hook.
-- `options`: `{}` Options.
-  - `options.beforeAppInitialized`: `bool` `default: false` Set `true` to run a non route page when application is not initialized.
 
 ### back: Back a Page
 
@@ -153,6 +151,16 @@ registerPage('name', {
 });
 ```
 
+### afterAnimate: After page's animation finished
+
+```
+registerPage('name', {
+  afterAnimate() {
+    this // ok
+  },
+});
+```
+
 ### beforeDestroy: Before page root element being destroyed
 
 ```
@@ -168,6 +176,26 @@ registerPage('name', {
 ```
 registerPage('name', {
   destroyed() {
+    this // ok
+  },
+});
+```
+
+### beforeHide: When start another page.
+
+```
+registerPage('name', {
+  beforeHide() {
+    this // ok
+  },
+});
+```
+
+### afterShow: When back from another page.
+
+```
+registerPage('name', {
+  afterShow() {
     this // ok
   },
 });

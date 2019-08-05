@@ -24,9 +24,8 @@ export const registerPage = (name, attributes = {}, options = {}) => {
  * Start a Page
  * @param name Page name.
  * @param data Page data pass to `created` hook.
- * @param options Options to start current page.
  */
-export const startPage = (name, data, options = {}) => {
+export const startPage = (name, data) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Page name should be non empty string.');
   }
@@ -38,9 +37,8 @@ export const startPage = (name, data, options = {}) => {
   }
 
   const pageOptions = optionsCollection[name];
-  const { beforeAppInitialized = !1 } = options;
-  const runBeforeAppInitialized =
-    !share.initialized && !pageOptions.route && beforeAppInitialized;
+  //
+  const runBeforeAppInitialized = !share.initialized && !pageOptions.route;
 
   if (!runBeforeAppInitialized) {
     if (!share.initialized) {
@@ -58,6 +56,10 @@ export const startPage = (name, data, options = {}) => {
     }
   }
 
+  const prevInstance = stacks[stacks.length - 1];
+
+  if (prevInstance) prevInstance.beforeHide();
+
   // eslint-disable-next-line new-cap
   const instance = new definition({ id: share.id, parent: share.root }, data);
 
@@ -74,16 +76,23 @@ export const startPage = (name, data, options = {}) => {
         // Show page, and delay 100 ms to guarantee that the animation is ok
         setTimeout(() => {
           instance.el.classList.add('orchids-active');
+          setTimeout(() => {
+            instance.afterAnimate();
+          }, 500);
         }, 100);
       }
     } else if (instance.options.animate) {
       instance.el.classList.add('orchids-active');
+      instance.afterAnimate();
     }
     incPagesCount();
   } else if (instance.options.animate) {
     // Show page, and delay 100 ms to guarantee that the animation is ok
     setTimeout(() => {
       instance.el.classList.add('orchids-active');
+      setTimeout(() => {
+        instance.afterAnimate();
+      }, 500);
     }, 100);
   }
 
@@ -98,6 +107,7 @@ export const back = () => {
   if (share.initialized && stacks.length < 2) return;
 
   const lastInstance = stacks[stacks.length - 1];
+  const prevInstance = stacks[stacks.length - 2];
 
   // When not initialized, stacks cant be empty.
   if (!lastInstance) return;
@@ -112,10 +122,12 @@ export const back = () => {
       setTimeout(() => {
         instance.el.remove();
         instance.destroyed();
+        if (prevInstance) prevInstance.afterShow();
       }, 500);
     } else {
       instance.el.remove();
       instance.destroyed();
+      if (prevInstance) prevInstance.afterShow();
     }
   }
 };
