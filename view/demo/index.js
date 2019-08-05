@@ -31,14 +31,24 @@ registerPage('a', {
     console.log('a: beforeCreate');
   },
   created({ title, content }) {
+    console.log('a: created');
     document.title = title;
     this.el.innerHTML = content;
+  },
+  afterAnimate() {
+    console.log('a: afterAnimate');
   },
   beforeDestroy() {
     console.log('a: beforeDestroy');
   },
   destroyed() {
     console.log('a: destroyed');
+  },
+  beforeHide() {
+    console.log('a: beforeHide');
+  },
+  afterShow() {
+    console.log('a: afterShow');
   },
 });
 
@@ -49,14 +59,24 @@ registerPage(
       console.log('b: beforeCreate');
     },
     created({ title, content }) {
+      console.log('b: created');
       document.title = title;
       this.el.innerHTML = content;
+    },
+    afterAnimate() {
+      console.log('b: afterAnimate');
     },
     beforeDestroy() {
       console.log('b: beforeDestroy');
     },
     destroyed() {
       console.log('b: destroyed');
+    },
+    beforeHide() {
+      console.log('b: beforeHide');
+    },
+    afterShow() {
+      console.log('b: afterShow');
     },
   },
   {
@@ -73,14 +93,24 @@ registerPage(
       console.log('c: beforeCreate');
     },
     created({ title, content }) {
+      console.log('c: created');
       document.title = title;
       this.el.innerHTML = content;
+    },
+    afterAnimate() {
+      console.log('c: afterAnimate');
     },
     beforeDestroy() {
       console.log('c: beforeDestroy');
     },
     destroyed() {
       console.log('c: destroyed');
+    },
+    beforeHide() {
+      console.log('c: beforeHide');
+    },
+    afterShow() {
+      console.log('c: afterShow');
     },
   },
   {
@@ -91,8 +121,8 @@ registerPage(
   },
 );
 
-startPage('a', { title: 'aa', content: 'aaa' });
-// startPage('b', { title: 'bb', content: 'bbb' }, {beforeAppInitialized: !0});
+// startPage('a', { title: 'aa', content: 'aaa' });
+startPage('b', { title: 'bb', content: 'bbb' });
 
 document.getElementById('back').addEventListener(
   'click',

@@ -56,8 +56,11 @@ export const makePage = (name, attributes, options) => {
     constructor: Page,
     beforeCreate() {},
     created() {},
+    afterAnimate() {},
     beforeDestroy() {},
     destroyed() {},
+    beforeHide() {},
+    afterShow() {},
   };
 
   Object.keys(attributes).forEach(attr => {
@@ -76,16 +79,19 @@ const onHashChange = () => {
 
   while (stacks.length > 1) {
     const instance = stacks.pop();
+    const prevInstance = stacks[stacks.length - 1];
     instance.beforeDestroy();
     if (instance.options.animate) {
       instance.el.classList.remove('orchids-active');
       setTimeout(() => {
         instance.el.remove();
         instance.destroyed();
+        if (prevInstance) prevInstance.afterShow();
       }, 500);
     } else {
       instance.el.remove();
       instance.destroyed();
+      if (prevInstance) prevInstance.afterShow();
     }
 
     if (instance.options.route) break;

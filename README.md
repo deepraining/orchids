@@ -48,8 +48,6 @@ startPage(name, data, options);
 
 - `name`: `string` 页面名字.
 - `data`: `*` 传递给 `created` 钩子的页面数据.
-- `options`: `{}` 配置.
-  - `options.beforeAppInitialized`: `bool` `默认: false` 当应用未初始化时，可否运行一个没有路由的页面.
 
 ### back: 回退一个页面
 
@@ -154,6 +152,16 @@ registerPage('name', {
 });
 ```
 
+### afterAnimate: 页面动画完成之后
+
+```
+registerPage('name', {
+  afterAnimate() {
+    this // ok
+  },
+});
+```
+
 ### beforeDestroy: 页面根元素销毁之前
 
 ```
@@ -169,6 +177,26 @@ registerPage('name', {
 ```
 registerPage('name', {
   destroyed() {
+    this // ok
+  },
+});
+```
+
+### beforeHide: 开启另一个页面时
+
+```
+registerPage('name', {
+  beforeHide() {
+    this // ok
+  },
+});
+```
+
+### afterShow: 从另一个页面回退到这个页面时
+
+```
+registerPage('name', {
+  afterShow() {
     this // ok
   },
 });
