@@ -4,9 +4,27 @@ import {
   registerPage,
   startPage,
   back,
+  getPage,
+  getRoutePage,
+  getPagesLength,
+  getRoutePagesLength,
+  getCurrentPage,
+  getCurrentRoutePage,
+  getPages,
+  getRoutePages,
 } from '../../src';
 
 // init({root: document.getElementById('container')});
+
+window.startPage = startPage;
+window.getPage = getPage;
+window.getRoutePage = getRoutePage;
+window.getPagesLength = getPagesLength;
+window.getRoutePagesLength = getRoutePagesLength;
+window.getCurrentPage = getCurrentPage;
+window.getCurrentRoutePage = getCurrentRoutePage;
+window.getPages = getPages;
+window.getRoutePages = getRoutePages;
 
 registerPage('a', {
   beforeCreate() {
@@ -74,6 +92,7 @@ registerPage(
 );
 
 startPage('a', { title: 'aa', content: 'aaa' });
+// startPage('b', { title: 'bb', content: 'bbb' }, {beforeAppInitialized: !0});
 
 document.getElementById('back').addEventListener(
   'click',
