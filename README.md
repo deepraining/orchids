@@ -43,11 +43,13 @@ registerPage(name, attributes, options);
 ### startPage: 开始一个页面
 
 ```
-startPage(name, data);
+startPage(name, data, options);
 ```
 
 - `name`: `string` 页面名字.
 - `data`: `*` 传递给 `created` 钩子的页面数据.
+- `options`: `{}` 配置.
+  - `options.beforeAppInitialized`: `bool` `默认: false` 当应用未初始化时，可否运行一个没有路由的页面.
 
 ### back: 回退一个页面
 
@@ -69,12 +71,26 @@ init({ root });
 const page = getPage(index);
 ```
 
-- `index`: `int` `默认: 0` Index.
+- `index`: `int` `默认: 0` 索引（如果是负数，则倒数取值，如 `-1` 为倒数第一个，`-2` 为倒数第二个）.
+
+### getRoutePage: 通过索引获取有路由的页面实例
+
+```
+const page = getRoutePage(index);
+```
+
+- `index`: `int` `默认: 0` 索引（如果是负数，则倒数取值，如 `-1` 为倒数第一个，`-2` 为倒数第二个）.
 
 ### getPagesLength: 获取页面个数
 
 ```
 const length = getPagesLength();
+```
+
+### getRoutePagesLength: 获取有路由的页面个数
+
+```
+const length = getRoutePagesLength();
 ```
 
 ### getCurrentPage: 获取当前页面
@@ -83,11 +99,27 @@ const length = getPagesLength();
 const page = getCurrentPage();
 ```
 
-### getLastRoutePage: 获取最近有路由的页面
+### getCurrentRoutePage: 获取当前有路由的页面
 
 ```
-const page = getLastRoutePage();
+const page = getCurrentRoutePage();
 ```
+
+### getPages: 根据名字获取页面
+
+```
+const pages = getPages(name);
+```
+
+- `name`: `string` 页面名字，如果为空，则获取所有的页面
+
+### getRoutePages: 根据名字获取路由页面
+
+```
+const pages = getRoutePages(name);
+```
+
+- `name`: `string` 页面名字，如果为空，则获取所有的路由页面
 
 ## Page: 页面实例与钩子
 

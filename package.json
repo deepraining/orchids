@@ -1,6 +1,6 @@
 {
   "name": "orchids",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make Web App be felt as Native App.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -47,7 +47,8 @@
     "test": "jest",
     "test-watch": "jest --watch --notify",
     "test-cover": "jest --coverage",
-    "coverage": "npm run test-cover && opn coverage/lcov-report/index.html"
+    "coverage": "npm run test-cover && opn coverage/lcov-report/index.html",
+    "view:demo": "lila dev demo"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

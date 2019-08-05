@@ -1,4 +1,4 @@
-import share, { stacks } from './share';
+import share, { stacks, optionsCollection } from './share';
 import { decPagesCount, getPagesCount, resetPagesCount } from './count';
 
 const directionToClass = {
@@ -15,16 +15,13 @@ const defaultOptions = {
 };
 
 export const makePage = (name, attributes, options) => {
+  // Record options
+  optionsCollection[name] = { ...defaultOptions, ...options };
+
   function Page({ id, parent }, data) {
     this.id = id;
     this.name = name;
-    this.options = { ...defaultOptions, ...options };
-    this.orchidsIsFirstPage = this.id === 1;
-
-    if (this.orchidsIsFirstPage) {
-      // If first page, route must be true
-      this.options.route = !0;
-    }
+    this.options = { ...optionsCollection[name] };
 
     this.beforeCreate();
 
@@ -50,13 +47,6 @@ export const makePage = (name, attributes, options) => {
       });
     }
 
-    if (this.options.route && !this.orchidsIsFirstPage) {
-      share.pushHash = !0;
-      window.location.hash = `${this.name}/${this.id}`;
-    } else if (this.options.route && this.orchidsIsFirstPage) {
-      this.el.classList.add('orchids-active');
-    }
-
     parent.appendChild(this.el);
 
     this.created(data);
@@ -78,9 +68,9 @@ export const makePage = (name, attributes, options) => {
 };
 
 const onHashChange = () => {
-  if (share.pushHash) {
+  if (share.pushingHash) {
     // reset
-    share.pushHash = !1;
+    share.pushingHash = !1;
     return;
   }
 
@@ -98,11 +88,10 @@ const onHashChange = () => {
       instance.destroyed();
     }
 
-    if (instance.options.route) {
-      decPagesCount();
-      break;
-    }
+    if (instance.options.route) break;
   }
+
+  decPagesCount();
 };
 
 export const initApp = () => {
@@ -115,3 +104,5 @@ export const initApp = () => {
   window.location.hash = '/';
   window.onhashchange = onHashChange;
 };
+
+export const getAllRoutePages = () => stacks.filter(p => p.options.route);

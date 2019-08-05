@@ -1,5 +1,5 @@
-import share, { definitions, stacks } from './share';
-import { makePage, initApp } from './extra';
+import share, { definitions, stacks, optionsCollection } from './share';
+import { makePage, initApp, getAllRoutePages } from './extra';
 import { incPagesCount } from './count';
 
 /**
@@ -24,31 +24,63 @@ export const registerPage = (name, attributes = {}, options = {}) => {
  * Start a Page
  * @param name Page name.
  * @param data Page data pass to `created` hook.
+ * @param options Options to start current page.
  */
-export const startPage = (name, data) => {
+export const startPage = (name, data, options = {}) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Page name should be non empty string.');
   }
 
-  if (!share.initialized) {
-    initApp();
-    share.initialized = !0;
-  }
+  const definition = definitions[name];
 
-  if (!definitions[name]) {
+  if (!definition) {
     throw new Error(`Page[${name}] is not registered.`);
   }
 
-  const instance = new definitions[name](
-    { id: share.id, parent: share.root },
-    data,
-  );
+  const pageOptions = optionsCollection[name];
+  const { beforeAppInitialized = !1 } = options;
+  const runBeforeAppInitialized =
+    !share.initialized && !pageOptions.route && beforeAppInitialized;
+
+  if (!runBeforeAppInitialized) {
+    if (!share.initialized) {
+      if (stacks.length) {
+        throw new Error(
+          'Cant init application, for some pages having been existed.',
+        );
+      }
+      if (!pageOptions.route) {
+        throw new Error('First page should have options.route equals to true.');
+      }
+
+      initApp();
+      share.initialized = !0;
+    }
+  }
+
+  // eslint-disable-next-line new-cap
+  const instance = new definition({ id: share.id, parent: share.root }, data);
 
   stacks.push(instance);
 
-  if (instance.options.animate) incPagesCount();
+  instance.isFirstPage = stacks.length === 1;
 
-  if (!instance.orchidsIsFirstPage && instance.options.animate) {
+  if (instance.options.route) {
+    if (!instance.isFirstPage) {
+      share.pushingHash = !0;
+      window.location.hash = `${instance.name}/${instance.id}`;
+
+      if (instance.options.animate) {
+        // Show page, and delay 100 ms to guarantee that the animation is ok
+        setTimeout(() => {
+          instance.el.classList.add('orchids-active');
+        }, 100);
+      }
+    } else if (instance.options.animate) {
+      instance.el.classList.add('orchids-active');
+    }
+    incPagesCount();
+  } else if (instance.options.animate) {
     // Show page, and delay 100 ms to guarantee that the animation is ok
     setTimeout(() => {
       instance.el.classList.add('orchids-active');
@@ -62,9 +94,14 @@ export const startPage = (name, data) => {
  * Back a Page.
  */
 export const back = () => {
-  if (stacks.length < 2) return;
+  // Initialized, first page must be a route page.
+  if (share.initialized && stacks.length < 2) return;
 
   const lastInstance = stacks[stacks.length - 1];
+
+  // When not initialized, stacks cant be empty.
+  if (!lastInstance) return;
+
   if (lastInstance.options.route) {
     window.history.back();
   } else {
@@ -101,7 +138,18 @@ export const init = ({ root }) => {
  * @param index
  * @returns {*}
  */
-export const getPage = index => stacks[index || 0];
+export const getPage = (index = 0) =>
+  stacks[index < 0 ? stacks.length + index : index];
+
+/**
+ * Get route Page by index.
+ * @param index
+ * @returns {*}
+ */
+export const getRoutePage = (index = 0) => {
+  const pages = getAllRoutePages();
+  return pages[index < 0 ? pages.length + index : index];
+};
 
 /**
  * Get pages' length.
@@ -110,20 +158,37 @@ export const getPage = index => stacks[index || 0];
 export const getPagesLength = () => stacks.length;
 
 /**
+ * Get route pages' length.
+ * @returns {number}
+ */
+export const getRoutePagesLength = () => getAllRoutePages().length;
+
+/**
  * Get current Page.
  * @returns {*}
  */
-export const getCurrentPage = () => stacks[stacks.length - 1];
+export const getCurrentPage = () => getPage(-1);
 
 /**
- * Get last Page which has route.
+ * Get current Page.
  * @returns {*}
  */
-export const getLastRoutePage = () => {
-  for (let len = stacks.length - 1; len > -1; len -= 1) {
-    const instance = stacks[len];
-    if (instance.options.route) return instance;
-  }
+export const getCurrentRoutePage = () => getRoutePage(-1);
 
-  return undefined;
+/**
+ * Get pages by name.
+ * @param name
+ * @returns {*[]}
+ */
+export const getPages = name =>
+  !name ? [...stacks] : stacks.filter(p => p.name === name);
+
+/**
+ * Get Route pages by name
+ * @param name
+ * @returns {*[]}
+ */
+export const getRoutePages = name => {
+  const pages = getAllRoutePages();
+  return !name ? [...pages] : pages.filter(p => p.name === name);
 };

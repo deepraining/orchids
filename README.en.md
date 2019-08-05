@@ -42,11 +42,13 @@ registerPage(name, attributes, options);
 ### startPage: Start a Page
 
 ```
-startPage(name, data);
+startPage(name, data, options);
 ```
 
 - `name`: `string` Page name.
 - `data`: `*` Page data pass to `created` hook.
+- `options`: `{}` Options.
+  - `options.beforeAppInitialized`: `bool` `default: false` Set `true` to run a non route page when application is not initialized.
 
 ### back: Back a Page
 
@@ -68,12 +70,26 @@ init({ root });
 const page = getPage(index);
 ```
 
-- `index`: `int` `default: 0` Index.
+- `index`: `int` `default: 0` Index(If index is negative integer, the sequence to get value is opposite direction. For example, `-1` is to get the last one, and `-2` is to get the second last one.).
+
+### getRoutePage: Get Page which have route by index
+
+```
+const page = getRoutePage(index);
+```
+
+- `index`: `int` `default: 0` Index(If index is negative integer, the sequence to get value is opposite direction. For example, `-1` is to get the last one, and `-2` is to get the second last one.).
 
 ### getPagesLength: Get pages' length
 
 ```
 const length = getPagesLength();
+```
+
+### getRoutePagesLength: Get route pages' length
+
+```
+const length = getRoutePagesLength();
 ```
 
 ### getCurrentPage: Get current Page
@@ -82,11 +98,27 @@ const length = getPagesLength();
 const page = getCurrentPage();
 ```
 
-### getLastRoutePage: Get last Page which has route
+### getCurrentRoutePage: Get current route Page
 
 ```
-const page = getLastRoutePage();
+const page = getCurrentRoutePage();
 ```
+
+### getPages: Get pages by name
+
+```
+const pages = getPages(name);
+```
+
+- `name`: `string` Page name. If empty, all pages will return;
+
+### getRoutePages: Get route pages by name
+
+```
+const pages = getRoutePages(name);
+```
+
+- `name`: `string` Page name. If empty, all route pages will return;
 
 ## Page: Page instance and hooks
 
