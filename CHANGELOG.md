@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 [2020-01-17]
+
+- Fix bug of history back twice in ios.
+
 ## 1.0.2 [2019-08-05]
 
 - Add `afterAnimate, beforeHide, afterShow` hooks.
