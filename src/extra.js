@@ -108,7 +108,7 @@ export const initApp = () => {
   if (existedPagesCount > 1) window.history.go(1 - existedPagesCount);
 
   if (window.location.href.indexOf('#') === -1) {
-    window.location.replace(window.location.href + '#/');
+    window.location.replace(`${window.location.href}#/`);
   }
   window.onhashchange = onHashChange;
 };

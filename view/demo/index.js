@@ -121,8 +121,8 @@ registerPage(
   },
 );
 
-// startPage('a', { title: 'aa', content: 'aaa' });
-startPage('b', { title: 'bb', content: 'bbb' });
+startPage('a', { title: 'aa', content: 'aaa' });
+// startPage('b', { title: 'bb', content: 'bbb' });
 
 document.getElementById('back').addEventListener(
   'click',
